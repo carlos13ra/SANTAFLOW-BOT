@@ -17,9 +17,9 @@ let handler = async (m, { conn, args }) => {
     let totalCommands = Object.keys(global.plugins).length
 
     const imgRandom = [
-      "https://iili.io/FKVDVAN.jpg",
-      "https://iili.io/FKVbUrJ.jpg"
-    ].getRandom?.() || "https://iili.io/FKVDVAN.jpg"
+      "https://i.postimg.cc/0NxWTkp0/1754525596737.jpg",
+      "https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg"
+    ].getRandom?.() || "https://i.postimg.cc/pTm6Z0fw/1754253021526.jpg"
 
     const text = [
       "*✦ 𝐈𝐍𝐕𝐎𝐂𝐀𝐂𝐈𝐎́𝐍 𝐌𝐀𝐒𝐈𝐕𝐀 𝐁𝐘 𝐂𝐚𝐫𝐥𝐨𝐬'𝐑𝐕 ✦*",
@@ -47,7 +47,7 @@ let handler = async (m, { conn, args }) => {
         externalAdReply: {
           title: 'sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ | ʙʏ ᴄᴀʀʟᴏs.ʀᴠ ',
           body: club,
-          thumbnailUrl: 'https://files.catbox.moe/q8b2br.jpg',
+          thumbnailUrl: 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg',
           sourceUrl: redes,
           mediaType: 1,
           renderLargerThumbnail: false
@@ -747,7 +747,7 @@ let handler = async (m, { conn, args }) => {
         externalAdReply: {
           title: packname,
           body: dev,
-          thumbnailUrl: 'https://files.catbox.moe/us0m4f.jpg',
+          thumbnailUrl: 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg',
           sourceUrl: redes,
           mediaType: 1,
           renderLargerThumbnail: true
