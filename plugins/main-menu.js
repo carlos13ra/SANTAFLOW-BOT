@@ -695,9 +695,9 @@ let handler = async (m, { conn, args }) => {
 > 🛰️ ➊ *#qr* – Escanea un 𝖢𝗈𝖽𝗂𝗀𝗈 𝗤𝗥  
 > 🔐 ➋ *#code* – Usa un 𝖢𝗈𝖽𝗂𝗴𝗼 de 8 dígitos`.trim();
 
-    await m.react('🌱')
+    await m.react('☘️')
     await conn.sendMessage(m.chat, {
-      image: { url: 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg' },
+      image: { url: banner },
       caption: menuText,
       mentions: [m.sender]
     }, { quoted: fkontak })
