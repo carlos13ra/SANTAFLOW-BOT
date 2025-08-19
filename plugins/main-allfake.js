@@ -27,17 +27,17 @@ return res.data
 console.log(`Error : ${e}`)
 }}
   
-global.creador = 'wa.me/51919199620'
+global.creador = 'wa.me/51946200884'
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.namechannel = '▐▐ ✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
-global.namechannel2 = '▐▐ ✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
-global.namegrupo = '▐▐ ⚡ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 • 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 ⚡ ▐▐'
-global.namecomu = '▐▐ ⚡ 𝗥𝗶𝗻-𝗜𝘁𝗼𝘀𝗵𝗶-𝗕𝗼𝘁-𝗠𝗗 • 𝗖𝗼𝗺𝘂𝗻𝗶𝘁𝘆 ⚡ ▐▐'
+global.namechannel = '▐▐ ✦ 𝗦𝗔𝗡𝗧𝗔𝗙𝗟𝗢𝗪 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
+global.namechannel2 = '▐▐ ✦ 𝗦𝗔𝗡𝗧𝗔𝗙𝗟𝗢𝗪 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
+global.namegrupo = '▐▐ ⚡ 𝗦𝗔𝗡𝗧𝗔𝗙𝗟𝗢𝗪 • 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 ⚡ ▐▐'
+global.namecomu = '▐▐ ⚡ 𝗦𝗔𝗡𝗧𝗔𝗙𝗟𝗢𝗪-𝗕𝗼𝘁-𝗠𝗗 • 𝗖𝗼𝗺𝘂𝗻𝗶𝘁𝘆 ⚡ ▐▐'
 global.listo = '✦❀ *Aquí tienes, capitán ฅ^•ﻌ•^ฅ* ❀✦'
 global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
 global.canalIdM = ["120363401008003732@newsletter", "120363401008003732@newsletter", "120363401008003732@newsletter"]
-global.canalNombreM = ["▐ 𝗧𝗢𝗖𝗔 𝗔𝗤𝗨𝗜▐ ", "✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦", "⚽𐚁 ֹ ִ Rin Itoshi - Official ୧ ֹ ִ⚽ᩚ꤬ᰍ"]
+global.canalNombreM = ["𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 𝐁𝐎𝐓 | ° 𝘊𝘏𝘈𝘕𝘕𝘌𝘓- 𝗢𝗙𝗜𝗖𝗜𝗔𝗟🧪꙰⃟⸙", "𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 𝐁𝐎𝐓 | ° 𝘊𝘏𝘈𝘕𝘕𝘌𝘓- 𝗢𝗙𝗜𝗖𝗜𝗔𝗟🧪꙰⃟⸙", "ˢᴬᴺᵀᴬᶠᴸᴼᵂ Bot | ° ᴄʜᴀɴɴᴇʟ - Official 🧪꙰⃟⸙"]
 global.channelRD = await getRandomChannel()
 
 global.d = new Date(new Date + 3600000)
@@ -74,8 +74,8 @@ global.edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17
 global.user2 = m.pushName || 'Anónimo';
 global.verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom();
 
-var canal = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'  
-var comunidad = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
+var canal = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'  
+var comunidad = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'
 var git = 'https://github.com/Yuji-XDev'
 var github = 'https://github.com/Yuji-XDev/Rin-Itoshi-Bot'
 var tiktok = 'https://tiktok.com/@the.black.xz'
@@ -117,9 +117,9 @@ global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo
 }}, { quoted: m }
 
 global.icono = [
-'https://files.catbox.moe/ceotf9.jpg',
-'https://files.catbox.moe/fft2hr.jpg',
-'https://files.catbox.moe/i97oje.jpg'
+'https://i.postimg.cc/0NxWTkp0/1754525596737.jpg',
+'https://i.postimg.cc/pTm6Z0fw/1754253021526.jpg',
+'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg'
 ].getRandom()
 
 /*global.rcanal = {
