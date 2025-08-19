@@ -22,7 +22,7 @@ let handler = async (m, { conn, args }) => {
     ].getRandom?.() || "https://iili.io/FKVDVAN.jpg"
 
     const text = [
-      "*✦ 𝐈𝐍𝐕𝐎𝐂𝐀𝐂𝐈𝐎́𝐍 𝐌𝐀𝐒𝐈𝐕𝐀 𝐁𝐘 𝐒𝐡𝐚𝐝𝐨𝐰'𝐂𝐨𝐫𝐞 ✦*",
+      "*✦ 𝐈𝐍𝐕𝐎𝐂𝐀𝐂𝐈𝐎́𝐍 𝐌𝐀𝐒𝐈𝐕𝐀 𝐁𝐘 𝐂𝐚𝐫𝐥𝐨𝐬'𝐑𝐕 ✦*",
       "⚜️ 𝐌𝐞𝐧𝐬𝐚𝐣𝐞 𝐜𝐨𝐥𝐞𝐜𝐭𝐢𝐯𝐨 𝐞𝐧 𝐜𝐮𝐫𝐬𝐨...",
       "🔮 𝐄𝐭𝐢𝐪𝐮𝐞𝐭𝐚𝐧𝐝𝐨 𝐚 𝐥𝐚𝐬 𝐚𝐥𝐦𝐚𝐬 𝐩𝐞𝐫𝐝𝐢𝐝𝐚𝐬"
     ].getRandom?.() || "✦ 𝐌𝐄𝐍𝐔 ✦"
@@ -45,7 +45,7 @@ let handler = async (m, { conn, args }) => {
       mentions: [m.sender],
       contextInfo: {
         externalAdReply: {
-          title: 'Rɪɴ Iᴛᴏsʜɪ ᴍᴅ | ʙʏ ᴅᴠ.sʜᴀᴅᴏᴡ ',
+          title: 'sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ | ʙʏ ᴄᴀʀʟᴏs.ʀᴠ ',
           body: club,
           thumbnailUrl: 'https://files.catbox.moe/q8b2br.jpg',
           sourceUrl: redes,
@@ -63,7 +63,7 @@ let handler = async (m, { conn, args }) => {
     let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' })
 
     let menuText = `
-🌷｡･:*˚:✧｡  Rɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ ｡✧:˚*:･｡🌱
+🌷｡･:*˚:✧｡  sᴀɴᴛᴀғʟᴏᴡ - ʙᴏᴛ ｡✧:˚*:･｡🌱
 ⊱ ────── {.⋅ ✯ ⋅.} ────── ⊰
 
 ☁️ ${ucapan()} @${userId.split('@')[0]} ⚡
