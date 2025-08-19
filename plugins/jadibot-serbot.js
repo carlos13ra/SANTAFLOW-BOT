@@ -31,7 +31,7 @@ let crm4 = "IF9hdXRvcmVzcG9uZGVyLmpzIGluZm8tYm90Lmpz"
 let drm1 = ""
 let drm2 = ""
 
-let rtx = `╭─〔 💠 𝗥𝗜𝗡 𝗜𝗧𝗢𝗦𝗛𝗜 - 𝗕𝗢𝗧 💠 〕─╮
+let rtx = `╭─〔 💠 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 - 𝗕𝗢𝗧 💠 〕─╮
 │
 │ 🌀 𝐄𝐬𝐜𝐚𝐧𝐞𝐚 𝐞𝐥 𝐜ó𝐝𝐢𝐠𝐨 𝐐𝐑 𝐮𝐬𝐚𝐧𝐝𝐨 
 │     𝐨𝐭𝐫𝐨 𝐜𝐞𝐥𝐮𝐥𝐚𝐫 𝐨 𝐮𝐧𝐚 𝐏𝐂 💻📱
