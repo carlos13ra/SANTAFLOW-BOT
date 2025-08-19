@@ -48,7 +48,7 @@ const handler = async (m, { conn, text, command }) => {
 ┃ 🌱 Publicado: *${ago}* ♡
 ┃ 🔗 Link: *${url}* ✧
 ┃
-╰━❀➤ El audio está en camino... 🌸💖`;
+╰━❀➤ El audio ya se esta enviando... 🎤❤`;
 
     await conn.sendMessage(m.chat, {text: textoInfo, contextInfo: { forwardingScore: 999, isForwarded: true, forwardedNewsletterMessageInfo: { newsletterName: channelRD.name, newsletterJid: channelRD.id, }, externalAdReply: { title: title, body: '┈ ⋞ 〈 ☘️ ʀɪɴ ɪᴛᴏsʜɪ - ᴀɪ ⛅ 〉 ⋟ ┈', thumbnailUrl: thumbnailBuffer, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: true }}}, {quoted: m});
 
