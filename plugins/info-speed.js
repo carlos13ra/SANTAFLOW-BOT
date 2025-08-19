@@ -20,24 +20,19 @@ let chats = Object.entries(conn.chats).filter(([id, data]) => id && data.isChats
 let groups = Object.entries(conn.chats).filter(([jid, chat]) => jid.endsWith('@g.us') && chat.isChats && !chat.metadata?.read_only && !chat.metadata?.announce).map(v => v[0])
 
 
-let texto = `${emoji} *${packname}*
-🚀 *Velocidad:*
-→ ${latensi.toFixed(4)}
+let texto = `╭─『 ${emoji} ${bot} 』─⬣
+⟢ 🔹 *𝑽𝒆𝒍𝒐𝒄𝒊𝒅𝒂𝒅:* ${latensi.toFixed(4)} ms  
+⟢ 🔸 *𝑨𝒄𝒕𝒊𝒗𝒊𝒅𝒂𝒅:* ${muptime}
 
-🕒 *Activo Durante:*
-→ ${muptime}
+⟢ 💌 *Chats Privados:* ${chats.length - groups.length}  
+⟢ 👥 *Grupos:* ${groups.length}
 
-💫 *Chats:*
-→ ${chats.length} *Chats privados*
-→ ${groups.length} *Grupos*
-
-🏆 *Servidor:*
-➤ *Ram ⪼* ${format(totalmem() - freemem())} / ${format(totalmem())}`.trim()
+⟢ 💾 *RAM usada:* ${format(totalmem() - freemem())}  
+⟢ 📦 *RAM total:* ${format(totalmem())}
+╰⧼ ⚡ 𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 • 𝑼𝒍𝒕𝒓𝒂 𝑴𝑫 ☘️ ⧽`.trim()
 
 m.react('✈️')
-
-conn.reply(m.chat, texto, m, )
-
+conn.reply(m.chat, texto, m, rcanal, )
 }
 handler.help = ['speed']
 handler.tags = ['info']

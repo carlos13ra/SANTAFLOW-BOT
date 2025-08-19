@@ -1,39 +1,44 @@
 let handler = async function (m, { conn, groupMetadata }) {
-  if (!m.isGroup) return m.reply('❌ Este comando solo funciona en grupos.')
+  if (!m.isGroup) return m.reply('🚫 Este comando solo funciona en *grupos*.')  
 
   const participantes = groupMetadata?.participants || []
 
   const tarjetas = participantes.map((p, index) => {
     const jid = p.id || 'N/A'
     const username = '@' + jid.split('@')[0]
-    const estado = p.admin === 'superadmin' ? '👑 *Propietario*' :
-                   p.admin === 'admin' ? '🛡️ *Administrador*' :
-                   '👤 *Miembro*'
+    const estado = p.admin === 'superadmin' ? '👑 Fundador' :
+                   p.admin === 'admin' ? '🛡️ Admin' :
+                   '👤 Miembro'
 
     return [
-      '╭─✿ *Usuario ' + (index + 1) + '* ✿',
-      `│  *Nombre:* ${username}`,
-      `│  *JID:* ${jid}`,
-      `│  *Rol:* ${estado}`,
-      '╰───────────────✿'
+      `┏━〔 👥 Usuario #${index + 1} 〕━┓`,
+      `┃ 🌱 *Nombre:* ${username}`,
+      `┃ ☘️ *JID:* ${jid}`,
+      `┃ 🎖️ *Rol:* ${estado}`,
+      `┗━━━━━━━━━━━━━━━━━━━┛`
     ].join('\n')
   })
 
   const contenido = tarjetas.join('\n\n')
   const mencionados = participantes.map(p => p.id).filter(Boolean)
 
-  const mensajeFinal = `╭━━━❖『 *Lista de Participantes* 』❖━━━╮
-👥 *Grupo:* ${groupMetadata.subject}
-🔢 *Total:* ${participantes.length} miembros
-╰━━━━━━━━━━━━━━━━━━━━━━╯
+  const totalAdmins = participantes.filter(p => p.admin).length
+  const totalMiembros = participantes.length - totalAdmins
+
+  const mensajeFinal = `┏━━〔 📋 *Participantes del Grupo* 〕━━┓
+┃ 🌱 *Nombre del grupo:* ${groupMetadata.subject}
+┃ 🔢 *Total de miembros:* ${participantes.length}
+┃ 👑 *Admins:* ${totalAdmins}
+┃ 👤 *Miembros:* ${totalMiembros}
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 ${contenido}`
 
   return conn.reply(m.chat, mensajeFinal, m, { mentions: mencionados })
 }
 
-handler.command = ['lid']
-handler.help = ['lid']
+handler.command = ['lids']
+handler.help = ['lids']
 handler.tags = ['group']
 handler.group = true
 

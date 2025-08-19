@@ -1,29 +1,24 @@
 let handler = async (m, { conn, command, usedPrefix }) => {
 let img = './src/catalogo.jpg'
-let staff = ` ︵ٜ⊹۬︵߭ꥈ‌⏜ׄ︵‌୨ ꥇ⭐߭ ୧‌︵۬߭⏜ꥇ‌︵⊹︵
-       ꥇ𝐄ٜ۬߭𝐐ׄꥇ‌𝐔ᨘ࣪𝐈ꥈ𝐏࣭߭𝐎..𝐃𝐄..𝐀𝐘𝐔𝐃𝐀𝐍𝐓𝐄𝐒.il
-⏝۬‌ꥇ︶ꥇ⊹۬︶‌⏝۬︶ᨘ⊹߭︶ׅꥇ⏝߭︶۬⊹ꥈ︶⏝
-       ⬪ 🏜️ (*SUKUNA BOT MD*) 
+let staff = ` 🌷⃢🌟⃞𝑬𝒒𝒖𝒊𝒑𝒐 𝒅𝒆 𝑨𝒚𝒖𝒅𝒂𝒏𝒕𝒆𝒔🌟⃞🌷⃢
 
-━━━━━━━━━━━━━━━━━━
-🧑‍💼 *Dueño:* ${creador}
-🤖 *Bot:* ${botname}
-📦 *Versión:* ${vs}
-📚 *Librería:* ${libreria} (${baileys})
-━━━━━━━━━━━━━━━━━━
+╭━➤🏜️ 𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 𝑩𝒐𝒕 𝑴𝑫 ︵ٜ⊹۬︵
+┃👑 𝑫𝒖𝒆𝒏̃𝒐: ${creador}
+┃🤖 𝑩𝒐𝒕: ${botname}
+┃📦 𝑽𝒆𝒓𝒔𝒊ó𝒏: ${vs}
+┃📚 𝑳𝒊𝒃𝒓𝒆𝒓í𝒂: ${libreria} (${baileys})
+╰━━━━━━━━━━━━━━━━━━━━━
 
-🧠 *Creador Principal*
-╭─➤
-│ ⚽ *Nombre:* ${etiqueta}𖣘
-│ 🎈 *Rol:* Developer
-│ 🔗 *Número:* wa.me/qr/5B6AGA5YNOUZI1
-│ 🧬 *GitHub:* https://github.com/Yuji-XDev
-╰───────────────
+╭━➤🧠 𝑪𝒓𝒆𝒂𝒅𝒐𝒓 𝑷𝒓𝒊𝒏𝒄𝒊𝒑𝒂𝒍 ︵ٜ⊹۬︵
+┃⚽ 𝑵𝒐𝒎𝒃𝒓𝒆: ${etiqueta}𖣘
+┃🎈 𝑹𝒐𝒍: Developer
+┃🔗 𝑵ú𝒎𝒆𝒓𝒐: wa.me/qr/5B6AGA5YNOUZI1
+┃🧬 𝑮𝒊𝒕𝑯𝒖𝒃: https://github.com/Yuji-XDev
+╰━━━━━━━━━━━━━━━━━━━━━
 
-👥 *Colaboradores*
-╭─➤
-│ 🚫 Actualmente no hay colaboradores
-╰───────────────`
+╭━➤👥 𝑪𝒐𝒍𝒂𝒃𝒐𝒓𝒂𝒅𝒐𝒓𝒆𝒔 ︵ٜ⊹۬︵
+┃🚫 𝑨𝒄𝒕𝒖𝒂𝒍𝒎𝒆𝒏𝒕𝒆 𝒏𝒐 𝒉𝒂𝒚 𝒄𝒐𝒍𝒂𝒃𝒐𝒓𝒂𝒅𝒐𝒓𝒆𝒔
+╰━━━━━━━━━━━━━━━━━━━━━`
 await conn.sendFile(m.chat, img, 'staff.jpg', staff.trim(), fkontak)
 }
   

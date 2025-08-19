@@ -5,6 +5,7 @@ import path, { join } from 'path'
 import { unwatchFile, watchFile } from 'fs'
 import chalk from 'chalk'
 import fetch from 'node-fetch'
+import getMensajeSistema from './lib/msmwarning.js'
 
 const { proto } = (await import('@whiskeysockets/baileys')).default
 const isNumber = x => typeof x === 'number' && !isNaN(x)
@@ -265,7 +266,7 @@ const senderJid = m.sender
 const botJid = conn.user.jid
 const groupMetadata = m.isGroup ? ((conn.chats[m.chat] || {}).metadata || await this.groupMetadata(m.chat).catch(_ => null)) : {}
 const participants = m.isGroup ? (groupMetadata.participants || []) : []
-const user = participants.find(p => p.id === senderLid || p.jid === senderJid) || {}
+const user = participants.find(p => p.id === senderLid || p.id === senderJid) || {}
 const bot = participants.find(p => p.id === botLid || p.id === botJid) || {}
 const isRAdmin = user?.admin === "superadmin"
 const isAdmin = isRAdmin || user?.admin === "admin"
@@ -348,7 +349,7 @@ typeof plugin.command === 'string' ?
 plugin.command === command :
 false
 
-global.comando = command
+global.comando2 = command
 
 if ((m.id.startsWith('NJX-') || (m.id.startsWith('BAE5') && m.id.length === 16) || (m.id.startsWith('B24E') && m.id.length === 20))) return
 
@@ -362,7 +363,7 @@ let user = global.db.data.users[m.sender]
 if (!['grupo-unbanchat.js'].includes(name) && chat && chat.isBanned && !isROwner) return
 if (name != 'grupo-unbanchat.js' && name != 'owner-exec.js' && name != 'owner-exec2.js' && name != 'grupo-delete.js' && chat?.isBanned && !isROwner) return
 if (m.text && user.banned && !isROwner) {
-m.reply(`《✦》Estas baneado/a, no puedes usar comandos en este bot!\n\n${user.bannedReason ? `✰ *Motivo:* ${user.bannedReason}` : '✰ *Motivo:* Sin Especificar'}\n\n> ✧ Si este Bot es cuenta oficial y tiene evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.`)
+m.reply(`🌷 Estas baneado/a, no puedes usar comandos en este bot!\n\n${user.bannedReason ? `✰ *Motivo:* ${user.bannedReason}` : '✰ *Motivo:* Sin Especificar'}\n\n> ✧ Si este Bot es cuenta oficial y tiene evidencia que respalde que este mensaje es un error, puedes exponer tu caso con un moderador.\n> ${global.creador}`)
 return
 }
 
@@ -531,32 +532,34 @@ console.log(m, m.quoted, e)}
 let settingsREAD = global.db.data.settings[this.user.jid] || {}  
 if (opts['autoread']) await this.readMessages([m.key])
 
-if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify|ai|yuki|a|s)/gi)) {
+if (db.data.chats[m.chat].reaction && m.text.match(/(ción|dad|aje|oso|izar|mente|pero|tion|age|ous|ate|and|but|ify|ai|rin|a|s)/gi)) {
 let emot = pickRandom(["🍟", "😃", "😄", "😁", "😆", "🍓", "😅", "😂", "🤣", "🥲", "☺️", "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "🌺", "🌸", "😚", "😋", "😛", "😝", "😜", "🤪", "🤨", "🌟", "🤓", "😎", "🥸", "🤩", "🥳", "😏", "💫", "😞", "😔", "😟", "😕", "🙁", "☹️", "😣", "😖", "😫", "😩", "🥺", "😢", "😭", "😤", "😠", "😡", "🤬", "🤯", "😳", "🥵", "🥶", "😶‍🌫️", "😱", "😨", "😰", "😥", "😓", "🤗", "🤔", "🫣", "🤭", "🤖", "🍭", "🤫", "🫠", "🤥", "😶", "📇", "😐", "💧", "😑", "🫨", "😬", "🙄", "😯", "😦", "😧", "😮", "😲", "🥱", "😴", "🤤", "😪", "😮‍💨", "😵", "😵‍💫", "🤐", "🥴", "🤢", "🤮", "🤧", "😷", "🤒", "🤕", "🤑", "🤠", "😈", "👿", "👺", "🧿", "🌩", "👻", "😺", "😸", "😹", "😻", "😼", "😽", "🙀", "😿", "😾", "🫶", "👍", "✌️", "🙏", "🫵", "🤏", "🤌", "☝️", "🖕", "🙏", "🫵", "🫂", "🐱", "🤹‍♀️", "🤹‍♂️", "🗿", "✨", "⚡", "🔥", "🌈", "🩷", "❤️", "🧡", "💛", "💚", "🩵", "💙", "💜", "🖤", "🩶", "🤍", "🤎", "💔", "❤️‍🔥", "❤️‍🩹", "❣️", "💕", "💞", "💓", "💗", "💖", "💘", "💝", "🚩", "👊", "⚡️", "💋", "🫰", "💅", "👑", "🐣", "🐤", "🐈"])
 if (!m.fromMe) return this.sendMessage(m.chat, { react: { text: emot, key: m.key }})
 }
 function pickRandom(list) { return list[Math.floor(Math.random() * list.length)]}
 }}
 
-global.dfail = (type, m, usedPrefix, command, conn) => {
+global.dfail = (type, m, conn, comando = '') => {
+  //let edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom();
+  //let user2 = m.pushName || 'Anónimo';
+  //let verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom();
+  let mensajes = getMensajeSistema(comando)
 
-let edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom()
-let user2 = m.pushName || 'Anónimo'
-let verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom()
+  const msg = {
+    rowner: mensajes.smsrowner,
+    owner: mensajes.smsowner,    
+    mods: mensajes.smsmods,  
+    premium: mensajes.smspremium,  
+    group: mensajes.smsgroup,  
+    admin: mensajes.smsadmin,
+    private: mensajes.smsprivate,
+    botAdmin: mensajes.smsbotAdmin,  
+    unreg: mensajes.smsunreg,
+    restrict: mensajes.smsrestrict
+  }[type]
 
-const msg = {
-rowner: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗥𝗘𝗦𝗘𝗥𝗩𝗔𝗗𝗢 𝗔 𝗖𝗥𝗘𝗔𝗗𝗢𝗥𝗘𝗦.`,
-owner: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗦𝗢𝗟𝗢 𝗗𝗘𝗦𝗔𝗥𝗥𝗢𝗟𝗟𝗔𝗗𝗢𝗥𝗘𝗦.`,
-mods: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗨𝗦𝗢 𝗘𝗫𝗖𝗟𝗨𝗦𝗜𝗩𝗢 𝗠𝗢𝗗𝗦.`,
-premium: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗥𝗘𝗤𝗨𝗜𝗘𝗥𝗘 𝗣𝗥𝗘𝗠𝗜𝗨𝗠.`,
-group: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗗𝗜𝗦𝗣𝗢𝗡𝗜𝗕𝗟𝗘 𝗦𝗢𝗟𝗢 𝗘𝗡 𝗚𝗥𝗨𝗣𝗢𝗦.`,
-private: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗘𝗝𝗘𝗖𝗨𝗧𝗔𝗕𝗟𝗘 𝗦𝗢𝗟𝗢 𝗘𝗡 𝗖𝗛𝗔𝗧 𝗣𝗥𝗜𝗩𝗔𝗗𝗢.`,
-admin: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗥𝗘𝗦𝗧𝗥𝗜𝗖𝗧𝗢 𝗔 𝗔𝗗𝗠𝗜𝗡𝗦.`,
-botAdmin: `『⛧』𝗡𝗘𝗖𝗘𝗦𝗜𝗧𝗢 𝗦𝗘𝗥 𝗔𝗗𝗠𝗜𝗡 𝗣𝗔𝗥𝗔 𝗨𝗦𝗔𝗥 *${comando}*.`,
-unreg: `『⛧』ＣＯＭＡＮＤＯ *${comando}* ↯ 𝗥𝗘𝗤𝗨𝗜𝗘𝗥𝗘 𝗥𝗘𝗚𝗜𝗦𝗧𝗥𝗢.\n> » #${verifyaleatorio} ${user2}.${edadaleatoria}`,
-restrict: `『⛧』Ｆ𝗨𝗡𝗖𝗜𝗢́𝗡 𝗥𝗘𝗦𝗧𝗥𝗜𝗡𝗚𝗜𝗗𝗔.`
-}[type];
-if (msg) return m.reply(msg).then(_ => m.react('✖️'))}
+  if (msg) return conn.reply(m.chat, msg, m, rcanal).then(_ => m.react('✖️'))
+}
 
 let file = global.__filename(import.meta.url, true)
 watchFile(file, async () => {
@@ -564,7 +567,7 @@ unwatchFile(file)
 console.log(chalk.magenta("Se actualizo 'handler.js'"))
 
 if (global.conns && global.conns.length > 0 ) {
-const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])]
+const users = [...new Set([...global.conns.filter((conn) => conn.user && conn.ws.socket && conn.ws.socket.readyState !== ws.CLOSED).map((conn) => conn)])];
 for (const userr of users) {
 userr.subreloadHandler(false)
-}}})
+}}});

@@ -11,7 +11,7 @@ let handler = async (m, { conn, text, args }) => {
 
     await conn.sendMessage(m.chat, { react: { text: '📀', key: m.key } });
 
-    const thumbRes = await fetch('https://files.catbox.moe/qzp733.jpg');
+    const thumbRes = await fetch('https://files.catbox.moe/9exbxh.png');
     const thumbBuffer = await thumbRes.buffer();
 
     const fkontak = {
@@ -38,15 +38,28 @@ let handler = async (m, { conn, text, args }) => {
     const cleanTitle = title.replace(/[^\w\s]/gi, '').trim().replace(/\s+/g, '_');
     const fileName = `${cleanTitle}.mp4`;
 
-    await m.reply(
-      `📥 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔 𝗘𝗡 𝗖𝗨𝗥𝗦𝗢...\n` +
-      `[▓▓▓▓▓▓░░░░░░] 50%\n` +
-      `> 🎶 *Archivo:* ${title}\n` +
-      `> ⏱️ *Duración:* ${duration}\n` +
-      `> 💾 *Tamaño estimado:* ${sizeStr}\n` +
-      `> 📎 *Enlace:* ${args[0]}\n` +
-      `> ⏳ *Estado:* Procesando...`
-    );
+    await conn.sendMessage(m.chat, {
+    text: `🎶 ¡Descargando archivo!
+
+📊 Progreso: [▓▓▓▓▓░░░░░] 50%
+
+📂 Nombre: *${title}*
+⏰ Tiempo: *${duration}*
+💽 Peso: *${sizeStr}*
+🔗 Link: ${args[0]}
+
+⌛ Estado: Casi listo, procesando video...`,
+    mentions: [m.sender],
+    contextInfo: {
+      externalAdReply: {
+        title: title,
+        thumbnailUrl: thumbnail,
+        sourceUrl: null,
+        mediaType: 1,
+        renderLargerThumbnail: true
+      }
+    }
+  }, { quoted: m });
 
     const caption = `*📥 Descarga completa:*\n> 🎧 *Título:* ${title}\n> ⏱️ *Duración:* ${duration}\n> 💾 *Tamaño:* ${sizeStr}`;
 
@@ -60,18 +73,18 @@ let handler = async (m, { conn, text, args }) => {
         contextInfo: {
           externalAdReply: {
             title,
-            body: '💿 YOUTUBE DOC ☘️',
+            body: '🌱 YOUTUBE DOC 💎',
             mediaUrl: args[0],
             sourceUrl: args[0],
             thumbnailUrl: args[0],
             mediaType: 1,
-            renderLargerThumbnail: true
+            renderLargerThumbnail: false
           }
         }
       }, { quoted: fkontak });
     } catch (err) {
       console.warn('❗ Error al enviar como documento. Se enviará como video.');
-      // por si falla en enviar el video en documento 😃
+
       await conn.sendMessage(m.chat, {
         video: { url },
         caption,
@@ -89,6 +102,7 @@ let handler = async (m, { conn, text, args }) => {
 };
 
 handler.command = ['ytmp4doc', 'ytvdoc', 'ytdoc'];
+handler.help = ['ytmp4doc'];
 handler.tags = ['descargas'];
 export default handler;
 

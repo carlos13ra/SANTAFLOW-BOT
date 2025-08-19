@@ -1,39 +1,36 @@
 let handler = async (m, { conn, usedPrefix }) => {
-  const imgurl = 'https://files.catbox.moe/3gxuzq.jpg';
-  const texto = `┏━〔🛰️ ᴘʀᴏғɪʟᴇ-ɪɴᴛᴇʀғᴀᴄᴇ〕━┓
+  const imgurl = icono;
+  const texto = `🌙・*:.｡. o(≧▽≦)o .｡.:*・🌸
 
-🎂 ${usedPrefix}setbirth
-   ↳ ᴀɴ̃ᴀᴅɪʀ ᴄᴜᴍᴘʟᴇᴀɴ̃ᴏs
+🪐 ${usedPrefix}setbirth
+   ➳ *ᴀɢʀᴇɢᴀʀ ᴄᴜᴍᴘʟᴇᴀɴ̃ᴏꜱ* ~ nyan~
 
-🧨 ${usedPrefix}delbirth
-   ↳ ʙᴏʀʀᴀʀ ᴄᴜᴍᴘʟᴇᴀɴ̃ᴏs
+💣 ${usedPrefix}delbirth
+   ➳ *ʙᴏʀʀᴀʀ ᴄᴜᴍᴘʟᴇᴀɴ̃ᴏꜱ* ~ ʕ•́ᴥ•̀ʔっ♡
 
-📄 ${usedPrefix}setdesc
-   ↳ ᴇsᴄʀɪʙɪʀ ʙɪᴏɢʀᴀғɪ́ᴀ
+📜 ${usedPrefix}setdesc
+   ➳ *ᴇsᴄʀɪʙɪʀ ʙɪᴏɢʀᴀғɪ́ᴀ* ~ uwu
 
-🔥 ${usedPrefix}deldesc
-   ↳ ᴇʟɪᴍɪɴᴀʀ ʙɪᴏɢʀᴀғɪ́ᴀ
+🗑️ ${usedPrefix}deldesc
+   ➳ *ᴇʟɪᴍɪɴᴀʀ ʙɪᴏɢʀᴀғɪ́ᴀ* ~ senpai nooo~
 
-👤 ${usedPrefix}setgenre
-   ↳ ᴅᴇғɪɴɪʀ ɢᴇ́ɴᴇʀᴏ
+🎭 ${usedPrefix}setgenre
+   ➳ *ᴅᴇғɪɴɪʀ ɢᴇ́ɴᴇʀᴏ* ~ desu~☆
 
-💀 ${usedPrefix}delgenre
-   ↳ ʙᴏʀʀᴀʀ ɢᴇ́ɴᴇʀᴏ
+🛑 ${usedPrefix}delgenre
+   ➳ *ʙᴏʀʀᴀʀ ɢᴇ́ɴᴇʀᴏ* ~ (つ✧ω✧)つ
 
-💍 ${usedPrefix}marry
-   ↳ ᴄᴀsᴀʀsᴇ ᴄᴏɴ ᴀʟɢᴜɪᴇɴ
+💎 ${usedPrefix}marry
+   ➳ *ᴄᴀsᴀʀsᴇ ᴄᴏɴ ᴀʟɢᴜɪᴇɴ* ~ ʕ♡ᴥ♡ʔ
 
-☠️ ${usedPrefix}divorce
-   ↳ ᴅɪᴠᴏʀᴄɪᴀʀsᴇ
-
-🧩 sᴛᴀᴛᴜs: ᴏɴʟɪɴᴇ ✅
-┗━〔⟦ SΣC MODULΣ vX.1337 ⟧〕━┛
+⚡ ${usedPrefix}divorce
+   ➳ *ᴅɪᴠᴏʀᴄɪᴀʀsᴇ* ~ (｡•́︿•̀｡)
 `;
 
   await conn.sendMessage(m.chat, {
     image: { url: imgurl },
     caption: texto,
-    footer: '⛩️ Sukuna Bot MD',
+    footer: '☘️ rin itoshi MD',
     buttons: [
       { buttonId: '#menu', buttonText: { displayText: '📜 ᴍᴇɴᴜ' }, type: 1 },
       { buttonId: '#perfil', buttonText: { displayText: '👤 ᴘᴇʀғɪʟ' }, type: 1 },

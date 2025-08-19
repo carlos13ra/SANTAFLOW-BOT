@@ -1,57 +1,59 @@
-import { sticker } from '../lib/sticker.js'
-import axios from 'axios'
+import fetch from 'node-fetch'
+import { Sticker } from 'wa-sticker-formatter'
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+const wm = 'RinBot'
 
-const fetchSticker = async (text, attempt = 1) => {
-    try {
-        const response = await axios.get(`https://api.nekorinn.my.id/maker/brat-v2`, {
-            params: { text },
-            responseType: 'arraybuffer',
-        })
-        return response.data
-    } catch (error) {
-        if (error.response?.status === 429 && attempt <= 3) {
-            const retryAfter = error.response.headers['retry-after'] || 5
-            await delay(retryAfter * 1000)
-            return fetchSticker(text, attempt + 1)
-        }
-        throw error
+let handler = async (m, { conn, text, command }) => {
+  if (!text) return m.reply(`Ejemplo: .${command} Gatitos`)
+
+  try {
+
+    const searchRes = await fetch(`https://zenzxz.dpdns.org/search/stickerlysearch?query=${encodeURIComponent(text)}`)
+    const searchJson = await searchRes.json()
+
+    if (!searchJson.status || !Array.isArray(searchJson.data) || searchJson.data.length === 0) {
+      return m.reply('No hay stickers aquí')
     }
+
+    const pick = searchJson.data[Math.floor(Math.random() * searchJson.data.length)]
+
+
+    const detailUrl = `https://zenzxz.dpdns.org/tools/stickerlydetail?url=${encodeURIComponent(pick.url)}`
+    const detailRes = await fetch(detailUrl)
+    const detailJson = await detailRes.json()
+
+    if (!detailJson.status || !detailJson.data || !Array.isArray(detailJson.data.stickers) || detailJson.data.stickers.length === 0) {
+      return m.reply('Error al tomar los stickers')
+    }
+
+    const packName = detailJson.data.name
+    const authorName = detailJson.data.author?.name || 'unknown'
+
+    m.reply(`Encontré ${detailJson.data.stickers.length} sticker(s)`)
+
+
+    const stickersToSend = detailJson.data.stickers.slice(0, 10)
+
+    for (const img of stickersToSend) {
+
+      const sticker = new Sticker(img.imageUrl, {
+        pack: packName || wm,
+        author: authorName,
+        type: 'full',
+        categories: ['😏'],
+        id: 'zenzxd'
+      })
+      const buffer = await sticker.toBuffer()
+      await conn.sendMessage(m.chat, { sticker: buffer }, { quoted: m })
+    }
+
+  } catch (e) {
+    console.error(e)
+    m.reply('Error al procesar los stickers')
+  }
 }
 
-let handler = async (m, { conn, text }) => {
-    if (m.quoted && m.quoted.text) {
-        text = m.quoted.text
-    } else if (!text) {
-        return conn.sendMessage(m.chat, {
-            text: `❀ Por favor, responde a un mensaje o ingresa un texto para crear el Sticker.`,
-        }, { quoted: m })
-    }
-
-    try {
-        const buffer = await fetchSticker(text)
-        let userId = m.sender
-        let packstickers = global.db.data.users[userId] || {}
-        let texto1 = packstickers.text1 || global.packsticker
-        let texto2 = packstickers.text2 || global.packsticker2
-
-        let stiker = await sticker(buffer, false, texto1, texto2)
-
-        if (stiker) {
-            return conn.sendFile(m.chat, stiker, 'sticker.webp', '', m)
-        } else {
-            throw new Error("✧ No se pudo generar el sticker.")
-        }
-    } catch (error) {
-        return conn.sendMessage(m.chat, {
-            text: `⚠︎ Ocurrió un error: ${error.message}`,
-        }, { quoted: m })
-    }
-}
-
-handler.command = ['brat']
+handler.help = ['stikerly *<consulta>*']
 handler.tags = ['sticker']
-handler.help = ['brat *<texto>*']
-
+handler.command = ['stikerly']
 export default handler

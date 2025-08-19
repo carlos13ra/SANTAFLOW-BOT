@@ -1,48 +1,43 @@
-let handler = async (m, { conn, text, command }) => {
-  const user = global.db.data.users[m.sender]
-  command = command || 'unreg'
+let handler = async (m, { conn, text }) => {
+  let user = global.db.data.users[m.sender]
 
-  if (!text) {
-    const caption = `╭━━〔 *🗑️ Confirmación de Eliminación* 〕━━⬣
-┃  
-┃ ⚠️ ¿Estás segur@ de eliminar tu registro?
-┃    
-┃ 🔸 𝘌𝘴𝘵𝘰 𝘣𝘰𝘳𝘳𝘢𝘳𝘢́ 𝘵𝘶 𝘥𝘢𝘵𝘰 𝘥𝘦 𝘭𝘢 𝘣𝘢𝘴𝘦, 𝘺 𝘵𝘶 𝘱𝘳𝘰𝘨𝘳𝘦𝘴𝘰...
-┃  
-╰━━━━━━━━━━━━━━━━━━━━⬣`;
-
-    const buttons = [
-      { buttonId: `#${command} sí`, buttonText: { displayText: '✅ Sí, borrar' }, type: 1 },
-      { buttonId: `#${command} no`, buttonText: { displayText: '❌ No, cancelar' }, type: 1 }
-    ];
-
-    return await conn.sendMessage(m.chat, {
-      text: caption.trim(),
-      buttons,
-      headerType: 1
-    }, { quoted: m });
+  let nombre = user.name || 'Sin nombre'
+  let edad = user.age || 'Desconocida'
+  let pp
+  try {
+    pp = await conn.profilePictureUrl(m.sender, 'image')
+  } catch {
+    pp = icono
   }
 
-  const decision = text.toLowerCase().split(' ').pop();
-  if (decision === 'sí' || decision === 'si') {
-    user.registered = false;
-    return conn.sendMessage(m.chat, {
-      text: `╭━━━〔 𝘋𝘢𝘵𝘰𝘴 𝘌𝘭𝘪𝘮𝘪𝘯𝘢𝘥𝘰𝘴 🧨 〕━━⬣
+  user.registered = false
 
-📛 *Registro eliminado exitosamente*
+  await conn.sendMessage(m.chat, {
+    text: `✧━━━━━━༺⚜️༻━━━━━━✧  
+       𝐓𝐔 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐎 𝐅𝐔𝐄 𝐄𝐋𝐈𝐌𝐈𝐍𝐀𝐃𝐎  
+✧━━━━━━༺⚜️༻━━━━━━✧  
 
-🪦 𝘛𝘶 𝘩𝘶𝘦𝘭𝘭𝘢 𝘧𝘶𝘦 𝘣𝘰𝘳𝘳𝘢𝘥𝘢 𝘥𝘦𝘭 𝘮𝘶𝘯𝘥𝘰 𝘋𝘦 𝘚𝘶𝘬𝘶𝘯𝘢...
-🕯️ 𝘌𝘯 𝘦𝘭 𝘳𝘦𝘴𝘵𝘰, 𝘴𝘰𝘭𝘰 𝘲𝘶𝘦𝘥𝘢 𝘦𝘭 𝘴𝘪𝘭𝘦𝘯𝘤𝘪𝘰...
+👑👤 𝐍𝐨𝐦𝐛𝐫𝐞 𝐚𝐧𝐭𝐞𝐫𝐢𝐨𝐫: *${nombre}*  
+💫🎂 𝐄𝐝𝐚𝐝: *${edad} 𝐚𝐧̃𝐨𝐬*  
+🌟👋 𝐄𝐬𝐩𝐞𝐫𝐚𝐦𝐨𝐬 𝐯𝐨𝐥𝐯𝐞𝐫 𝐚 𝐯𝐞𝐫𝐭𝐞  
 
-╰━━━━━━━━━━━━━━━━━━━━⬣`.trim(),
-      quoted: m
-    });
-  } else if (decision === 'no') {
-    return conn.reply(m.chat, `❎ *Cancelado.* Tu registro sigue intacto.`, m);
-  } else {
-    return conn.reply(m.chat, `⛔ *Opción no válida.* Escribe: *${command} sí* o *${command} no*`, m);
-  }
-};
+━━━━━━━━━━━━━━━━━━━━  
+📜 𝐄𝐬𝐜𝐫𝐢𝐛𝐞: *.reg 𝐍𝐨𝐦𝐛𝐫𝐞 𝐄𝐝𝐚𝐝*  
+𝐩𝐚𝐫𝐚 𝐫𝐞𝐠𝐢𝐬𝐭𝐫𝐚𝐫𝐭𝐞 𝐧𝐮𝐞𝐯𝐚𝐦𝐞𝐧𝐭𝐞.  
+━━━━━━━━━━━━━━━━━━━━`,
+    mentions: [m.sender],
+    contextInfo: {
+      externalAdReply: {
+        title: `⚡ Registro eliminado correctamente ${emojis}`,
+        body: `🧪 Nombre: ${nombre} • Edad: ${edad} años`,
+        thumbnailUrl: pp,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        sourceUrl: pp
+      }
+    }
+  }, { quoted: m })
+}
 
 handler.help = ['unreg']
 handler.tags = ['rg']

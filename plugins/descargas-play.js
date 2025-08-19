@@ -5,7 +5,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
-    if (!text.trim()) return conn.reply(m.chat, `💿 Por favor, ingresa el nombre o enlace del video.`, m)
+    if (!text.trim()) return conn.reply(m.chat, `💿 Por favor, ingresa el nombre o enlace del video.`, m, fake)
 
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
@@ -14,7 +14,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       : search.videos?.[0]
 
     if (!video) return conn.reply(m.chat, '✧ No se encontraron resultados para tu búsqueda.', m)
-    
+    /*
     const res2 = await fetch('https://files.catbox.moe/qzp733.jpg');
     const thumb2 = await res2.buffer();
     const Shadow = {
@@ -31,7 +31,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         }
       },
       participant: "0@s.whatsapp.net"
-    };
+    };*/
 
     const { title, thumbnail, timestamp, views, ago, url, author } = video
     const vistas = formatViews(views)
@@ -81,7 +81,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: '🎃 𝖲ANTAFLOW 𝖴𝖫𝖳𝖱𝖠 𝖬𝖣 💨',
+          body: '⚽ RIN ITOSHI - IA 🌀',
           mediaType: 1,
           thumbnail: thumb,
           mediaUrl: url,
@@ -89,7 +89,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
           renderLargerThumbnail: false
         }
       }
-    }, { quoted: Shadow })
+    }, { quoted: m })
       } catch (e) {
         return conn.reply(m.chat, '⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.', m)
       }
@@ -103,7 +103,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         if (!json.download) throw '⚠ No se obtuvo enlace de video.'
         
         await m.react('✅');
-        await conn.sendFile(m.chat, json.download, `${json.title || 'video'}.mp4`, `📥 *Video descargado con éxito.*\n\n> 🎬 *Título:* ${json.title}\n> ⏱️ *Duracion:* ${timestamp}\n> 📽️ *Calidad:* ${json.quality}\n> 🔗 *link:* ${url}`, Shadow)
+        await conn.sendFile(m.chat, json.download, `${json.title || 'video'}.mp4`, title, m)
       } catch (e) {
         return conn.reply(m.chat, '⚠︎ No se pudo enviar el video. El archivo podría ser muy pesado o hubo un error en el enlace.', m)
       }

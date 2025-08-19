@@ -1,5 +1,5 @@
 {
-"name": "Bot Santaflow - MD",
+"name": "Rin itoshi - AI",
 "version": "2.2.5",
 "description": "WhatsApp Bot Multi Device",
 "main": "index.js",
@@ -18,16 +18,16 @@
 "eslint": "eslint .",
 "eslintfix": "eslint --fix ."
 },
-"homepage": "https://github.com/Yuji-XDev/Luffy-Bot-MD",
+"homepage": "https://github.com/Yuji-XDev/Rin-Itoshi-Bot",
 "author": {
 "name": "alv"
 },
 "repository": {
 "type": "git",
-"url": "git+https://github.com/Yuji-XDev/Luffy-Bot-MD"
+"url": "git+https://github.com/Yuji-XDev/Rin-Itoshi-Bot"
 },
 "bugs": {
-"url": "https://github.com/Yuji-XDev/Luffy-Bot-MD/issues"
+"url": "https://github.com/Yuji-XDev/Rin-Itoshi-Bot/issues"
 },
 "license": "MIT-License",
 "dependencies": {

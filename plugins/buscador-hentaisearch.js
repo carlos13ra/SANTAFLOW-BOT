@@ -20,9 +20,7 @@ ${i+1}. *_${v.title}_*
   }
   conn.sendFile(m.chat, randomThumbnail, 'error.jpg', teks, m);
 };
-handler.help = ['searchhentai', 'hentaisearch'];
-handler.tags = ['buscador'];
-handler.command = ['searchhentai', 'hentaisearch'];
+handler.command = ['searchhentai', 'hentaisearch']
 export default handler;
 async function searchHentai(search) {
   return new Promise((resolve, reject) => {

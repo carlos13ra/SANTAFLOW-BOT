@@ -13,17 +13,19 @@ let old = performance.now()
 let neww = performance.now()
 let speed = neww - old
 const used = process.memoryUsage()
-let info = `ᥫ᭡ Información - ${botname} ❀\n`
-info += `ᰔᩚ  *◜Creador◞* ⇢ ${etiqueta}\n`
-info += `🜸  *◜Prefijo◞* ⇢ [ ${usedPrefix} ]\n`
-info += `✧  *◜Versión◞* ⇢ ${vs}\n`
-info += `❖  *◜Chats Privados◞* ⇢ ${chats.length - groupsIn.length}\n`
-info += `✎  *◜Total De Chats◞* ⇢ ${chats.length}\n`
-info += `❍  *◜Usuarios◞* ⇢ ${totalreg}\n`
-info += `❑  *◜Grupos◞* ⇢ ${groupsIn.length}\n`
-info += `✰  *◜Actividad◞* ⇢ ${uptime}\n`
-info += `ⴵ  *◜Velocidad◞* ⇢ ${(speed * 1000).toFixed(0) / 1000}\n`
-info += `✦  *◜Sub-Bots Activos◞* ⇢ ${totalUsers || '0'}`
+let info = `▧ ═══『 ${botname} 』═══ ▧
+⟢ 🏆 𝐂𝐫𝐞𝐚𝐝𝐨𝐫: ${etiqueta}
+⟢ 🌀 𝐏𝐫𝐞𝐟𝐢𝐣𝐨: [ ${usedPrefix} ]
+⟢ 📌 𝐕𝐞𝐫𝐬𝐢𝐨́𝐧: ${vs}
+⟢ 💬 𝐂𝐡𝐚𝐭𝐬 𝐏𝐫𝐢𝐯𝐚𝐝𝐨𝐬: ${chats.length - groupsIn.length}
+⟢ 🗂 𝐂𝐡𝐚𝐭𝐬 𝐓𝐨𝐭𝐚𝐥𝐞𝐬: ${chats.length}
+⟢ 👥 𝐔𝐬𝐮𝐚𝐫𝐢𝐨𝐬: ${totalreg}
+⟢ 🏟 𝐆𝐫𝐮𝐩𝐨𝐬: ${groupsIn.length}
+⟢ ⏳ 𝐀𝐜𝐭𝐢𝐯𝐨: ${uptime}
+⟢ ⚡ 𝐕𝐞𝐥𝐨𝐜𝐢𝐝𝐚𝐝: ${(speed * 1000).toFixed(0) / 1000} seg
+⟢ 🤖 𝐒𝐮𝐛-𝐁𝐨𝐭𝐬 𝐀𝐜𝐭𝐢𝐯𝐨𝐬: ${totalUsers || '0'}
+▧ ═══════════════════ ▧
+`;
 await conn.sendFile(m.chat, banner, 'estado.jpg', info, m)
 }
 handler.help = ['estado']

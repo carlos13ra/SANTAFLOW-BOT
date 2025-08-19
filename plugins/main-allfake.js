@@ -27,17 +27,17 @@ return res.data
 console.log(`Error : ${e}`)
 }}
   
-global.creador = 'wa.me/51946200884'
+global.creador = 'wa.me/51919199620'
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.namechannel = '=͟͟͞Santaflow bot • 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⌺'
-global.namechannel2 = '=͟͟͞Santaflow bot • 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⌺'
-global.namegrupo = '=͟͟͞Santaflow bot • 𝒐𝒇𝒊𝒄𝒊𝒂𝒍 ⌺'
-global.namecomu = '=͟͟͞Santaflow bot • 𝑪𝒐𝒎𝒖𝒏𝒊𝒕𝒚 ˟꘏꙳'
-global.listo = '- 🌀 *𝐓𝐔 𝐏𝐀𝐍𝐄𝐋 𝐄𝐒𝐓𝐀 𝐋𝐈𝐒𝐓𝐎...*'
-global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/vm6opf.jpg')
+global.namechannel = '▐▐ ✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
+global.namechannel2 = '▐▐ ✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦ ▐▐'
+global.namegrupo = '▐▐ ⚡ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 • 𝗢𝗳𝗶𝗰𝗶𝗮𝗹 ⚡ ▐▐'
+global.namecomu = '▐▐ ⚡ 𝗥𝗶𝗻-𝗜𝘁𝗼𝘀𝗵𝗶-𝗕𝗼𝘁-𝗠𝗗 • 𝗖𝗼𝗺𝘂𝗻𝗶𝘁𝘆 ⚡ ▐▐'
+global.listo = '✦❀ *Aquí tienes, capitán ฅ^•ﻌ•^ฅ* ❀✦'
+global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
 
-global.canalIdM = ["120363402079893698@newsletter", "120363402079893698@newsletter", "120363401008003732@newsletter"]
-global.canalNombreM = ["  ꙰⃟⛅  santaflow ᵇᵒᵗ | ° ᴄʜᴀɴɴᴇʟ ᵒᶠⁱᶜⁱᵃˡ  🧪꙰⃟⸙", "⟬ ᳞ꪳ⃟ 𖤐 𝙎ANTAFLOW BOT 𝘾𝙃𝘼𝙉𝙉𝙀𝙇 ᴼᶠᴵᶜᴵᴬᴸ𖤐 ᳞ꪳ⃟ ⟭", "✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦"]
+global.canalIdM = ["120363401008003732@newsletter", "120363401008003732@newsletter", "120363401008003732@newsletter"]
+global.canalNombreM = ["▐ 𝗧𝗢𝗖𝗔 𝗔𝗤𝗨𝗜▐ ", "✦ 𝗥𝗶𝗻 𝗜𝘁𝗼𝘀𝗵𝗶 - 𝗖𝗵𝗮𝗻𝗻𝗲𝗹 ✦", "⚽𐚁 ֹ ִ Rin Itoshi - Official ୧ ֹ ִ⚽ᩚ꤬ᰍ"]
 global.channelRD = await getRandomChannel()
 
 global.d = new Date(new Date + 3600000)
@@ -54,24 +54,31 @@ global.error = '✖️'
 global.msm = '⚠︎'
 
 global.emoji = '🍀'
-global.emoji2 = '🌾'
-global.emoji3 = '👻'
-global.emoji4 = '✧'
-global.emoji5 = '🌲''
-global.emoji6 = '★'
+global.emoji2 = '☆⌒(ゝ。∂)'
+global.emoji3 = '(✧ω✧)'
+global.emoji4 = '(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧'
+global.emoji5 = '(づ｡◕‿‿◕｡)づ'
+global.emoji6 = '★~(◠‿◕✿)'
 global.emojis = [emoji, emoji2, emoji3, emoji4, emoji5, emoji6].getRandom()
 
-global.wait = '✧͢☁️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐀𝐍𝐃𝐎...⚙️༄  \n=͟͟͞💠 𝑬𝒔𝒑𝒆𝒓𝒆 𝒑𝒐𝒓 𝒇𝒂𝒗𝒐𝒓...';
-global.waitt = '✧͢☁️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐀𝐍𝐃𝐎...⚙️༄  \n=͟͟͞💠 𝑬𝒔𝒑𝒆𝒓𝒆 𝒑𝒐𝒓 𝒇𝒂𝒗𝒐𝒓...';
-global.waittt = '✧͢☁️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐀𝐍𝐃𝐎...⚙️༄  \n=͟͟͞💠 𝑬𝒔𝒑𝒆𝒓𝒆 𝒑𝒐𝒓 𝒇𝒂𝒗𝒐𝒓...';
-global.waitttt = '✧͢☁️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐀𝐍𝐃𝐎...⚙️༄  \n=͟͟͞💠 𝑬𝒔𝒑𝒆𝒓𝒆 𝒑𝒐𝒓 𝒇𝒂𝒗𝒐𝒓...';
+global.wait = '⚽️ 𝙀𝙣𝙫𝙞𝙖𝙣𝙙𝙤 𝙩𝙚𝙣 𝙥𝙖𝙘𝙞𝙚𝙣𝙘𝙞𝙖...';
+global.waitt = '⚽️ 𝙀𝙣𝙫𝙞𝙖𝙣𝙙𝙤 𝙩𝙚𝙣 𝙥𝙖𝙘𝙞𝙚𝙣𝙘𝙞𝙖...';
+global.waittt = '⚽️ 𝙀𝙣𝙫𝙞𝙖𝙣𝙙𝙤 𝙩𝙚𝙣 𝙥𝙖𝙘𝙞𝙚𝙣𝙘𝙞𝙖...';
+global.waitttt = '⚽️ 𝙀𝙣𝙫𝙞𝙖𝙣𝙙𝙤 𝙩𝙚𝙣 𝙥𝙖𝙘𝙞𝙚𝙣𝙘𝙞𝙖...';
 
 
-var canal = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'  
-var comunidad = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'
+global.hotw = '*🐭 El contenido `NSFW` está desactivado en este grupo.*\n> Un administrador puede activarlo con el comando » *`#nsfw on`*';
+
+
+global.edadaleatoria = ['10', '28', '20', '40', '18', '21', '15', '11', '9', '17', '25'].getRandom();
+global.user2 = m.pushName || 'Anónimo';
+global.verifyaleatorio = ['registrar', 'reg', 'verificar', 'verify', 'register'].getRandom();
+
+var canal = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'  
+var comunidad = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
 var git = 'https://github.com/Yuji-XDev'
-var github = 'https://github.com/Yuji-XDev/SukunaBot-V2'
-var tiktok = 'https://www.tiktok.com/@carlos.ramirez.fc13?_t=ZS-8yloqqAfxkP&_r=1'
+var github = 'https://github.com/Yuji-XDev/Rin-Itoshi-Bot'
+var tiktok = 'https://tiktok.com/@the.black.xz'
 let correo = 'blackoficial2025@gmail.com'
 global.redes = [canal, comunidad, git, github, tiktok, correo].getRandom()
 
@@ -92,13 +99,17 @@ global.taguser = '@' + m.sender.split("@s.whatsapp.net")
 var more = String.fromCharCode(8206)
 global.readMore = more.repeat(850)
 
-global.packsticker = `⬣──🔥 𝙋𝙊𝘿𝙀𝙍 𝙎𝙏𝙄𝘾𝙆𝙀𝙍 ──⬣
-👤 𝙉𝙤𝙢𝙗𝙧𝙚: ${nombre}
-🤖 𝘽𝙤𝙩 𝘼𝙘𝙩𝙞𝙫𝙤: ${botname}
-📆 𝘿𝙞́𝙖: ${fecha}
-🕓 𝙃𝙤𝙧𝙖: ${tiempo}`;
-
-global.packsticker2 = `> ⛩️ 𝘾𝙤𝙣 𝙙𝙚𝙙𝙞𝙘𝙖𝙘𝙞𝙤́𝙣 𝙙𝙚: ${dev} ⊰╯`
+global.packsticker = `
+🌸🍒✩₊˚.⋆☾⋆⁺₊✧
+✦ 𝕌𝕤𝕦𝕒𝕣𝕚𝕠: ${nombre}
+✦ 𝔹𝕠𝕥: ${botname}
+✦ 𝔽𝕖𝕔𝕙𝕒: ${fecha}
+✦ ℍ𝕠𝕣𝕒: ${tiempo}
+✧⁺₊⋆☾⋆.˚₊✩🍒🌸
+`;
+global.packsticker2 = `╭࣭࣭࣭࣭࣭࣭ٜ۫┄☪︎⃘✦ 𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 ✦☪︎┄࣭࣭࣭࣭࣭࣭۫╮
+     ${dev}
+╰࣭࣭࣭࣭࣭࣭ٜ۫┄☪︎⃘✦ ⌬ ✦☪︎┄࣭࣭࣭࣭࣭࣭۫╯`
   
 global.fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `6285600793871-1614953337@g.us` } : {}) }, message: { 'contactMessage': { 'displayName': `${nombre}`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${nombre},;;;\nFN:${nombre},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegThumbnail': null, thumbnail: null,sendEphemeral: true}}}
 
@@ -106,14 +117,38 @@ global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo
 }}, { quoted: m }
 
 global.icono = [
-'https://i.postimg.cc/4dL4Wd8L/IMG-20250808-WA0306-1.jpg'
+'https://files.catbox.moe/ceotf9.jpg',
+'https://files.catbox.moe/fft2hr.jpg',
+'https://files.catbox.moe/i97oje.jpg'
 ].getRandom()
 
-//global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: 100, newsletterName: channelRD.name, }, externalAdReply: { showAdAttribution: true, title: packname, body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: true }, }, }}
-
-global.rcanal = {contextInfo: {forwardingScore: 2025, isForwarded: true, externalAdReply: {title: packname, body: 'SUKUNA - ULTRA', sourceUrl: redes, thumbnailUrl: icono}}}
+/*global.rcanal = {
+  contextInfo: {
+    mentionedJid: [m.sender],
+    isForwarded: true,
+    forwardedNewsletterMessageInfo: {
+      newsletterJid: channelRD.id,
+      serverMessageId: 100,
+      newsletterName: channelRD.name,
+    },
+    externalAdReply: {
+      showAdAttribution: true,
+      title: packname,
+      body: dev,
+      mediaUrl: null,
+      description: null,
+      previewType: "PHOTO",
+      thumbnailUrl: icono,
+      sourceUrl: redes,
+      mediaType: 1,
+      renderLargerThumbnail: true
+    }
+  }
 }
+*/
 
+global.rcanal = {contextInfo: {forwardingScore: 2025, isForwarded: true, externalAdReply: {title: packname, body: author, sourceUrl: redes, thumbnailUrl: icono}}}
+}
 
 export default handler
 

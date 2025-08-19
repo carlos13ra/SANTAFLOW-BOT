@@ -101,17 +101,17 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     const video = search.videos[0];
     const { title, timestamp, views, ago, author, thumbnail, url: videoUrl } = video || {};
 
-    const textoInfo = `╭━━⬣『 *🎲 YOUTUBE - MP4* 』⬣━━⬣
+    const textoInfo = `🌸✨╭━━━⬣ 『 🎲 𝒀𝑶𝑼𝑻𝑼𝑩𝐸 - 𝑴𝑷4 』⬣━━━╮✨🌸
 ┃
-┃ 🍃 *Titulo:* ${title}
-┃ ⏱️ *Duración:* ${formatDuration(timestamp)}
-┃ 🍰 *Canal:* ${author?.name}
-┃ 👀 *Vistas:* ${formatViews(views)}
-┃ 🌱 *Publicado:* ${ago}
-┃ 🔗 *Link:* ${videoUrl}
+┃ 🍃 *𝕋𝕚𝕥𝕦𝕝𝕠:* ${title}
+┃ ⏳ *𝔻𝕦𝕣𝕒𝕔𝕚ó𝕟:* ${formatDuration(timestamp)}
+┃ 🍰 *𝕔𝕒𝕟𝕒𝕝:* ${author?.name}
+┃ 👀 *𝕧𝕚𝕤𝕥𝕒𝕤:* ${formatViews(views)}
+┃ 🌱 *𝕡𝕦𝕓𝕝𝕚𝕔𝕒𝕕𝕠:* ${ago}
+┃ 🔗 *𝕝𝕚𝕟𝕜:* ${videoUrl}
 ┃
-╰━━━━⬣
-*➭ El video se está enviando... 🌸*`;
+╰━━━━━━⬣
+🌸 *𝐄𝐥 𝐯𝐢𝐝𝐞𝐨 𝐬𝐞 𝐞𝐬𝐭𝐚́ 𝐞𝐧𝐯𝐢𝐚𝐧𝐝𝐨... 𝚊𝚠𝚞𝚞~* 🌸`;
 
     const thumbnailBuffer = await fetch(thumbnail).then(res => res.buffer()).catch(() => null);
 
@@ -119,9 +119,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       text: textoInfo,
       contextInfo: {
         forwardedNewsletterMessageInfo: {
-          newsletterJid: '120363402079893698@newsletter',
+          newsletterJid: '120363401008003732@newsletter',
           serverMessageId: '',
-          newsletterName: '˗ˏˋ🎤SANTAFLOW🎤😈 ˎˊ˗'
+          newsletterName: '˗ˏˋ🎀 sᴜᴋuna_ʙᴏᴛ⋆.ᴍᴅ ᯓ✧💌 ˎˊ˗'
         },
         forwardingScore: 9999999,
         isForwarded: true,
@@ -129,10 +129,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           showAdAttribution: true,
           renderLargerThumbnail: true,
           title: title,
-          body: '┈ ⋞ 〈 🎤CARLOS - RAMIREZ⚽ 〉 ⋟ ┈',
+          body: '┈ ⋞ 〈 👾 ʀɪɴ ɪᴛᴏsʜɪ - ᴀɪ ⚽ 〉 ⋟ ┈',
           mediaType: 1,
           thumbnail: thumbnailBuffer,
-          sourceUrl: "https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39"
+          sourceUrl: "https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U"
         }
       }
     }, { quoted: m });
@@ -166,7 +166,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       buffer,
       `${titleVid}.mp4`,
       caption,
-      m,
+      fkontak,
       null,
       {
         mimetype: 'video/mp4',

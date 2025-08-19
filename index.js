@@ -11,7 +11,7 @@ import fs, { readdirSync, statSync, unlinkSync, existsSync, mkdirSync, readFileS
 import yargs from 'yargs'
 import { spawn, execSync } from 'child_process'
 import lodash from 'lodash'
-import { luffyJadiBot } from './plugins/jadibot-serbot.js'
+import { shadowJadiBot } from './plugins/jadibot-serbot.js'
 import chalk from 'chalk'
 import syntaxerror from 'syntax-error'
 import { tmpdir } from 'os'
@@ -38,13 +38,17 @@ const { chain } = lodash
 const PORT = process.env.PORT || process.env.SERVER_PORT || 3000
 
 let { say } = cfonts
-console.log(chalk.magentaBright('\n🌷 Iniciando bot...'))
-say('Shadow', {
+
+console.log(chalk.bold.redBright(`\n▨────────────────────────▨`))
+console.log(chalk.magentaBright('\n🌱 Iniciando bot...'))
+console.log(chalk.bold.redBright(`\n▨────────────────────────▨`))
+
+say('RIN ITOSHI', {
 font: 'simple',
 align: 'left',
 gradient: ['green', 'white']
 })
-say('Made with love by shadow', {
+say('Made with By shadow', {
 font: 'console',
 align: 'center',
 colors: ['cyan', 'magenta', 'yellow']
@@ -297,7 +301,6 @@ console.log(chalk.green.bold(`[ ✿ ]  Escanea este código QR`))}
 if (connection === "open") {
 const userJid = jidNormalizedUser(conn.user.id)
 const userName = conn.user.name || conn.user.verifiedName || "Desconocido"
-await joinChannels(conn)
 console.log(chalk.green.bold(`[ ✿ ]  Conectado a: ${userName}`))
 }
 let reason = new Boom(lastDisconnect?.error)?.output?.statusCode
@@ -374,7 +377,7 @@ mkdirSync(rtU, { recursive: true })
 }
 
 global.rutaJadiBot = join(__dirname, `./${jadi}`)
-if (global.luffyJadibts) {
+if (global.shadowJadibts) {
 if (!existsSync(global.rutaJadiBot)) {
 mkdirSync(global.rutaJadiBot, { recursive: true }) 
 console.log(chalk.bold.cyan(`ꕥ La carpeta: ${jadi} se creó correctamente.`))
@@ -388,7 +391,7 @@ for (const gjbts of readRutaJadiBot) {
 const botPath = join(rutaJadiBot, gjbts)
 const readBotPath = readdirSync(botPath)
 if (readBotPath.includes(creds)) {
-luffyJadiBot({pathluffyJadiBot: botPath, m: null, conn, args: '', usedPrefix: '/', command: 'serbot'})
+shadowJadiBot({pathshadowJadiBot: botPath, m: null, conn, args: '', usedPrefix: '/', command: 'serbot'})
 }}}}
 
 const pluginFolder = global.__dirname(join(__dirname, './plugins/index'))
@@ -551,9 +554,4 @@ const parsedNumber = phoneUtil.parseAndKeepRawInput(number)
 return phoneUtil.isValidNumber(parsedNumber)
 } catch (error) {
 return false
-}}
-
-async function joinChannels(conn) {
-for (const channelId of Object.values(global.ch)) {
-await conn.newsletterFollow(channelId).catch(() => {})
 }}

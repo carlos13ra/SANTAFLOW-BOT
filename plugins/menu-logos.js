@@ -53,28 +53,41 @@ const estilogo = [
 ];
 
 const handler = async (m, { conn, usedPrefix }) => {
-  let menutxt = `*┏━━⊱  MENÚ DE LOGOS Y ESTILOS  ⊰━━┓*\n\n`;
+  try {
+    let menutxt = `╭━━━❰ *✨ MENÚ DE LOGOS & ESTILOS ✨* ❱━━━╮\n\n`;
 
-  menutxt += estilogo.map(e => `${e.emoji} *${usedPrefix}${e.cmd}*`).join('\n');
-  menutxt += `\n\n*┗━━⊱ ᴜsᴀ ᴀsɪ:*\n_${usedPrefix}ᴄᴏᴍᴀɴᴅᴏ ᴛᴇxᴛᴏ_\nPᴏʀ ᴇᴊᴇᴍᴘʟᴏ: *${usedPrefix}ɢʟɪᴛᴄʜᴛᴇxᴛ sᴜᴋᴜɴᴀ ʙᴏᴛ*`;
+    menutxt += `• 🌳 *Estilos Populares*  •\n`;
+    const populares = estilogo.slice(0, 10);
+    menutxt += populares.map(e => `${e.emoji} *${usedPrefix}${e.cmd}*`).join('\n');
+    menutxt += `\n\n•  🎨 *Estilos Creativos*  •\n`;
+    const creativos = estilogo.slice(10, 30);
+    menutxt += creativos.map(e => `${e.emoji} *${usedPrefix}${e.cmd}*`).join('\n');
+    menutxt += `\n\n•  🌈 *Estilos Especiales*  •\n`;
+    const especiales = estilogo.slice(30);
+    menutxt += especiales.map(e => `${e.emoji} *${usedPrefix}${e.cmd}*`).join('\n');
 
-  await conn.sendMessage(m.chat, {
-    text: menutxt,
-    contextInfo: {
-      mentionedJid: [m.sender],
-      isForwarded: true,
-      forwardingScore: 999,
-      externalAdReply: {
-        title: "⚡ MENU LOGOS ❤️",
-        body: dev,
-        thumbnailUrl: 'https://files.catbox.moe/nmseef.png',
-        sourceUrl: 'https://github.com/the-27/Rin-Itoshi-Bot-MD',
-        mediaType: 1,
-        showAdAttribution: true,
-        renderLargerThumbnail: true,
+    menutxt += `\n\n╰━━⊱ *CÓMO USAR* ⊰━━╯\n`;
+    menutxt += `_Escribe el comando seguido del texto que quieres transformar_\n`;
+    menutxt += `Ejemplo: *${usedPrefix}glitchtext Sukuna Bot*\n\n`;
+    menutxt += `⚡ *Tip:* Puedes combinar varios estilos y emojis para hacer tu logo único.\n`;
+
+    await conn.sendMessage(m.chat, {
+      text: menutxt,
+      contextInfo: {
+        mentionedJid: [m.sender],
+        externalAdReply: {
+          title: "💠 Rin Itoshi - Menú de Logos",
+          body: "Dev by Shadow'Core",
+          thumbnailUrl: 'https://files.catbox.moe/nmseef.png',
+          sourceUrl: 'https://github.com/the-27/Rin-Itoshi-Bot-MD',
+          mediaType: 1,
+          renderLargerThumbnail: true,
+        },
       },
-    },
-  }, { quoted: m });
+    }, { quoted: m });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 handler.help = ['menulogos'];

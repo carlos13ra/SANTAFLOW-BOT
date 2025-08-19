@@ -8,12 +8,11 @@ let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i
 
 let handler = async function (m, { conn, text, usedPrefix, command }) {
   let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-  let mentionedJid = [who]
   let pp = await conn.profilePictureUrl(who, 'image').catch((_) => 'https://files.catbox.moe/xr2m6u.jpg')
   let user = global.db.data.users[m.sender]
   let name2 = conn.getName(m.sender)
-  
-  
+
+
   if (user.registered) {
    const texto = `➤ ⌬ \`ＡＶＩＳＯ\` ⌬
 *🚫 Ya estás registrado...*
@@ -27,10 +26,10 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
    ];
 
    return await conn.sendMessage(m.chat, {
-     image: { url: 'https://files.catbox.moe/r2ixaj.jpg' },
+     image: { url: icono },
      caption: texto,
      mentions: [m.sender],
-     footer: '🌾 Sukuna Ultra MD',
+     footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
      buttons: botones,
      headerType: 4
    }, { quoted: m });
@@ -45,15 +44,15 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 *${usedPrefix + command} ${name2}.18*`;
 
      const botones = [
-       { buttonId: `${usedPrefix}reg ${name2}.18`, buttonText: { displayText: '🖍️ Auto Verificacion' }, type: 1 },
+       { buttonId: `${usedPrefix}reg ${name2}.18`, buttonText: { displayText: '🖍️ Auto Verificación' }, type: 1 },
        { buttonId: `${usedPrefix}menu`, buttonText: { displayText: '🎲 Menu All' }, type: 1 },
      ];
 
      return await conn.sendMessage(m.chat, {
-       image: { url: 'https://files.catbox.moe/r2ixaj.jpg' },
+       image: { url: icono },
        caption: mensaje,
        mentions: [m.sender],
-       footer: '🌾 Sukuna Ultra MD',
+       footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
        buttons: botones,
        headerType: 4
      }, { quoted: m });
@@ -65,7 +64,6 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   let fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' });
   let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' });
 
-
   let [_, name, splitter, age] = text.match(Reg)
   if (!name) return m.reply(`*『✦』El nombre no puede estar vacío.*`)
   if (!age) return m.reply(`*『✦』La edad no puede estar vacía.*`)
@@ -73,32 +71,35 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   age = parseInt(age)
   if (age > 1000) return m.reply(`*『✦』Wow el abuelo quiere jugar al bot.*`)
   if (age < 5) return m.reply(`*『✦』hay un abuelo bebé jsjsj.*`)
-  user.name = name + '✓'.trim()
+
+  user.name = `${name} ✓`
   user.age = age
   user.regTime = + new Date      
   user.registered = true
-  global.db.data.users[m.sender].coin += 40
-  global.db.data.users[m.sender].exp += 300
-  global.db.data.users[m.sender].joincount += 20
+  user.coin = (user.coin || 0) + 40
+  user.exp = (user.exp || 0) + 300
+  user.joincount = (user.joincount || 0) + 20
+
   let sn = createHash('md5').update(m.sender).digest('hex').slice(0, 20)
-let regbot = `╔═══ ❖ ═══╗
-✅ 𝒱𝐸𝑅𝐼𝐹𝐼𝐶𝐴𝐶𝐼Ó𝒩 𝐸𝒳𝐼𝒯𝒪𝒮𝒜 ✅
-╚═══ ❖ ═══╝
 
-🌙 𓆩 𝒩𝒪𝑀𝐵𝑅𝐸 𓆪:: 『${name}』
-🌀 𓆩 𝐸𝒟𝒜𝒟 𓆪:: 『${age} años』
+  let regbot = `✅ VERIFICACIÓN EXITOSA ✅
+───────────────────
+· › 🌷 \`NOMBRE\` » *${name}*
+· › 🌀 \`EDAD\` » *${age} años*
+───────────────────
+· › 🕸️ \`FECHA\` » *${fecha}*
+· › 🐋 \`HORA\` » *${hora}*
+· › 🌿 \`DIA\` » *${dia}*
+───────────────────
+• 🍹 RECOMPENSAS 🧪
+· › 🪙 \`COINS:\` *+40*
+· › 🏮 \`EXP:\` *+300*
+· › 🔰 \`TOKENS:\` *+20*
+───────────────────`.trim();
 
-🕰️ 𓆩 𝐹𝐸𝒞𝐻𝒜 𓆪:: 『${fecha}』
-🐚 𓆩 𝐻𝒪𝑅𝒜 𓆪:: 『${hora}』
-🍃 𓆩 𝒟𝐼𝒜 𓆪:: 『${dia}』
+  await m.react?.('📩')
 
-🎁 𝑅𝐸𝒞𝒪𝑀𝒫𝐸𝒩𝒮𝒜𝒮 🎁
-🪙 𝒞𝒪𝐼𝒩𝒮:: +40
-📛 𝐸𝒳𝒫:: +300
-🔮 𝒯𝒪𝒦𝐸𝒩𝒮:: +20`;
-
-await m.react('📩')
-await conn.sendMessage(
+  await conn.sendMessage(
     m.chat,
     {
       image: { url: pp },
@@ -111,7 +112,7 @@ await conn.sendMessage(
           thumbnailUrl: icono,
           mediaUrl: redes,
           sourceUrl: redes,
-          renderLargerThumbnail: false
+          renderLargerThumbnail: true
         }
       }
     },
@@ -123,4 +124,3 @@ handler.tags = ['rg']
 handler.command = ['verify', 'verificar', 'reg', 'register', 'registrar'] 
 
 export default handler
-

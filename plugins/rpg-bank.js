@@ -1,46 +1,38 @@
-import fetch from 'node-fetch'
 import db from '../lib/database.js'
 
-const img = 'https://files.catbox.moe/sectzh.jpg'
-
 let handler = async (m, { conn, usedPrefix }) => {
-  let who = m.mentionedJid[0] 
-           ? m.mentionedJid[0] 
-           : m.quoted 
-           ? m.quoted.sender 
-           : m.sender
-
-  if (who === conn.user.jid) return m.react('✖️')
-
-  if (!(who in global.db.data.users)) {
-    return m.reply(`🚫 El usuario no se encuentra en mi base de datos.`)
-  }
+  let who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.sender
+  if (who == conn.user.jid) return m.react('✖️')
+  if (!(who in global.db.data.users)) return m.reply(`🌱 El usuario no se encuentra en mi base de datos.`)
 
   let user = global.db.data.users[who]
-  let name = await conn.getName(who)
+  let total = (user.coin || 0) + (user.bank || 0)
 
-  let txt = `╭─⃝ ⟡ 𓆩 🏦 𝐁𝐀𝐍𝐂𝐎 𝐃𝐄 𝐀𝐕𝐄𝐍𝐓𝐔𝐑𝐀 𓆪 ⟡ ─⃝╮
-┃👤 Usuario: *${name}*
-┃💰 Dinero: *${user.coin} ${moneda}*
-┃🏦 Banco: *${user.bank} ${moneda}*
+  let img = 'https://files.catbox.moe/spg9j8.jpg'
+
+  let texto = `
+╭━━━〔 💎 𝐄𝐂𝐎𝐍𝐎𝐌𝐈𝐀 💎 〕━━━⬣
 ┃
-┃🌟 Experiencia: *${user.exp}* ▓░
-┃📈 Nivel: *${user.level}*
-┃⚜️ Rango: *${user.role}*
+┃ 👤 Usuario » *${conn.getName(who)}*
+┃ ⛀ Dinero » *${user.coin || 0} ${moneda}*
+┃ ⚿ Banco  » *${user.bank || 0} ${moneda}*
+┃ 💰 Total  » *${total} ${moneda}*
 ┃
-┃📅 Fecha: *${new Date().toLocaleString('id-ID')}*
-╰────────────────────────╯
+╰━━━━━━━━━━━━━━━━━⬣
 
-📌 *Consejo:*  
-Deposita tu dinero para protegerlo.  
-🔐 Usa: *${usedPrefix}deposit*`
+> 🌸 *Consejo:* Protege tu dinero y evita robos.
+Usa:  *${usedPrefix}deposit cantidad*
+`
 
-  await conn.sendFile(m.chat, img, 'bank.jpg', txt, fkontak, null, { mentions: [who] })
+  await conn.sendMessage(m.chat, {
+    image: { url: img },
+    caption: texto
+  }, { quoted: m })
 }
 
-handler.help = ['bank']
+handler.help = ['bal']
 handler.tags = ['rpg']
-handler.command = ['bal', 'balance', 'bank']
+handler.command = ['bal', 'balance', 'bank'] 
 handler.register = true
 handler.group = true
 
