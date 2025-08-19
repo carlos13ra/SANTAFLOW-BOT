@@ -675,7 +675,7 @@ let handler = async (m, { conn, args }) => {
   await conn.sendMessage(
     m.chat,
     {
-      image: { url: icono },
+      image: { url: avatar },
       caption: menuText,
       contextInfo: {
         externalAdReply: {
