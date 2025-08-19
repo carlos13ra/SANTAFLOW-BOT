@@ -2,15 +2,15 @@ import fetch from 'node-fetch';
 
 var handler = async (m, { conn, args, usedPrefix, command }) => {
     if (!args[0]) {
-        return conn.reply(m.chat, `🌸✨ Onichan~ debes poner un link de TikTok uwu 💖`, m, fake);
+        return conn.reply(m.chat, `🥭 Joder tio- debes poner un link de TikTok Bien😈`, m, fake);
     }
 
     try {
         await conn.reply(m.chat, `
-╭─⊰ 🌸 𝐍𝐲𝐚𝐚~ ⊱─╮  
-┃ ⏳ *Espera un momentito onii-chan...*  
-┃ 💕 *Estoy descargando tu videíto kawaii~*  
-╰─⊰ ✨ 𝐀𝐰𝐮𝐮~ ⊱─╯`, m);
+╭─⊰ 🌸 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖~ ⊱─╮  
+┃ ⏳ *Espera un momentito SANTAFLOW-LA RESPUESTA...*  
+┃ 💕 *Estoy descargando tu videíto SANTAFLOW~RED*  
+╰─⊰ ✨ SANTAFLOW~POP DEL MONO ⊱─╯`, m);
 
         const tiktokData = await tiktokdl(args[0]);
 
@@ -30,7 +30,7 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
 
         if (videoURL) {
             await conn.sendFile(m.chat, videoURL, "tiktok.mp4", `╭─╼⃝🌸 𝑶𝒏𝒊𝒄𝒉𝒂𝒂𝒏~ 💖  
-│ 🍡 *Tu video está servidito nya~!*  
+│ 🍡 *Tu video está servidito BIEN~!*  
 │  
 │ 🎀 *Título:* ${data.title || 'Sin descripción uwu'}  
 │ 💗 *Likes:* ${formatNumber(data.digg_count)} ✨  
@@ -40,7 +40,7 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
 │ ⏲️ *Duración:* ${formatDuration(data.duration)} ⌛  
 │ 🖼️ *Calidad:* ${videoURL.includes('hd') ? 'HD 🌟' : 'Normalito 📺'}  
 │  
-╰─❖ 🌈 𝐃𝐢𝐬𝐟𝐫𝐮𝐭𝐚𝐥𝐨, 𝐨𝐧𝐢𝐢-𝐜𝐡𝐚𝐧~ 💞`, m);
+╰─❖ 🌈 𝐃𝐢𝐬𝐟𝐫𝐮𝐭𝐚𝐥𝐨, 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖-𝐕𝐄𝐍𝐈𝐃 𝐏𝐎𝐑 𝐌𝐈~ 💞`, m);
         } else {
             return conn.reply(m.chat, "❌ No pude descargarlo nya~ 😿", m);
         }
