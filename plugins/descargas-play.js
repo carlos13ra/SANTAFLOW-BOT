@@ -81,7 +81,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: '⚽ RIN ITOSHI - IA 🌀',
+          body: '⚽ SANTAFLOW - IA 🌀',
           mediaType: 1,
           thumbnail: thumb,
           mediaUrl: url,
