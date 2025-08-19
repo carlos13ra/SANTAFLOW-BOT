@@ -98,34 +98,25 @@ let regbot = `╔═══ ❖ ═══╗
 🔮 𝒯𝒪𝒦𝐸𝒩𝒮:: +20`;
 
 await m.react('📩')
-await conn.sendButton(m.chat, regbot, club, pp, [
-['👤 𝗢𝗪𝗡𝗘𝗥', '#owner'],
-['🌾 𝗣𝗘𝗥𝗙𝗜𝗟', '#perfil'],
-['☘️ 𝗠𝗘𝗡𝗨 • 𝗔𝗟𝗟', '#menu']], null, [
-['🌐 𝗖𝗔𝗡𝗔𝗟', `https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39`]], fkontak)}
-
-/*  await conn.sendMessage(m.chat, {
-    image: { url: pp },
-    caption: regbot,
-    footer: club,
-    buttons: [
-      { buttonId: '#menu', buttonText: { displayText: '🌳 Menu Principal' }, type: 1 },
-      { buttonId: '#profile', buttonText: { displayText: '🔥 Perfil' }, type: 1 },
-    ],
-    headerType: 4,
-    contextInfo: {
-      externalAdReply: {
-        title: 'ּ໋۪֔⛩️⣴ ⵿ּׄ🫧 ⃝̸̶⵿ᩫᰰᮬ 𝐔𝐒𝐔𝐀𝐑𝐈𝐎 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐃𝐎🎄᮫๋໋֢᳝ꨪᰰ⃟ુ᭡̵໋࡙',
-        body: ' . ݁ ּ ּ۪ ࣭֔𔓕⃘᜔𑵅᮫ּ߲֧߲۪۪〫֔࠭🌧️ꨩּֽ֪۪۪〫ࣳׄ꩖ּ߲߲֧۪۪߲߲࣪𝐁𝐲: 𓆩𝑺𝒉𝒂֟፝𝑫𝒐𝒘•𝒄𝒐𝒓𝒆𓆪',
-        thumbnailUrl: 'https://files.catbox.moe/hwkp81.jpg',
-        mediaType: 1,
-        renderLargerThumbnail: true,
-        showAdAttribution: true,
-        sourceUrl: channel,
+await conn.sendMessage(
+    m.chat,
+    {
+      image: { url: pp },
+      caption: regbot,
+      contextInfo: {
+        externalAdReply: {
+          title: '✦͢🌹⌗ 𝐔𝐒𝐔𝐀𝐑𝐈𝐎 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐃𝐎 💎✨',
+          body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ éꜱᴇxɪᴛᴏ\n☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
+          mediaType: 1,
+          thumbnailUrl: icono,
+          mediaUrl: redes,
+          sourceUrl: redes,
+          renderLargerThumbnail: false
+        }
       }
-    }
-  }, { quoted: fkontak });
-}*/
+    },
+    { quoted: m });
+};
 
 handler.help = ['reg']
 handler.tags = ['rg']
