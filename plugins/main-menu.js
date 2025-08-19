@@ -1,0 +1,720 @@
+import axios from 'axios';
+
+let handler = async (m, { conn, args }) => {
+  let userId = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.sender;
+  let userData = global.db.data.users[userId] || {};
+  let exp = userData.exp || 0;
+  let coin = userData.coin || 0;
+  let level = userData.level || 0;
+  let role = userData.role || 'Sin Rango';
+  let name = await conn.getName(userId);
+
+  let _uptime = process.uptime() * 1000;
+  let uptime = clockString(_uptime);
+  let totalreg = Object.keys(global.db.data.users).length;
+  let totalCommands = Object.values(global.plugins).filter(v => v.help && v.tags).length;
+  
+  
+  await new Promise(resolve => setTimeout(resolve, 2000));
+      
+   let hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' });
+   let fechaObj = new Date();
+   let fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' });
+   let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' });
+   
+   
+  let menuText = `
+☁️ ${ucapan()} @${userId.split('@')[0]}
+
+╭─────────✦ ✦─────────╮
+│   🌌 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 - 𝐁𝐎𝐓 🌌
+╰─────────✦ ✦─────────╯
+   ✦ Usuario: ${name}
+   ✦ Nivel: ${level}
+   ✦ EXP: ${exp}
+   ✦ Rango: ${role}
+   ✦ Progreso: ▓▓▓▓▓▓▓▓▓▓
+   
+   🕒 Hora Perú: ${hora}
+   📅 Fecha: ${fecha}
+   🎉 Día: ${dia}
+   
+╭════『📊 ESTADÍSTICAS 📊』═════╮
+│ ⚙️ Modo: 🔒 Privado
+│ 👑 Creador: +${suittag}
+│ 🤖 Bot: ${(conn.user.jid == global.conn.user.jid ? '🌟 BOT OFICIAL' : '✨ SUB BOT')}
+│ 📚 Comandos: ${totalCommands}
+│ 🧑‍🤝‍🧑 Usuarios: ${totalreg}
+│ ⏱️ Activo: ${uptime}
+╰═══════════════════════════╯
+͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏
+  🧪 Lista de comandos **SANTAFLOW MD**
+
+͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏͏
+⋆﹥━⌬ 𖤐 𝙄𝙉𝙁𝙊 𖤐 ⌬━﹤⋆
+✦ #afk [alasan]
+✦ #menu
+✦ #uptime
+✦ #script
+✦ #staff
+✦ #creador
+✦ #grupos
+✦ #estado
+✦ #infobot
+✦ #sug
+✦ #ping
+✦ #reportar <txt>
+✦ #reglas
+✦ #speed
+✦ #sistema
+✦ #usuarios
+✦ #ds
+✦ #funciones
+✦ #editautoresponder
+
+⋆﹥━⌬ 𖤐 𝙈𝙀𝙉𝙐𝙎 𖤐 ⌬━﹤⋆
+✦ .menulist
+✦ .dev - ᴍᴇɴᴜ ᴏᴡɴᴇʀ
+✦ .menusticker - ᴍᴇɴᴜ sᴛɪᴄᴋᴇʀs
+✦ .menusearch - ᴍᴇɴᴜ sᴇᴀʀᴄʜ
+✦ .menudl - ᴍᴇɴᴜ ᴅᴇsᴄᴀʀɢᴀs
+✦ .menulogos - ʟᴏɢᴏs
+✦ .menunsfw - ᴍᴇɴᴜ 18
+✦ .menugp - ᴍᴇɴᴜ ɢʀᴜᴘᴏ
+✦ .menu2 - ᴍᴇɴᴜ ᴀᴜᴅɪᴏs
+✦ .menurpg - ᴍᴇɴᴜ ʀᴘɢ
+
+
+⋆﹥━⌬ 𖤐 𝙎𝙀𝘼𝙍𝘾𝙃 𖤐 ⌬━﹤⋆
+✦ .ᴀɴɪᴍᴇɪɴғᴏ
+✦ .ᴀɴɪᴍᴇsᴇᴀʀᴄʜ
+✦ .ᴄᴜᴇᴠᴀɴᴀ
+✦ .ɢɪᴛʜᴜʙsᴇᴀʀᴄʜ
+✦ .sᴇᴀʀᴄʜʜᴇɴᴛᴀɪ
+✦ .ɢᴏᴏɢʟᴇ *<ʙúsǫᴜᴇᴅᴀ>*
+✦ .ɪᴍᴀɢᴇɴ *<ǫᴜᴇʀʏ>*
+✦ .ɪɴғᴏᴀɴɪᴍᴇ
+✦ .ɢɪᴛʜᴜʙsᴛᴀʟᴋ *<ǫᴜᴇʀʏ>*
+✦ .sᴏᴜɴᴅᴄʟᴏᴜᴅsᴇᴀʀᴄʜ *<ᴛxᴛ>*
+✦ .ᴘɪɴᴛᴇʀᴇsᴛ
+✦ .ᴘᴏʀɴʜᴜʙsᴇᴀʀᴄʜ
+✦ .sᴘᴏᴛɪғʏsᴇᴀʀᴄʜ *<ᴛᴇxᴛᴏ>*
+✦ .ʏᴛsᴇᴀʀᴄʜ2 *<ᴛᴇxᴛ>*
+✦ .letra *<texto>*
+✦ .ɴᴘᴍᴊs
+✦ .ɢɴᴜʟᴀ
+✦ .ᴀᴘᴋsᴇᴀʀᴄʜ
+✦ .ᴡɪᴋɪs
+✦ .ᴛɪᴋᴛᴏᴋsᴇᴀʀᴄʜ *<ᴛxᴛ>*
+✦ .ᴛᴡᴇᴇᴛᴘᴏsᴛs
+✦ .xɴxxs
+✦ .xᴠsᴇᴀʀᴄʜ
+✦ .ʏᴛs
+✦ .ғᴅʀᴏɪᴅsᴇᴀʀᴄʜ *<ᴛéʀᴍɪɴᴏ>*
+✦ .ʜᴀᴘᴘʏᴍᴏᴅsᴇᴀʀᴄʜ *<ʙúsǫᴜᴇᴅᴀ>*
+✦ .ᴄɪɴᴇᴄᴀʟɪᴅᴀᴅsᴇᴀʀᴄʜ *<ʙúsǫᴜᴇᴅᴀ>*
+✦ .ʏᴀʜᴏᴏsᴇᴀʀᴄʜ *<ʙúsǫᴜᴇᴅᴀ>*
+✦ .ᴍᴏᴠɪᴇ *<ᴛéʀᴍɪɴᴏ>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Subs\`*  🍰 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .qr
+✦ .code
+✦ .token
+✦ .sockets
+✦ .deletesesion
+✦ .pausarai
+╰┈┈┈▥
+
+
+⋆﹥━⌬ 𖤐 𝘿𝙊𝙒𝙉𝙇𝙊𝘼𝘿 𖤐 ⌬━﹤⋆
+✦ #fb2
+✦ #fdroid *<url>*
+✦ #fb
+✦ #sound
+✦ #gitclone *<url git>*
+✦ #gdrive
+✦ #ig
+✦ #mediafire *<url>*
+✦ #mega
+✦ #apk *<nombre>*
+✦ #pinvid *<link>*
+✦ #apk2 *<busqueda>*
+✦ #npmdl
+✦ #tt2
+✦ #kwaidl
+✦ #likee *<url>*
+✦ #aplay2 • applemusic2
+✦ #capcut *<url>*
+✦ #play
+✦ #play2
+✦ #ytmp3doc
+✦ #ytmp4doc
+✦ #iaimg *<texto>*
+✦ #yta
+✦ #ytv
+✦ #tiktokrandom
+✦ #spotify
+✦ #tiktokhd
+✦ #tiktoktrends
+✦ #snapchat *<link>*
+✦ #terabox
+✦ #tiktok *<url>*
+✦ #tiktokmp3 *<url>*
+✦ #tiktokimg *<url>*
+✦ #twitter *<url>*
+✦ #xvideosdl
+✦ #xnxxdl
+✦ #pindl
+⋆﹥━⌬━━━━━━⌬━﹤⋆
+
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖥𝗎𝗇\`*  🥯 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .gay *@tag* 
+✦ .lesbiana *@tag* 
+✦ .pajero *@tag* 
+✦ .pajera *@tag* 
+✦ .puto *@tag* 
+✦ .puta *@tag* 
+✦ .manco *@tag* 
+✦ .manca *@tag* 
+✦ .rata *@tag*
+✦ .prostituta *@tag*
+✦ .amigorandom
+✦ .jalamela
+✦ .simi
+✦ .chiste
+✦ .consejo
+✦ .doxear *<mension>*
+✦ .facto
+✦ .reto
+✦ .verdad
+✦ .prostituto *<@tag>*
+✦ .formarpareja
+✦ .formarpareja5
+✦ .huevo *@user*
+✦ .chupalo *<mencion>*
+✦ .aplauso *<mencion>*
+✦ .marron *<mencion>*
+✦ .suicidar
+✦ .iqtest <mencion>*
+✦ .meme
+✦ .morse
+✦ .nombreninja *<texto>*
+✦ .paja
+✦ .personalidad *<mencion>*
+✦ .pregunta 
+✦ .zodiac *2002 02 25*
+✦ .ship 
+✦ .sorte 
+✦ .top *[texto]*
+✦ .formartrio *<mencion>*
+✦ .tt
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖥𝗋𝖺𝗌ᧉ𝗌\`* 🖍️ ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .piropo
+✦ .frase
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖩𝗎ᧉ𝗀ᨣ𝗌\`*  🥥 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .ahorcado
+✦ .delxo
+✦ .genio *<pregunta>*
+✦ .math *<mode>*
+✦ .ppt *texto*
+✦ .pvp
+✦ .sopa
+✦ .acertijo
+✦ .ttt *texto*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖠𝗇ı𝗆ᧉ\`*  🍮 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .angry/enojado @tag
+✦ .bath/bañarse @tag
+✦ .bite/morder @tag
+✦ .bleh/lengua @tag
+✦ .blush/sonrojarse @tag
+✦ .bored/aburrido @tag
+✦ .nights/noches
+✦ .dias/days
+✦ .coffe/cafe @tag
+✦ .cry/llorar @tag
+✦ .cuddle/acurrucarse @tag
+✦ .dance/bailar @tag
+✦ .drunk/borracho @tag
+✦ .eat/comer @tag
+✦ .messi
+✦ .cr7
+✦ .facepalm/palmada @tag
+✦ .happy/feliz @tag
+✦ .hello/hola @tag
+✦ .hug/abrazar @tag
+✦ .kill/matar @tag
+✦ .kiss2/besar2 @tag
+✦ .kiss/besar @tag
+✦ .laugh/reirse @tag
+✦ .lick/lamer @tag
+✦ .love2/enamorada @tag
+✦ .patt/acariciar @tag
+✦ .poke/picar @tag
+✦ .pout/pucheros @tag
+✦ .ppcouple
+✦ .preg/embarazar @tag
+✦ .punch/golpear @tag
+✦ .run/correr @tag
+✦ .sad/triste @tag
+✦ .scared/asustada @tag
+✦ .seduce/seducir @tag
+✦ .shy/timida @tag
+✦ .slap/bofetada @tag
+✦ .sleep/dormir @tag
+✦ .smoke/fumar @tag
+✦ .think/pensando @tag
+✦ .undress/encuerar @tag
+✦ .waifu
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Pᧉrẜil\`*  🩸 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .reg
+✦ .unreg
+✦ .profile
+✦ .marry *[mension / etiquetar]*
+✦ .divorce
+✦ .setgenre *<text>*
+✦ .delgenre
+✦ .setbirth *<text>*
+✦ .delbirth
+✦ .setdesc *<text>*
+✦ .deldesc
+╰┈┈┈▥
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Logos\`*  🖼️ ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .glitchtext
+✦ .narutotext
+✦ .dragonball
+✦ .neonlight
+✦ .pubglogo
+✦ .harrypotter
+✦ .marvel
+✦ .pixelglitch
+✦ .amongustext
+✦ .writetext
+✦ .advancedglow
+✦ .typographytext
+✦ .neonglitch
+✦ .flagtext
+✦ .flag3dtext
+✦ .deletingtext
+✦ .blackpinkstyle
+✦ .glowingtext
+✦ .underwatertext
+✦ .logomaker
+✦ .cartoonstyle
+✦ .papercutstyle
+✦ .watercolortext
+✦ .effectclouds
+✦ .blackpinklogo
+✦ .gradienttext
+✦ .summerbeach
+✦ .luxurygold
+✦ .multicoloredneon
+✦ .sandsummer
+✦ .galaxywallpaper
+✦ .style
+✦ .makingneon
+✦ .royaltext
+✦ .freecreate
+✦ .galaxystyle
+✦ .rainytext
+✦ .graffititext
+✦ .colorfulltext
+✦ .equalizertext
+✦ .angeltxt
+✦ .starlight
+✦ .steel
+✦ .neoncity
+✦ .cloudsky
+✦ .matrix
+✦ .minion
+✦ .papercut3d
+✦ .firetext
+✦ .icecold
+✦ .rainbowtext
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Stalk\`*  🌀 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .tiktokstalk *<usuario>*
+✦ .kwaistalk *<usuario>*
+✦ .telegramstalk *<nombre_usuario>*
+✦ .youtubestalk *<nombre de usuario>*
+✦ .instagramstalk *<usuario>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Prᧉmιυɱ\`*  🍄 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .comprarpremium
+✦ .premium
+✦ .vip
+✦ .spamwa <number>|<mesage>|<no of messages>
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Rpg\`*  🥧 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .aventura
+✦ .baltop
+✦ .bank / bal
+✦ .cazar 
+✦ .codigo *<cantida de coins>*
+✦ .canjear *<código>*
+✦ .cartera
+✦ .apostar *<cantidad>*
+✦ .cf
+✦ .cofre
+✦ .crimen
+✦ .daily
+✦ .depositar 
+✦ .explorar
+✦ .gremio
+✦ .regalo
+✦ .halloween
+✦ .heal
+✦ .inventario 
+✦ .mensual
+✦ .mazmorra
+✦ .minar
+✦ .navidad
+✦ .retirar
+✦ .robar
+✦ .robarxp
+✦ .ruleta *<cantidad> <color>*
+✦ .buyall
+✦ .buy
+✦ .protituirse
+✦ .work
+✦ .pay / transfer 
+✦ .semanal
+✦ .levelup
+✦ .lvl @user
+✦ .slot *<apuesta>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Gᴀᴄʜᴀ\`*  ☕ ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .rw
+✦ .reclamar 
+✦ .harem
+✦ .waifuimage
+✦ .charinfo
+✦ .topwaifus *[pagina]*
+✦ .regalar *<nombre del personaje> @usuario*
+✦ .vote *<personaje>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Sᴛɪᴄᴋᴇʀs\`*  👾 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .sticker *<img>*
+✦ .sticker *<url>*
+✦ .setmeta
+✦ .delmeta
+✦ .bratvid *<texto>*
+✦ .pfp *@user*
+✦ .qc
+✦ .toimg *(reply)*
+✦ .brat
+✦ .bratvid *<texto>*
+✦ .emojimix  *<emoji+emoji>*
+✦ .wm *<packname>|<author>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖳ᨣᨣ𝗅𝗌\`*  🍚 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .letra *<texto>*
+✦ .fake
+✦ .hd
+✦ .detectar
+✦ .clima *<ciudad/país>*
+✦ .join
+✦ .nuevafotochannel
+✦ .nosilenciarcanal
+✦ .silenciarcanal
+✦ .noseguircanal
+✦ .seguircanal 
+✦ .avisoschannel 
+✦ .resiviravisos 
+✦ .inspect 
+✦ .inspeccionar 
+✦ .eliminarfotochannel 
+✦ .reactioneschannel 
+✦ .reaccioneschannel 
+✦ .nuevonombrecanal 
+✦ .nuevadescchannel
+✦ .setavatar
+✦ .setbanner
+✦ .seticono
+✦ .setmoneda
+✦ .setname nombre1/nombre2
+✦ .cal *<ecuacion>*
+✦ .horario
+✦ .read
+✦ .traducir <idoma>
+✦ .say
+✦ .whatmusic <audio/video>
+✦ .paisinfo
+✦ .ssweb
+✦ .tamaño *<cantidad>*
+✦ .document *<audio/video>*
+✦ .translate
+✦ .up
+✦ .enhance
+✦ .wikipedia
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖮𝗇-𝖮ẜẜ\`*  🧋 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .welcome
+✦ .bienvenida
+✦ .antiprivado
+✦ .antiprivate
+✦ .restrict
+✦ .restringir
+✦ .antibot
+✦ .antibots
+✦ .autoaceptar
+✦ .aceptarauto
+✦ .autorechazar
+✦ .rechazarauto
+✦ .autoresponder
+✦ .autorespond
+✦ .antisubbots
+✦ .antibot2
+✦ .modoadmin
+✦ .soloadmin
+✦ .reaction
+✦ .reaccion
+✦ .nsfw
+✦ .modohorny
+✦ .antispam
+✦ .jadibotmd
+✦ .modejadibot
+✦ .subbots
+✦ .detect
+✦ .avisos
+✦ .antilink
+✦ .audios
+✦ .antiver
+✦ .antiocultar
+✦ .antilink2
+✦ .antiarabe
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Grupos\`*  ⚙️ ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .admins
+✦ .agregar
+✦ .advertencia <@user>
+✦ .delwarn
+✦ .grupo abrir / cerrar
+✦ .group open / close
+✦ .delete
+✦ .demote <@user>
+✦ .promote <@user>
+✦ .encuesta <text|text2>
+✦ .kickfantasmas
+✦ .gpbanner
+✦ .gpdesc
+✦ .gpname
+✦ .hidetag
+✦ .infogrupo
+✦ .kickall
+✦ .kick <@user>
+✦ .kicknum
+✦ .listonline
+✦ .link
+✦ .listadv
+✦ .mute
+✦ .unmute
+✦ .config
+✦ .restablecer
+✦ .setbye
+✦ .setwelcome
+✦ .testwelcome
+✦ .setemoji <emoji>
+✦ .invocar *<mensaje opcional>*
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Nsfw\`*  🪼 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .sixnine/69 @tag
+✦ .anal/culiar @tag
+✦ .blowjob/mamada @tag
+✦ .boobjob/rusa @tag
+✦ .cum/leche @tag
+✦ .fap/paja @tag
+✦ .follar @tag
+✦ .fuck/coger @tag
+✦ .footjob/pies @tag
+✦ .fuck2/coger2 @tag
+✦ .grabboobs/agarrartetas @tag
+✦ .grop/manosear @tag
+✦ .penetrar @user
+✦ .lickpussy/coño @tag
+✦ .r34 <tag>
+✦ .sexo/sex @tag
+✦ .spank/nalgada @tag
+✦ .suckboobs/chupartetas @tag
+✦ .violar/perra @tag
+✦ .lesbianas/tijeras @tag
+✦ .pack
+✦ .tetas
+✦ .undress/encuerar
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`Owner\`*  🌷 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .addcoins *<@user>*
+✦ .addowner / delowner
+✦ .addprem [@user] <days>
+✦ .añadirxp
+✦ .copia
+✦ .autoadmin
+✦ .banuser *@tag <razón>*
+✦ .banlist
+✦ .bcgc
+✦ .block / unblock
+✦ .blocklist
+✦ .chetar *@user* / *<número>*
+✦ .cleartmp
+✦ .creargc
+✦ .deletefile
+✦ .delprem <@user>
+✦ .deschetar *@user* / *<número>*
+✦ .dsowner
+⤷ ✦ =>
+⤷ ✦ >
+✦ .fetch
+✦ .getplugin
+✦ .grouplist
+✦ .salir
+✦ .let
+✦ .prefix [prefix]
+✦ .quitarcoin *<@user>* / all
+✦ .quitarxp *<@user>*
+✦ .resetprefix
+✦ .restablecerdatos
+✦ .restart / reiniciar
+✦ .reunion
+✦ .savefile <ruta/nombre>
+✦ .saveplugin
+✦ .setcmd *<texto>*
+✦ .delcmd
+✦ .listcmd
+✦ .setimage
+✦ .setstatus <teks>
+✦ .spam2
+✦ .unbanuser <@tag>
+✦ .ip <alamat ip>
+✦ .update / fix
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖨𝗇ƚᧉ𝖨ı𝗀ᧉ𝗇𝖼ı𝖺𝗌\`*  💭 ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .dalle
+✦ .demo *<texto>*
+✦ .flux *<texto>*
+✦ .gemini
+✦ .ia
+✦ .llama
+╰┈┈┈▥
+
+╔══❖•ೋ🌿ೋ•❖══╗
+  𖤐 𓆩 *\`𝖢ᨣ𝗇𝗏ᧉ𝗋ƚᧉ𝗋𝗌\`*  🌪️ ᩚ꤬ᰨᰍ 𓆪
+╚══❖•ೋ🌿ೋ•❖══╝
+✦ .tourl <imagen>
+✦ .catbox
+✦ .tourl3
+✦ .togifaud
+✦ .tomp3
+✦ .tovideo
+✦ .tts <lang> <teks>
+✦ .tts2
+╰┈┈┈▥
+
+
+   🧿 *𝗖𝗥𝗘𝗔 𝗨𝗡 𝗦𝗨𝗕𝗕𝗢𝗧 𝗘𝗡 𝗦𝗘𝗚𝗨𝗡𝗗𝗢𝗦*
+> 🛰️ ➊ *#qr* – Escanea un 𝖢𝗈𝖽𝗂𝗀𝗈 𝗤𝗥  
+> 🔐 ➋ *#code* – Usa un 𝖢𝗈𝖽𝗂𝗀𝗈 de 8 dígitos
+`.trim();
+
+  await m.react('🎤');
+  await conn.sendMessage(
+    m.chat,
+    {
+      image: { url: icono },
+      caption: menuText,
+      contextInfo: {
+        externalAdReply: {
+          title: '🌾 Santaflow - La respuesta ',
+          body: '☯︎ by carlos\'manguito',
+          mediaType: 1,
+          thumbnailUrl: banner,
+          mediaUrl: redes,
+          sourceUrl: 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39',
+          renderLargerThumbnail: false
+        }
+      }
+    },
+    { quoted: m }
+  );
+};
+
+handler.help = ['menu'];
+handler.tags = ['main'];
+handler.command = ['menu', 'menú', 'help', 'allmenú', 'allmenu', 'menucompleto'];
+export default handler;
+
+function clockString(ms) {
+  let h = Math.floor(ms / 3600000);
+  let m = Math.floor((ms % 3600000) / 60000);
+  let s = Math.floor((ms % 60000) / 1000);
+
+  let horas = h === 1 ? 'hora' : 'horas';
+  let minutos = m === 1 ? 'minuto' : 'minutos';
+  let segundos = s === 1 ? 'segundo' : 'segundos';
+
+  return `${h} ${horas}, ${m} ${minutos}, ${s} ${segundos}`;
+}
+
+function ucapan() {
+  const time = moment.tz('America/Lima').format('HH');
+  let res = "Buenas Noches🌙";
+  if (time >= 5 && time < 12) res = "Buenos Días☀️";
+  else if (time >= 12 && time < 18) res = "Buenas Tardes🌤️";
+  else if (time >= 18) res = "Buenas Noches🌙";
+  return res;
+}
