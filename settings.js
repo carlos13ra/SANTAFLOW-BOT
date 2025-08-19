@@ -15,47 +15,47 @@ global.botNumber = ''
 
 global.owner = [
 // <-- Número @s.whatsapp.net -->
-  ['51919199620', '🜲 Propietario 🜲', true],
-  ['51969214380', 'shadow', true],
-  ['59898719147', ':v', true],
-  ['51934053286', ':v', true ],
+  ['51946200884', '🜲 Propietario 🜲', true],
+  ['51946200884', 'Carlos.rv', true],
+  ['51946200884', ':v', true],
+  ['51946200884', ':v', true ],
   
 // <-- Número @lid -->
 
-  ['80754461647013', 'Propietario', true],
-  ['193196806148194', 'shadow', true],
-  ['119069730668723', ':v', true ],
-  ['102680420733070', ':v', true ]
+  ['49285437599822', 'Propietario', true],
+  ['49285437599822', 'carlos.rv', true],
+  ['49285437599822', ':v', true ],
+  ['49285437599822', ':v', true ]
 ];  
   
   
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
-global.mods = ['51919199620']
-global.suittag = ['51919199620'] 
-global.prems = ['51919199620']
+global.mods = ['51946200884']
+global.suittag = ['51946200884'] 
+global.prems = ['51946200884']
 
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
 global.libreria = 'Baileys'
 global.baileys = 'V 6.7.17' 
 global.vs = '2.2.5'
-global.nameqr = '✦⃟⚡ Rin•Itoshi•Bot•MD ⚡⃟✦'
-global.namebot = '⚽⸸ Rin•Itoshi•MD ⸸⚽'
+global.nameqr = '✦⃟⚡ SANTAFLOW•Bot•MD ⚡⃟✦'
+global.namebot = '⚽⸸ SANTAFLOW•MD ⸸⚽'
 global.sessions = 'Sessions'
 global.jadi = 'JadiBots' 
 global.shadowJadibts = true
 
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
-global.packname = '🏆 ⌬ 𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 𝑩𝒐𝒕 𝑴𝑫 ⌬ ⚽'
-global.botname = '☘️ 𝑹𝑰𝑵 𝑰𝑻𝑶𝑺𝑯𝑰 ⚽'
-global.wm = '◈𝐑𝐢𝐧 𝐈𝐭𝐨𝐬𝐡𝐢 𝐁𝐨𝐭◈'
-global.author = '⩇⃟🔋 𝑴𝒂𝒅𝒆 𝒃𝒚 𝑺𝒉𝒂𝒅𝒐𝒘𝒄𝒐𝒓𝒆 ⩇⃟⚡'
-global.dev = '☘️ ミ💨 》Tʜᴇ Sʜᴀᴅᴏᴡ`ᴄᴏʀᴇ《 💥ミ 🌀'
-global.bot = '𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 𝑩𝒐𝒕'
-global.club = '🌱 𝖯𝗈𝗐𝖾𝗋𝖾𝖽 𝖻𝗒 Sʜᴀᴅᴏᴡ•Core 𝖢𝗅𝗎𝖻 ⚡'
-global.textbot = '𝚁𝙸𝙽 𝙸𝚃𝙾𝚂𝙷𝙸 𝙱𝙾𝚃 ✦ 𝕊ℍ𝔸𝔻𝕆𝕎•ℂ𝕆ℝ𝔼'
+global.packname = '🏆 ⌬ 𝐒𝐚𝐧𝐭𝐚𝐟𝐥𝐨𝐰 𝑩𝒐𝒕 𝑴𝑫 ⌬ ⚽'
+global.botname = '☘️ 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖⚽'
+global.wm = '◈SANTAFLOW 𝐁𝐨𝐭◈'
+global.author = '⩇⃟🔋 𝑴𝒂𝒅𝒆 𝒃𝒚 𝐜𝐚𝐫𝐥𝐨𝐬.𝐫𝐯 ⩇⃟⚡'
+global.dev = '☘️ ミ💨 》𝑪𝑨𝑹𝑳𝑶𝑺.𝑹𝑽《 💥ミ 🌀'
+global.bot = '𝑺𝒂𝒏𝒕𝒂𝒇𝒍𝒐𝒘 𝒃𝒐𝒕'
+global.club = '🌱 𝖯𝗈𝗐𝖾𝗋𝖾𝖽 𝖻𝗒 carlos•Core 𝖢𝗅𝗎𝖻 ⚡'
+global.textbot = '𝐬𝐚𝐧𝐭𝐚𝐟𝐥𝐨𝐰 𝙱𝙾𝚃 ✦ 𝕊ℍ𝔸𝔻𝕆𝕎•ℂ𝕆ℝ𝔼'
 global.etiqueta = '@sʜᴀᴅᴏᴡ°ᴄᴏʀᴇ'
 
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
@@ -69,10 +69,10 @@ global.logo = 'https://files.catbox.moe/fft2hr.jpg'
 
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
-global.gp1 = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
-global.comunidad1 = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
-global.channel = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
-global.channel2 = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
+global.gp1 = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'
+global.comunidad1 = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'
+global.channel = 'https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39'
+global.channel2 = 'httpom/channel/0029VbAtbPA84OmJSLiHis2U'
 global.md = 'https://github.com/Yuji-XDev/Rin-Itoshi-Bot'
 global.correo = 'thekingdestroy507@gmail.com'
 
