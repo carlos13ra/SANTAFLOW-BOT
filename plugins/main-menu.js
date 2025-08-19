@@ -16,51 +16,19 @@ let handler = async (m, { conn, args }) => {
     let totalreg = Object.keys(global.db.data.users).length
     let totalCommands = Object.keys(global.plugins).length
 
-    const imgRandom = [
-      "https://i.postimg.cc/0NxWTkp0/1754525596737.jpg",
-      "https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg"
-    ].getRandom?.() || "https://i.postimg.cc/pTm6Z0fw/1754253021526.jpg"
-
-    const text = [
-      "*✦ 𝐈𝐍𝐕𝐎𝐂𝐀𝐂𝐈𝐎́𝐍 𝐌𝐀𝐒𝐈𝐕𝐀 𝐁𝐘 𝐂𝐚𝐫𝐥𝐨𝐬'𝐑𝐕 ✦*",
-      "⚜️ 𝐌𝐞𝐧𝐬𝐚𝐣𝐞 𝐜𝐨𝐥𝐞𝐜𝐭𝐢𝐯𝐨 𝐞𝐧 𝐜𝐮𝐫𝐬𝐨...",
-      "🔮 𝐄𝐭𝐢𝐪𝐮𝐞𝐭𝐚𝐧𝐝𝐨 𝐚 𝐥𝐚𝐬 𝐚𝐥𝐦𝐚𝐬 𝐩𝐞𝐫𝐝𝐢𝐝𝐚𝐬"
-    ].getRandom?.() || "✦ 𝐌𝐄𝐍𝐔 ✦"
-
-    const thumbnailBuffer = Buffer.from((await axios.get(imgRandom, { responseType: 'arraybuffer' })).data)
-
-    const shadow = {
-      key: { participants: "0@s.whatsapp.net", fromMe: false, id: "Halo" },
-      message: {
-        locationMessage: {
-          name: text,
-          jpegThumbnail: thumbnailBuffer
-        }
-      },
-      participant: "0@s.whatsapp.net"
-    }
-
-    await conn.sendMessage(m.chat, {
-      text: '╭─〔 ⚙️ 𝐂𝐀𝐑𝐆𝐀𝐍𝐃𝐎... 〕─⬣\n┃ 🛰️ *Conectando a la base de datos...*\n┃ 📡 *Sincronizando menú principal...*\n╰───────────────⬣',
-      mentions: [m.sender],
-      contextInfo: {
-        externalAdReply: {
-          title: 'sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ | ʙʏ ᴄᴀʀʟᴏs.ʀᴠ ',
-          body: club,
-          thumbnailUrl: 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg',
-          sourceUrl: redes,
-          mediaType: 1,
-          renderLargerThumbnail: false
-        }
-      }
-    }, { quoted: m })
-
     await new Promise(resolve => setTimeout(resolve, 2000))
 
     let fechaObj = new Date()
     let hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' })
     let fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' })
     let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' })
+
+    let suittag = "+51 946 200 884" 
+    let club = "🌸 SantaFlow Bot"
+    let channelRD = { id: "120363402079893698@newsletter", name: "SantaFlow Oficial" }
+    let packname = "SantaFlow Pack"
+    let dev = "By dev.nose xd"
+    let redes = "https://github.com/Yuji-XDev"
 
     let menuText = `
 🌷｡･:*˚:✧｡  sᴀɴᴛᴀғʟᴏᴡ - ʙᴏᴛ ｡✧:˚*:･｡🌱
@@ -721,12 +689,14 @@ let handler = async (m, { conn, args }) => {
 │ ᝰ .tts2
 ╰─┐ • •ㅤ•-ˏˋ✿ˊˎ-• •ㅤ•
         ꒷︶︶꒷︶︶꒷꒦︶✧꒷₊˚
-
+        
 
    🧿 *𝗖𝗥𝗘𝗔 𝗨𝗡 𝗦𝗨𝗕𝗕𝗢𝗧 𝗘𝗡 𝗦𝗘𝗚𝗨𝗡𝗗𝗢𝗦*
 > 🛰️ ➊ *#qr* – Escanea un 𝖢𝗈𝖽𝗂𝗀𝗈 𝗤𝗥  
-> 🔐 ➋ *#code* – Usa un 𝖢𝗈𝖽𝗂𝗀𝗈 de 8 dígitos`.trim()
-    await m.react('🍂')
+> 🔐 ➋ *#code* – Usa un 𝖢𝗈𝖽𝗂𝗴𝗼 de 8 dígitos`.trim()
+
+    await m.react('🌱')
+
     await conn.sendMessage(m.chat, {
       image: { url: 'https://files.catbox.moe/g2of9q.jpg' },
       caption: menuText,
@@ -753,7 +723,7 @@ let handler = async (m, { conn, args }) => {
           renderLargerThumbnail: true
         }
       }
-    }, { quoted: shadow })
+    }, { quoted: m })
 
   } catch (e) {
     console.error(e)
