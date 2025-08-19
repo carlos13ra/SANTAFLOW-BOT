@@ -107,7 +107,7 @@ global.packsticker = `
 ✦ ℍ𝕠𝕣𝕒: ${tiempo}
 ✧⁺₊⋆☾⋆.˚₊✩🍒🌸
 `;
-global.packsticker2 = `╭࣭࣭࣭࣭࣭࣭ٜ۫┄☪︎⃘✦ 𝑹𝒊𝒏 𝑰𝒕𝒐𝒔𝒉𝒊 ✦☪︎┄࣭࣭࣭࣭࣭࣭۫╮
+global.packsticker2 = `╭࣭࣭࣭࣭࣭࣭ٜ۫┄☪︎⃘✦ SANTAFLOW ✦☪︎┄࣭࣭࣭࣭࣭࣭۫╮
      ${dev}
 ╰࣭࣭࣭࣭࣭࣭ٜ۫┄☪︎⃘✦ ⌬ ✦☪︎┄࣭࣭࣭࣭࣭࣭۫╯`
   
