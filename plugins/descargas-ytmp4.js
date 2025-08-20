@@ -129,7 +129,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           showAdAttribution: true,
           renderLargerThumbnail: true,
           title: title,
-          body: '┈ ⋞ 〈 👾 ʀɪɴ ɪᴛᴏsʜɪ - ᴀɪ ⚽ 〉 ⋟ ┈',
+          body: '┈ ⋞ 〈 👾 carlos.Rv - ᴀɪ ⚽ 〉 ⋟ ┈',
           mediaType: 1,
           thumbnail: thumbnailBuffer,
           sourceUrl: "https://whatsapp.com/channel/0029Vb6iXGDISTkKY8fxUa39"
