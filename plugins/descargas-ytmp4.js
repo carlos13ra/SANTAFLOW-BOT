@@ -121,7 +121,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         forwardedNewsletterMessageInfo: {
           newsletterJid: '120363402079893698@newsletter',
           serverMessageId: '',
-          newsletterName: '˗ˏˋ🎀 SANTAFLOW_ʙᴏᴛ⋆.ᴍᴅ ᯓ✧💌 ˎˊ˗'
+          newsletterName: '˗ˏˋ🎀 SANTAFLOW_Bot⋆.ᴍᴅ ᯓ✧💌 ˎˊ˗'
         },
         forwardingScore: 9999999,
         isForwarded: true,
