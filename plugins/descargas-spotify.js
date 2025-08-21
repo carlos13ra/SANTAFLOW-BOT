@@ -9,7 +9,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 │ 🪷 Uso correcto:
 │ ⤷ ${usedPrefix + command} dj opus
 ╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *Rin Itoshi*`
+     ⌬ 𝑩𝒐𝒕: *santaflow*`
     );
   }
 
