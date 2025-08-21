@@ -15,7 +15,7 @@ const tiktokHandler = async (m, { conn, command, args, usedPrefix }) => {
         if (!query) {
             return conn.reply(
                 m.chat,
-                `❌ \`\`\`Escribe lo que quieres buscar\`\`\`\n\`Ejemplo:\`\n> ${usedPrefix}tksearch Videos Graciosos `,
+                `🌀 \`\`\`Escribe lo que quieres buscar\`\`\`\n\`Ejemplo:\`\n> ${usedPrefix}tksearch Videos Graciosos `,
                 m
             );
         }
@@ -28,11 +28,14 @@ const tiktokHandler = async (m, { conn, command, args, usedPrefix }) => {
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            if (!data.meta || !data.meta.length) {
+            // Ajusta aquí según la API real
+            const results = data?.meta || data?.result || data?.videos || [];
+
+            if (!results.length) {
                 return conn.reply(m.chat, '❌ No se encontraron videos', m);
             }
 
-            session.videos = data.meta;
+            session.videos = results;
             tiktokSessions.set(m.chat, session);
 
             return await sendVideoWithButtons(session, m, conn, usedPrefix);
@@ -60,9 +63,13 @@ const tiktokHandler = async (m, { conn, command, args, usedPrefix }) => {
 async function sendVideoWithButtons(session, m, conn, usedPrefix) {
     const video = session.videos[session.currentIndex];
 
+    if (!video || !video.hd) {
+        return conn.reply(m.chat, '⚠️ No se pudo obtener el video en HD', m);
+    }
+
     const caption = session.currentIndex === 0 
-        ? `✅ Usa el botón para ver más videos.\n\n${wm}`
-        : `_*©${author}*_`;
+        ? `✅ Usa el botón para ver más videos.\n\n${wm || ''}`
+        : `_*©${author || 'Bot'}*_`;
 
     try {
         const buttons = [];
