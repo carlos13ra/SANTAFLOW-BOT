@@ -29,7 +29,15 @@ let handler = async (m, { conn, text }) => {
 
     await conn.sendMessage(m.chat, { image: { url: data.image }, caption: info }, { quoted: m });
     
+    
     await conn.sendMessage(m.chat, {
+      audio: { url: data.download },
+      ptt: true,
+      fileName: `${data.title}.mp3`,
+      mimetype: 'audio/mpeg'
+    }, { quoted: m });
+    
+    /*await conn.sendMessage(m.chat, {
       audio: { url: data.download },
       mimetype: 'audio/mpeg',
       ptt: true,
@@ -45,7 +53,7 @@ let handler = async (m, { conn, text }) => {
           renderLargerThumbnail: true
         }
       }
-    }, { quoted: m });
+    }, { quoted: m });*/
     
     await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
 
