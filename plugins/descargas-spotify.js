@@ -2,7 +2,7 @@ import axios from 'axios';
 
 let handler = async (m, { conn, text }) => {
 
-  if (!text) return m.reply(`[ ✿ ] Ingresa el nombre de una canción o una URL de Spotify.`);
+  if (!text) return m.reply(`🍂 Ingresa el nombre de una canción o una URL de Spotify.`);
 
   try {
     let song;
@@ -26,12 +26,22 @@ let handler = async (m, { conn, text }) => {
                  `> 🍂 Enlace › *${song.url}*`;
 
     await conn.sendMessage(m.chat, { image: { url: data.image }, caption: info }, { quoted: m });
-
+    
     await conn.sendMessage(m.chat, {
       audio: { url: data.download },
-      ptt: false,
+      mimetype: 'audio/mpeg',
       fileName: `${data.title}.mp3`,
-      mimetype: 'audio/mpeg'
+      contextInfo: {
+        externalAdReply: {
+          title: json.title,
+          body: `Duración: ${data.duration}`,
+          mediaType: 1,
+          thumbnail: thumbnailBuffer,
+          mediaUrl: url,
+          sourceUrl: url,
+          renderLargerThumbnail: true
+        }
+      }
     }, { quoted: m });
 
   } catch (e) {
