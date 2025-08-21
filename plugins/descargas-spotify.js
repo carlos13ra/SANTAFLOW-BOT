@@ -1,93 +1,174 @@
+import yts from 'yt-search';
 import fetch from 'node-fetch';
+import { prepareWAMessageMedia, generateWAMessageFromContent } from '@whiskeysockets/baileys';
 
-let handler = async (m, { conn, args, command, usedPrefix }) => {
-  const text = args.join(" ");
-  if (!text) {
-    return m.reply(
-      `⟬⟬ 🌸 *SPOTIFY - DESCARGAS* 🌸 ⟭⟭
-╭─╼━━━━━━━━━━━╾─╮
-│ 🪷 Uso correcto:
-│ ⤷ ${usedPrefix + command} dj opus
-╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *santaflow*`
-    );
-  }
+const handler = async (m, { conn, args, usedPrefix, command }) => {
+  const club = '🎧  𝗦𝗔𝗡𝗧𝗔𝗙𝗟𝗢𝗪';
 
-  await m.react('🔍');
+  if (!args[0]) return conn.reply(m.chat, `*🧪 Ingresa un título para buscar en YouTube.*\n✧ \`Ejemplo:\` ${usedPrefix}${command} Joji - Ew`, m, fake);
 
+  await m.react('💚');
   try {
-    const searchRes = await fetch(`https://api.vreden.my.id/api/spotifysearch?query=${encodeURIComponent(text)}`);
-    const searchJson = await searchRes.json();
+    let query = args.join(" ");
+    let searchResults = await searchVideos(query);
+    let spotifyResults = await searchSpotify(query);
+    let AppleMusicResult = await (await fetch(`https://api.siputzx.my.id/api/s/applemusic?query=${query}&region=es`)).json();
 
-    if (!searchJson.result || searchJson.result.length === 0) {
-      return m.reply(
-        `⟬⟬ 🌸 *SPOTIFY - DESCARGAS* 🌸 ⟭⟭
-╭─╼━━━━━━━━━━━╾─╮
-│ ❌ No encontré resultados para:
-│ ⤷ *${text}*
-╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *Rin Itoshi*`
-      );
+    if (!searchResults.length && !spotifyResults.length) throw new Error('*✖️ No se encontraron resultados.*');
+
+    let video = searchResults[0];
+
+    let thumbnail;
+    try {
+      thumbnail = await (await fetch(video.miniatura)).buffer();
+    } catch (e) {
+      console.warn('*✖️ No se pudo obtener la miniatura, usando imagen por defecto.*');
+      thumbnail = await (await fetch('https://telegra.ph/file/36f2a1bd2aaf902e4d1ff.jpg')).buffer();
     }
 
-    const track = searchJson.result[0];
-    const { title, artist, album, duration, releaseDate, spotifyLink, coverArt } = track;
+    const caption = `    *"${video.titulo || 'no encontrado'}"*
 
-    const detailRes = await fetch(`https://api.vreden.my.id/api/spotify?url=${encodeURIComponent(spotifyLink)}`);
-    const detailJson = await detailRes.json();
+> ⏱️ *Duración:* ${video.duracion || 'no encontrado'}
+> 📊 *Vistas:* ${video.vistas || 'no encontrado'}
+> 🎤 *Canal:* ${video.canal || 'no encontrado'}
+> 📅 *Publicado:* ${video.publicado || 'no encontrado'}
+> 🔗 *Url:* ${video.url}`;
 
-    if (!detailJson.result?.music) {
-      return m.reply(
-        `⟬⟬ 🌸 *SPOTIFY - DESCARGAS* 🌸 ⟭⟭
-╭─╼━━━━━━━━━━━╾─╮
-│ ⚠️ No pude obtener el audio de:
-│ ⤷ *${title}*
-╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *Rin Itoshi*`
-      );
-    }
+    let ytSections = searchResults.slice(1, 11).map((v, index) => ({
+      title: `${index + 1}┃ ${v.titulo}`,
+      rows: [
+        {
+          title: `🎶 Descargar MP3`,
+          description: `Duración: ${v.duracion || 'No disponible'}`,
+          id: `${usedPrefix}ytmp3 ${v.url}`
+        },
+        {
+          title: `📦 Descargar MP3 Documento`,
+          description: `Duración: ${v.duracion || 'No disponible'}`,
+          id: `${usedPrefix}yta-v2 ${v.url}`
+        },
+        {
+          title: `🎥 Descargar MP4`,
+          description: `Duración: ${v.duracion || 'No disponible'}`,
+          id: `${usedPrefix}ytmp4 ${v.url}`
+        },
+        {
+          title: `📦 Descargar MP4 Documento`,
+          description: `Duración: ${v.duracion || 'No disponible'}`,
+          id: `${usedPrefix}ytmp4doc ${v.url}`
+        }
+      ]
+    }));
 
-    const audioUrl = detailJson.result.music;
+    let spotifySections = spotifyResults.slice(0, 10).map((s, index) => ({
+      title: `${index + 1}┃ ${s.titulo}`,
+      rows: [
+        {
+          title: `🎶 Descargar Audio`,
+          description: `Duración: ${s.duracion || 'No disponible'}`,
+          id: `${usedPrefix}music ${s.url}`
+        }
+      ]
+    }));
+
+    let applemusicSections = (AppleMusicResult?.data?.result || []).slice(0, 5).map((a, index) => ({
+      title: `${index + 1}┃ ${a.title}`,
+      rows: [
+        {
+          title: `🎶 Descargar Audio`,
+          description: `Artista: ${a.artist || 'No disponible'}`,
+          id: `${usedPrefix}applemusic ${a.link}`
+        }
+      ]
+    }));
 
     await conn.sendMessage(m.chat, {
-      image: { url: coverArt },
-      caption: `⟬⟬ 🎼 *SPOTIFY - TRACK* 🎼 ⟭⟭
-╭─╼━━━━━━━━━━━╾─╮
-│ 🎵 *Título:* ${title}
-│ 👤 *Artista:* ${artist}
-│ 💿 *Álbum:* ${album}
-│ ⏱️ *Duración:* ${duration}
-│ 📅 *Lanzamiento:* ${releaseDate}
-│ 🌐 *Spotify:* ${spotifyLink}
-╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *Rin Itoshi*`
-    }, { quoted: m });
-
-    await conn.sendMessage(m.chat, {
-      audio: { url: audioUrl },
-      mimetype: 'audio/mp4',
-      ptt: false,
-      fileName: `${title}.mp3`
+      image: thumbnail,
+      caption: caption,
+      footer: club,
+      contextInfo: {
+        mentionedJid: [m.sender],
+        forwardingScore: 999,
+        isForwarded: true
+      },
+      buttons: [
+        {
+          buttonId: `${usedPrefix}ytmp3 ${video.url}`,
+          buttonText: { displayText: '💿 Audio' },
+          type: 1,
+        },
+        {
+          buttonId: `${usedPrefix}ytmp4 ${video.url}`,
+          buttonText: { displayText: '☘️ Video' },
+          type: 1,
+        },
+        {
+          type: 4,
+          nativeFlowInfo: {
+            name: 'single_select',
+            paramsJson: JSON.stringify({
+              title: '📺 𝐑𝐄𝐒𝐔𝐋𝐓𝐀𝐃𝐎 𝐃𝐄 𝐘𝐎𝐔𝐓𝐔𝐁𝐄',
+              sections: ytSections,
+            }),
+          },
+        },
+        {
+          type: 4,
+          nativeFlowInfo: {
+            name: 'single_select',
+            paramsJson: JSON.stringify({
+              title: '🎲 𝐑𝐄𝐒𝐔𝐋𝐓𝐀𝐃𝐎 𝐃𝐄 𝐒𝐏𝐎𝐓𝐈𝐅𝐘',
+              sections: spotifySections,
+            }),
+          },
+        },
+      ],
+      headerType: 1,
+      viewOnce: true
     }, { quoted: m });
 
     await m.react('✅');
-
   } catch (e) {
     console.error(e);
-    return m.reply(
-      `⟬⟬ 🌸 *SPOTIFY - DESCARGAS* 🌸 ⟭⟭
-╭─╼━━━━━━━━━━━╾─╮
-│ ⚠️ Ocurrió un error inesperado.
-│ 🔄 Intenta nuevamente más tarde.
-╰─╼━━━━━━━━━━━╾─╯
-     ⌬ 𝑩𝒐𝒕: *Rin Itoshi*`
-    );
+    await m.react('✖️');
+    conn.reply(m.chat, '*`Error al buscar el video.`*', m, fake);
   }
 };
 
-handler.help = ['spotify'];
-handler.tags = ['descargas'];
-handler.command = ['spotify', 'spotifydl'];
-handler.register = true;
-
+handler.help = ['play *<texto>*'];
+handler.tags = ['downloader'];
+handler.command = ['play', 'play2'];
 export default handler;
+
+async function searchVideos(query) {
+  try {
+    const res = await yts(query);
+    return res.videos.slice(0, 10).map(video => ({
+      titulo: video.title,
+      url: video.url,
+      miniatura: video.thumbnail,
+      canal: video.author.name,
+      publicado: video.ago || 'No disponible',
+      vistas: video.views || 'No disponible',
+      duracion: video.duration || 'No disponible'
+    }));
+  } catch (error) {
+    console.error('Error en yt-search:', error.message);
+    return [];
+  }
+}
+
+async function searchSpotify(query) {
+  try {
+    const res = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(query)}`);
+    const data = await res.json();
+    return data.data.slice(0, 10).map(track => ({
+      titulo: track.title,
+      url: track.url,
+      duracion: track.duration || 'No disponible'
+    }));
+  } catch (error) {
+    console.error('Error en Spotify API:', error.message);
+    return [];
+  }
+  }
