@@ -1,67 +1,62 @@
-import fetch from "node-fetch"
-import yts from "yt-search"
+import axios from 'axios';
 
 let handler = async (m, { conn, text }) => {
-  const fake = { quoted: m }
 
-  if (!text) {
-    return conn.reply(m.chat, `⚡ Por favor, ingresa el nombre de una canción para buscar.`, m, fake)
-  }
-
-  await m.react('🕒')
-  //conn.reply(m.chat, `🎧 *Buscando tu canción... Espérame un momento.*`, m, fake)
+  if (!text) return m.reply(`[ ✿ ] Ingresa el nombre de una canción o una URL de Spotify.`);
 
   try {
-    // Hacemos la solicitud a la API
-    const response = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`)
-
-    // Verificamos que esté bien la respuesta
-    if (!response.ok) throw '❌ La API de Spotify no respondió correctamente.'
-
-    const gyh = await response.json()
-
-    // Validamos que la estructura contenga lo que necesitamos
-    if (!gyh?.result?.downloadUrl) throw '❌ No se encontró ninguna canción en la API.'
-
-    // Buscamos también en YouTube para obtener metadatos
-    const search = await yts(text)
-    if (!search?.videos?.length) throw '❌ No se encontró un video relacionado.'
-
-    const videoInfo = search.videos[0]
-    const { title, thumbnail, timestamp: duration, views, url } = videoInfo
-
-    // Creamos el mensaje con audio + metadata
-    const doc = {
-      audio: { url: gyh.result.downloadUrl },
-      mimetype: 'audio/mpeg',
-      fileName: `${title}.mp3`,
-      contextInfo: {
-        externalAdReply: {
-          showAdAttribution: true,
-          mediaType: 2,
-          mediaUrl: url,
-          title: title,
-          body: `Duración: ${duration} | 🔁 Reproducciones: ${views.toLocaleString()}`,
-          sourceUrl: url,
-          thumbnailUrl: thumbnail || "https://h.uguu.se/gwCZoshl.jpg",
-          renderLargerThumbnail: true
-        }
-      }
+    let song;
+    const isSpotifyUrl = text.startsWith('https://open.spotify.com/');
+    if (isSpotifyUrl) {
+      song = { url: text };
+    } else {
+      const results = await spotifyxv(text);
+      if (!results.length) return m.reply('No se encontró la canción.');
+      song = results[0];
     }
 
-    await conn.sendMessage(m.chat, doc, { quoted: m })
-    await m.react('✅')
+    const res = await axios.get(`https://api.stellarwa.xyz/dow/spotify?url=${song.url}&apikey=proyectsV2`);
+    const data = res.data?.data;
+    if (!data?.download) return m.reply('No se pudo obtener el enlace de descarga.');
+
+    const info = `[ ✿ ] Descargando › *${data.title}*\n\n` +
+                 `> [✩] Artista › *${data.artist}*\n` +
+                 (song.album ? `> ✰ Álbum › *${song.album}*\n` : '') +
+                 `> [ⴵ] Duración › *${data.duration}*\n` +
+                 `> [☁︎] Enlace › *${song.url}*`;
+
+    await conn.sendMessage(m.chat, { image: { url: data.image }, caption: info }, { quoted: m });
+
+    await conn.sendMessage(m.chat, {
+      audio: { url: data.download },
+      ptt: true,
+      fileName: `${data.title}.mp3`,
+      mimetype: 'audio/mpeg'
+    }, { quoted: m });
 
   } catch (e) {
-    console.error('[❌ Error en Spotify]', e)
-    await m.react('❌')
-    conn.reply(m.chat, '🚫 *Hubo un error al buscar o enviar la canción.*\nPor favor, intenta con otra canción o más tarde.', m, fake)
+    // console.error(e);
+    await m.reply(`${w}`);
   }
+};
+
+handler.tags = ['descargas'];
+handler.help = ['spotify'];
+handler.command = ['spotify'];
+export default handler;
+
+async function spotifyxv(query) {
+  const res = await axios.get(`https://api.stellarwa.xyz/search/spotify?query=${encodeURIComponent(query)}&apikey=proyectsV2`);
+  if (!res.data?.status || !res.data?.data?.length) return [];
+
+  const firstTrack = res.data.data[0];
+
+  return [{
+    name: firstTrack.title,
+    artista: [firstTrack.artist],
+    album: firstTrack.album,
+    duracion: firstTrack.duration,
+    url: firstTrack.url,
+    imagen: firstTrack.image || ''
+  }];
 }
-
-handler.help = ['spotify *<nombre>*']
-handler.tags = ['descargas']
-handler.command = ['spotify']
-handler.register = true
-
-export default handler
