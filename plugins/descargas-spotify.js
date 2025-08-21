@@ -1,66 +1,35 @@
-import fetch from 'node-fetch';
+import fetch from 'node-fetch'
 
-let handler = async (m, { conn, args, command, usedPrefix}) => {
-  const text = args.join(" ");
+let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return m.reply(
-      `╭━━━〔 🎶 *SPOTIFY PLAYER* 🎶 〕━━⬣
-┃ ✦ Uso correcto:
-┃ ⌬ ${usedPrefix + command} *nombre de canción*
-┃ ✧ Ejemplo:
-┃ ⌬ ${usedPrefix + command} Shakira Monotonía
-╰━━━━━━━━━━━━━━━━━━⬣`
-    );
+    await m.reply(`*📀 Por favor, ingresa el enlace o nombre de una canción de Spotify.*\n> *\`Ejemplo:\`* ${usedPrefix + command} Ponte bonita - Cris mj`);
+    return;
   }
+
+  await m.react('⌛');
 
   try {
-    const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
-    const json = await res.json();
+    let ouh = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
+    let gyh = await ouh.json();
 
-    if (!json.status || !json.result?.downloadUrl) {
-      return m.reply(
-        `╭━━━〔 ⚠️ *SIN RESULTADOS* ⚠️ 〕━━⬣
-┃ ✦ No encontré nada con:
-┃ ⌬ *${text}*
-┃ ✧ Intenta con otro nombre 🎵
-╰━━━━━━━━━━━━━━━━━━⬣`
-      );
+    if (!gyh.result || !gyh.result.downloadUrl) {
+      throw new Error('No se encontró la canción o el enlace es inválido.');
     }
 
-    const { title, artist, duration, cover, url } = json.result.metadata;
-    const audio = json.result.downloadUrl;
-
-    // Enviar imagen con detalles
     await conn.sendMessage(m.chat, {
-      image: { url: cover },
-      caption: `╭━━━〔 🎧 *SPOTIFY MUSIC* 🎧 〕━━⬣
-┃ ✦ 🎵 *Título:* ${title}
-┃ ✦ 👤 *Artista:* ${artist}
-┃ ✦ ⏱️ *Duración:* ${duration}
-┃ ✦ 🌍 *Enlace:* ${url}
-╰━━━━━━━━━━━━━━━━━━⬣`
+      audio: { url: gyh.result.downloadUrl },
+      mimetype: 'audio/mpeg'
     }, { quoted: m });
 
-
-    await conn.sendMessage(m.chat, {
-      audio: { url: audio },
-      mimetype: 'audio/mp4',
-      ptt: false,
-      fileName: `${title}.mp3`
-    }, { quoted: m });
-
+    await m.react('✅');
   } catch (e) {
-    console.error(e);
-    return m.reply(
-      `╭━━━〔 ⚠️ *ERROR* ⚠️ 〕━━⬣
-┃ ✦ Hubo un problema al procesar la solicitud.
-┃ ✧ Intenta nuevamente más tarde ⏳
-╰━━━━━━━━━━━━━━━━━━⬣`
-    );
+    await m.reply(`❌ Error al obtener el audio:\n${e.message}`);
+    await m.react('❌');
   }
-};
+}
 
-handler.help = ['spotify', 'music']
-handler.tags = ['downloader']
-handler.command = ['spotify', 'splay']
+handler.help = ['spotify *<texto>*']
+handler.tags = ['descargas']
+handler.command = ['spotify', 'spotifydl', 'spdl']
+
 export default handler
