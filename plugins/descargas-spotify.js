@@ -15,6 +15,8 @@ let handler = async (m, { conn, text }) => {
       song = results[0];
     }
 
+    await conn.sendMessage(m.chat, { react: { text: '🕓', key: m.key } });
+     
     const res = await axios.get(`https://api.stellarwa.xyz/dow/spotify?url=${song.url}&apikey=proyectsV2`);
     const data = res.data?.data;
     if (!data?.download) return m.reply('No se pudo obtener el enlace de descarga.');
@@ -30,23 +32,25 @@ let handler = async (m, { conn, text }) => {
     await conn.sendMessage(m.chat, {
       audio: { url: data.download },
       mimetype: 'audio/mpeg',
+      ptt: true,
       fileName: `${data.title}.mp3`,
       contextInfo: {
         externalAdReply: {
           title: data.title,
           body: `Duración: ${data.duration}`,
           mediaType: 1,
-          thumbnail: thumbnailBuffer,
-          mediaUrl: url,
-          sourceUrl: url,
+          thumbnailUrl: data.image,
+          mediaUrl: song.url,
+          sourceUrl: song.url,
           renderLargerThumbnail: true
         }
       }
     }, { quoted: m });
+    
+    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
 
   } catch (e) {
-    // console.error(e);
-    await m.reply(`${w}`);
+    await m.reply('❌ Error al procesar la canción.');
   }
 };
 
