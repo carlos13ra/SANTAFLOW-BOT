@@ -22,14 +22,14 @@ let handler = async (m, { conn, text }) => {
     const info = `[ ✿ ] Descargando › *${data.title}*\n\n` +
                  `> [✩] Artista › *${data.artist}*\n` +
                  (song.album ? `> ✰ Álbum › *${song.album}*\n` : '') +
-                 `> [ⴵ] Duración › *${data.duration}*\n` +
-                 `> [☁︎] Enlace › *${song.url}*`;
+                 `> 🌱 Duración › *${data.duration}*\n` +
+                 `> 🍂 Enlace › *${song.url}*`;
 
     await conn.sendMessage(m.chat, { image: { url: data.image }, caption: info }, { quoted: m });
 
     await conn.sendMessage(m.chat, {
       audio: { url: data.download },
-      ptt: true,
+      ptt: false,
       fileName: `${data.title}.mp3`,
       mimetype: 'audio/mpeg'
     }, { quoted: m });

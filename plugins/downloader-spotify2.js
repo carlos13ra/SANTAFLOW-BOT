@@ -19,7 +19,6 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       json = await res.json();
       if (!json.estado || !json.datos?.URL) throw new Error('Falla API 1');
     } catch (e) {
-      // Si falla la API 1 intenta con la API 2
       res = await fetch(api2);
       json = await res.json();
       if (!json.estado || !json.datos?.URL) throw new Error('Falla API 2');
