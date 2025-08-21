@@ -33,7 +33,7 @@ let handler = async (m, { conn, text }) => {
       fileName: `${data.title}.mp3`,
       contextInfo: {
         externalAdReply: {
-          title: json.title,
+          title: data.title,
           body: `Duración: ${data.duration}`,
           mediaType: 1,
           thumbnail: thumbnailBuffer,
