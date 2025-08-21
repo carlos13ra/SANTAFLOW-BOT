@@ -32,7 +32,7 @@ let handler = async (m, { conn, text }) => {
     await conn.sendMessage(m.chat, {
       audio: { url: data.download },
       mimetype: 'audio/mpeg',
-      ptt: true,
+      ptt: false,
       fileName: `${data.title}.mp3`,
       contextInfo: {
         externalAdReply: {
