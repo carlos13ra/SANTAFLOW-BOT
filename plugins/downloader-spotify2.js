@@ -1,45 +1,62 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 
-let handler = async (m, { conn, args, command, usedPrefix }) => {
-  let url = args[0];
-  if (!url) {
-    return m.reply(
-      `⚠️ Ingresa un link de Spotify\n\nEjemplo:\n${usedPrefix + command} https://open.spotify.com/track/37ZtpRBkHcaq6hHy0X98zn`
-    );
-  }
+let handler = async (m, { conn, text }) => {
+
+  if (!text) return m.reply(`[ ✿ ] Ingresa el nombre de una canción o una URL de Spotify.`);
 
   try {
-    let api1 = `https://delirius-apiofc.vercel.app/download/spotifydl?url=${url}`;
-    let api2 = `https://delirius-apiofc.vercel.app/download/spotifydlv2?url=${url}`;
-
-    let res, json;
-
-    try {
-      res = await fetch(api1);
-      json = await res.json();
-      if (!json.estado || !json.datos?.URL) throw new Error('Falla API 1');
-    } catch (e) {
-      res = await fetch(api2);
-      json = await res.json();
-      if (!json.estado || !json.datos?.URL) throw new Error('Falla API 2');
+    let song;
+    const isSpotifyUrl = text.startsWith('https://open.spotify.com/');
+    if (isSpotifyUrl) {
+      song = { url: text };
+    } else {
+      const results = await spotifyxv(text);
+      if (!results.length) return m.reply('No se encontró la canción.');
+      song = results[0];
     }
 
-    let { título, autor, imagen, URL } = json.datos;
+    const res = await axios.get(`https://api.stellarwa.xyz/dow/spotify?url=${song.url}&apikey=proyectsV2`);
+    const data = res.data?.data;
+    if (!data?.download) return m.reply('No se pudo obtener el enlace de descarga.');
+/*
+    const info = `[ ✿ ] Descargando › *${data.title}*\n\n` +
+                 `> [✩] Artista › *${data.artist}*\n` +
+                 (song.album ? `> ✰ Álbum › *${song.album}*\n` : '') +
+                 `> [ⴵ] Duración › *${data.duration}*\n` +
+                 `> [☁︎] Enlace › *${song.url}*`;
 
-    let txt = `╭━━━〔 🎵 𝗦𝗣𝗢𝗧𝗜𝗙𝗬 𝗗𝗟 🎵 〕━━⬣
-┃✨ *Título:* ${título}
-┃👤 *Artista:* ${autor}
-┃📀 *Fuente:* Spotify
-╰━━━━━━━━━━━━⬣`;
+    await conn.sendMessage(m.chat, { image: { url: data.image }, caption: info }, { quoted: m });*/
 
-    await conn.sendMessage(m.chat, { image: { url: imagen }, caption: txt }, { quoted: m });
-    await conn.sendMessage(m.chat, { audio: { url: URL }, mimetype: 'audio/mpeg', fileName: `${título}.mp3` }, { quoted: m });
+    await conn.sendMessage(m.chat, {
+      audio: { url: data.download },
+      ptt: true,
+      fileName: `${data.title}.mp3`,
+      mimetype: 'audio/mpeg'
+    }, { quoted: m });
 
   } catch (e) {
-    console.log(e);
-    return m.reply('❌ No se pudo descargar el audio desde ninguna API.');
+    // console.error(e);
+    await m.reply(`${w}`);
   }
 };
 
-handler.command = ['spotifydl', 'music'];
+handler.tags = ['descargas'];
+handler.help = ['music'];
+handler.command = ['music'];
 export default handler;
+
+async function spotifyxv(query) {
+  const res = await axios.get(`https://api.stellarwa.xyz/search/spotify?query=${encodeURIComponent(query)}&apikey=proyectsV2`);
+  if (!res.data?.status || !res.data?.data?.length) return [];
+
+  const firstTrack = res.data.data[0];
+
+  return [{
+    name: firstTrack.title,
+    artista: [firstTrack.artist],
+    album: firstTrack.album,
+    duracion: firstTrack.duration,
+    url: firstTrack.url,
+    imagen: firstTrack.image || ''
+  }];
+}
