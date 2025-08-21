@@ -2,15 +2,14 @@ import axios from 'axios'
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-
-    if (!text) return conn.reply(m.chat, `❀ Por favor, proporciona el nombre de una canción o artista.`, m)
+    if (!text) return conn.reply(m.chat, `🌀 Por favor, proporciona el nombre de una canción o artista.`, m, rcanal);
 
     try {
         let songInfo = await spotifyxv(text)
         if (!songInfo.length) throw `✧ No se encontró la canción.`
         let song = songInfo[0]
-        const res = await fetch(`https://api.sylphy.xyz/download/spotify?url=${song.url}&apikey=sylph-96ccb836bc`)
 
+        const res = await fetch(`https://api.sylphy.xyz/download/spotify?url=${song.url}&apikey=sylph-96ccb836bc`)
         if (!res.ok) throw `Error al obtener datos de la API, código de estado: ${res.status}`
 
         const data = await res.json().catch((e) => { 
@@ -18,23 +17,42 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
             throw "Error al analizar la respuesta JSON."
         })
 
-        if (!data.data.dl_url) throw "No se pudo obtener el enlace de descarga."
-        const info = `「✦」Descargando *<${data.data.title}>*\n\n> ✧ Artista » *${data.data.artist}*\n> ✰ Album » *${data.data.album}*\n> ⴵ Duracion » *${data.data.duration}*\n> 🜸 Link » ${song.url}`
+        console.log("Respuesta API Spotify:", data)
 
-        await conn.sendMessage(m.chat, { text: info, contextInfo: { forwardingScore: 9999999, isForwarded: false, 
-        externalAdReply: {
-            showAdAttribution: true,
-            containsAutoReply: true,
-            renderLargerThumbnail: true,
-            title: botname,
-            body: dev,
-            mediaType: 1,
-            thumbnailUrl: data.data.img,
-            mediaUrl: song.url,
-            sourceUrl: song.url
-        }}}, { quoted: m })
+        if (!data || !data.data) throw "⚠️ La API no devolvió información válida."
+        if (!data.data.dl_url) throw "⚠️ No se pudo obtener el enlace de descarga."
 
-        conn.sendMessage(m.chat, { audio: { url: data.data.dl_url }, fileName: `${data.data.title}.mp3`, mimetype: 'audio/mp4', ptt: true }, { quoted: m })
+        const info = `「✦」Descargando *<${data.data.title}>*\n\n` +
+                     `> ✧ Artista » *${data.data.artist}*\n` +
+                     `> ✰ Album » *${data.data.album}*\n` +
+                     `> ⴵ Duracion » *${data.data.duration}*\n` +
+                     `> 🜸 Link » ${song.url}`
+
+        await conn.sendMessage(m.chat, { 
+            text: info, 
+            contextInfo: { 
+                forwardingScore: 9999999, 
+                isForwarded: false, 
+                externalAdReply: {
+                    showAdAttribution: true,
+                    containsAutoReply: true,
+                    renderLargerThumbnail: true,
+                    title: botname,
+                    body: dev,
+                    mediaType: 1,
+                    thumbnailUrl: data.data.img,
+                    mediaUrl: song.url,
+                    sourceUrl: song.url
+                }
+            } 
+        }, { quoted: m })
+
+        await conn.sendMessage(m.chat, { 
+            audio: { url: data.data.dl_url }, 
+            fileName: `${data.data.title}.mp3`, 
+            mimetype: 'audio/mp4', 
+            ptt: true 
+        }, { quoted: m })
 
     } catch (e1) {
         m.reply(`${e1.message || e1}`)
@@ -43,8 +61,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 handler.help = ['spotify', 'music']
 handler.tags = ['downloader']
 handler.command = ['spotify', 'splay']
-//handler.group = true
-
 export default handler
 
 async function spotifyxv(query) {
@@ -74,7 +90,9 @@ async function tokens() {
         url: 'https://accounts.spotify.com/api/token',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: 'Basic ' + Buffer.from('acc6302297e040aeb6e4ac1fbdfd62c3:0e8439a1280a43aba9a5bc0a16f3f009').toString('base64')
+            Authorization: 'Basic ' + Buffer.from(
+                'acc6302297e040aeb6e4ac1fbdfd62c3:0e8439a1280a43aba9a5bc0a16f3f009'
+            ).toString('base64')
         },
         data: 'grant_type=client_credentials'
     })
