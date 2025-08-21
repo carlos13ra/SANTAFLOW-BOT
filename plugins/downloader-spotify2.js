@@ -1,32 +1,46 @@
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) throw m.reply(`
-╭━━〔 *❌ FALTA TEXTO* 〕━━⬣
-┃ 🍡 *Usa el comando así:*
-┃ ⎔ ${usedPrefix + command} <nombre canción>
-┃ 💽 *Ejemplo:* ${usedPrefix + command} Believer
-╰━━━━━━━━━━━━━━━━━━━━⬣
-  `.trim());
+let handler = async (m, { conn, args, command, usedPrefix }) => {
+  let url = args[0];
+  if (!url) {
+    return m.reply(
+      `⚠️ Ingresa un link de Spotify\n\nEjemplo:\n${usedPrefix + command} https://open.spotify.com/track/37ZtpRBkHcaq6hHy0X98zn`
+    );
+  }
 
-  await m.react('🍂');
+  try {
+    let api1 = `https://delirius-apiofc.vercel.app/download/spotifydl?url=${url}`;
+    let api2 = `https://delirius-apiofc.vercel.app/download/spotifydlv2?url=${url}`;
 
-  let ouh = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${text}`);
-  let gyh = await ouh.json();
+    let res, json;
 
-  await conn.sendMessage(m.chat, {
-    audio: { url: gyh.result.downloadUrl },
-    mimetype: 'audio/mpeg'
-  }, { quoted: m });
+    try {
+      res = await fetch(api1);
+      json = await res.json();
+      if (!json.estado || !json.datos?.URL) throw new Error('Falla API 1');
+    } catch (e) {
+      // Si falla la API 1 intenta con la API 2
+      res = await fetch(api2);
+      json = await res.json();
+      if (!json.estado || !json.datos?.URL) throw new Error('Falla API 2');
+    }
 
-  await m.reply(`🌀 *Petición:* ${text}
-💣 *Estado:* Éxito, canción enviada.`.trim());
+    let { título, autor, imagen, URL } = json.datos;
 
-  await m.react('🎵');
-}
+    let txt = `╭━━━〔 🎵 𝗦𝗣𝗢𝗧𝗜𝗙𝗬 𝗗𝗟 🎵 〕━━⬣
+┃✨ *Título:* ${título}
+┃👤 *Artista:* ${autor}
+┃📀 *Fuente:* Spotify
+╰━━━━━━━━━━━━⬣`;
 
-handler.help = ['music *<texto>*'];
-handler.tags = ['descargas'];
-handler.command = ['music'];
+    await conn.sendMessage(m.chat, { image: { url: imagen }, caption: txt }, { quoted: m });
+    await conn.sendMessage(m.chat, { audio: { url: URL }, mimetype: 'audio/mpeg', fileName: `${título}.mp3` }, { quoted: m });
 
+  } catch (e) {
+    console.log(e);
+    return m.reply('❌ No se pudo descargar el audio desde ninguna API.');
+  }
+};
+
+handler.command = ['spotifydl', 'music'];
 export default handler;
