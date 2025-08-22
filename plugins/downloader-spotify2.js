@@ -8,29 +8,29 @@ let handler = async (m, { conn, text, command }) => {
   try {
 
     let res = await fetch(`https://api.dorratz.com/spotifydl?url=${encodeURIComponent(text)}`);
-    let json = await res.json();
+    let data = await res.json();
 
-    if (!json.download_url) {
+    if (!data.download_url) {
       return m.reply("⚠️ No se pudo obtener el enlace de descarga.");
     }
 
-    let caption = `╭━━━〔 🎶 SPOTIFY MUSIC 〕━━⬣
-┃✨ *Título:* ${json.name}
-┃🎤 *Artista:* ${json.artists}
-┃⏱️ *Duración:* ${(json.duration_ms / 60000).toFixed(2)} min
-┃📀 *By:* ${json.creator}
+    let caption = `╭━━━〔 🎶 SPOTIFY MUSIC 🍂 〕━━⬣
+┃✨ *Título:* ${data.name}
+┃🎤 *Artista:* ${data.artists}
+┃⏱️ *Duración:* ${(data.duration_ms / 60000).toFixed(2)} min
+┃📀 *By:* shadow
 ╰━━━━━━━━━━━━━━━━⬣`;
 
     await conn.sendMessage(m.chat, {
-      image: { url: json.image },
+      image: { url: data.image },
       caption
     }, { quoted: m });
 
 
     await conn.sendMessage(m.chat, {
-      audio: { url: json.download_url },
+      audio: { url: data.download_url },
       mimetype: "audio/mpeg",
-      fileName: `${json.name}.mp3`
+      fileName: `${data.name}.mp3`
     }, { quoted: m });
 
   } catch (e) {
