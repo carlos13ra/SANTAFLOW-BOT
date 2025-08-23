@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+
 import yts from "yt-search";
 
 const ytIdRegex = /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -25,13 +25,10 @@ const formatViews = (views) => {
   return views.toString();
 };
 
-const handler = async (m, { conn, text }) => {
+let handler = async (m, { conn, text }) => {
   if (!text) return m.reply(toSansSerifPlain("✦ Ingresa el nombre o link de un video."));
 
-  // Reacción mientras busca el video
-  await conn.sendMessage(m.chat, {
-    react: { text: "🕐", key: m.key }
-  });
+  await conn.sendMessage(m.chat, { react: { text: "🕐", key: m.key } });
 
   let video;
   try {
@@ -47,25 +44,52 @@ const handler = async (m, { conn, text }) => {
   const { title, timestamp, views, url, thumbnail, author, ago } = video;
 
   const caption = [
-    "✧─── ･ ｡ﾟ★: *.✦ .* :★. ───✧",
+    "✧─── ･ ｡ﾟ★: .✦ . :★. ───✧",
     "⧼ ᰔᩚ ⧽  M U S I C  -  Y O U T U B E",
     "",
-    `» ✧ « *${title}*`,
+    `» ✧🌱 « *${title}*`,
     `> ➩ Canal › *${author.name}*`,
     `> ➩ Duración › *${timestamp}*`,
     `> ➩ Vistas › *${formatViews(views)}*`,
     `> ➩ Publicado › *${ago || "desconocido"}*`,
     `> ➩ Link › *${url}*`,
     "",
-    "> ✰ Responde con *Audio* o *Video* para descargar ✧"
+    "> ✰ Responde con *audio* o *video* para descargar ✧"
   ].join("\n");
 
-  await conn.sendMessage(m.chat, {
+  let msg = await conn.sendMessage(m.chat, {
     image: { url: thumbnail },
     caption
   }, { quoted: m });
+
+
+  conn.playContext = conn.playContext || {};
+  conn.playContext[msg.key.id] = { url };
 };
 
 handler.command = ["play"];
-handler.register = true;
 export default handler;
+
+// ---------------------------------------------
+// Capturador de respuestas
+let before = async (m, { conn }) => {
+  if (!m.quoted) return;
+  if (!conn.playContext) return;
+
+  let ctx = conn.playContext[m.quoted.id];
+  if (!ctx) return;
+
+  let txt = m.text.trim().toLowerCase();
+
+  if (txt === "audio") {
+    // redirige al plugin ytmp3
+    m.text = ctx.url;
+    conn.plugins["ytmp3"]?.(m, { conn, text: ctx.url, args: [ctx.url], command: "ytmp3", usedPrefix: "." });
+  } else if (txt === "video") {
+    // redirige al plugin ytmp4
+    m.text = ctx.url;
+    conn.plugins["ytmp4"]?.(m, { conn, text: ctx.url, args: [ctx.url], command: "ytmp4", usedPrefix: "." });
+  }
+};
+
+export { before };
