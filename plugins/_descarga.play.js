@@ -11,33 +11,15 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// ====== CONFIG ======
-const MAX_FILE_MB = 45 // WhatsApp suele permitir ~50MB; dejamos margen
-const PENDING_TTL_MS = 5 * 60 * 1000 // 5 min para responder “audio/video”
+const MAX_FILE_MB = 45 
+const PENDING_TTL_MS = 5 * 60 * 1000 
 const RESULTS_PER_PAGE = 5
 
-// Fallbacks opcionales (pon tus APIs que devuelvan audio/video directo)
-// Deben devolver { ok: true, url: 'https://...' } o lanzar error.
 const FALLBACKS = {
-  audio: [
-    // async (videoUrl) => { ... }
-  ],
-  video: [
-    // async (videoUrl) => { ... }
-  ]
+  audio: [],
+  video: []
 }
 
-// ====== ESTADO EN MEMORIA ======
-/**
- * pendingPlaySessions estructura:
- * key: chatId
- * value: {
- *   createdAt: number,
- *   query: string,
- *   results: Array<{ title, url, duration, views, author, thumbnail }>,
- *   promptMsgId: string // el ID del mensaje del bot al que deben responder
- * }
- */
 const pendingPlaySessions = new Map()
 
 function cleanupOldSessions() {
@@ -47,39 +29,28 @@ function cleanupOldSessions() {
   }
 }
 
-// ====== UTIL ======
 function bytesToMB(bytes) {
   return bytes / (1024 * 1024)
 }
-
-async function safeUnlink(file) {
-  try { fs.unlinkSync(file) } catch { }
-}
+async function safeUnlink(file) { try { fs.unlinkSync(file) } catch { } }
 
 function pickBestAudioFormat(info) {
-  // m4a/webm audio only, bitrate decente
   const audioOnly = ytdl.filterFormats(info.formats, 'audioonly')
-  // ordenar por bitrate desc
   audioOnly.sort((a, b) => (b.audioBitrate || 0) - (a.audioBitrate || 0))
   return audioOnly[0] || info.formats.find(f => f.hasAudio)
 }
 
 function pickBestVideoFormat(info, maxMB = MAX_FILE_MB) {
-  // queremos video+audio con tamaño estimado razonable
   const av = info.formats.filter(f => f.hasVideo && f.hasAudio && f.qualityLabel)
-  // ordenar por resolución asc hasta encontrar que quepa
   const order = ['360p', '480p', '720p', '1080p']
   av.sort((a, b) => order.indexOf(a.qualityLabel) - order.indexOf(b.qualityLabel))
-
-  // estimar tamaño por bitrate * duración
   const secs = parseInt(info.videoDetails.lengthSeconds || '0', 10)
   for (const f of av) {
-    const br = (f.bitrate || f.averageBitrate || 256000) // ~ kbps
+    const br = (f.bitrate || f.averageBitrate || 256000)
     const sizeBytes = (br * secs)
     const sizeMBapprox = sizeBytes / (8 * 1024 * 1024)
     if (sizeMBapprox <= maxMB) return f
   }
-  // si ninguno “cabe”, regresar el menor igualmente
   return av[0] || info.formats.find(f => f.hasVideo && f.hasAudio)
 }
 
@@ -92,26 +63,23 @@ function formatList(results) {
   })
   out += '╰━━━━━━━━━━━━━━━━━━⬣\n'
   out += 'Responde a ESTE mensaje con:\n'
-  out += '» audio    (envía el #1)\n'
-  out += '» video    (envía el #1)\n'
-  out += '» audio 3  (envía el #3)\n'
-  out += '» video 2  (envía el #2)\n'
+  out += '» ytmp3    (envía el #1)\n'
+  out += '» ytmp4    (envía el #1)\n'
+  out += '» ytmp3 3  (envía el #3)\n'
+  out += '» ytmp4 2  (envía el #2)\n'
   return out
 }
 
 function parseChoice(text) {
-  // acepta: "audio", "video", "audio 3", "video 2"
   const t = (text || '').trim().toLowerCase()
-  const m = t.match(/^(audio|video)(?:\s+(\d+))?$/i)
+  const m = t.match(/^(ytmp3|ytmp4)(?:\s+(\d+))?$/i)
   if (!m) return null
-  const kind = m[1]
+  const kind = m[1] === 'ytmp3' ? 'audio' : 'video'
   const idx = m[2] ? Math.max(1, parseInt(m[2], 10)) : 1
   return { kind, index: idx }
 }
 
-// ====== ENVÍO ======
 async function sendAudio(conn, m, videoUrl, title) {
-  // 1) Intento directo con ytdl-core
   try {
     const info = await ytdl.getInfo(videoUrl)
     const fmt = pickBestAudioFormat(info)
@@ -132,13 +100,12 @@ async function sendAudio(conn, m, videoUrl, title) {
     await safeUnlink(tmp)
     return
   } catch (e) {
-    // 2) Fallbacks (si configuraste)
     for (const fb of FALLBACKS.audio) {
       try {
         const res = await fb(videoUrl)
         await conn.sendMessage(m.chat, { audio: { url: res.url }, mimetype: 'audio/mpeg', fileName: `${title}.mp3` }, { quoted: m })
         return
-      } catch { /* siguiente */ }
+      } catch { }
     }
     throw e
   }
@@ -171,35 +138,27 @@ async function sendVideo(conn, m, videoUrl, title) {
         const res = await fb(videoUrl)
         await conn.sendMessage(m.chat, { video: { url: res.url }, caption: title }, { quoted: m })
         return
-      } catch { /* siguiente */ }
+      } catch { }
     }
     throw e
   }
 }
 
-// ====== HANDLER PRINCIPAL ======
-/**
- * Usa este handler en tu “message upsert”.
- * Lógica:
- *  - Si el mensaje es RESPUESTA al prompt del bot y dice "audio"/"video" => descarga.
- *  - Si es un TEXTO NORMAL (sin prefijo) => busca y crea sesión.
- */
+// ====== HANDLER ======
 let handler = async (m, { conn, text, isBaileys, usedPrefix, command }) => {
   try {
     cleanupOldSessions()
-
     const fromMe = m.key?.fromMe
     const isCmd = !!command || (usedPrefix && text?.startsWith?.(usedPrefix))
     const body = (text || (m.text || '')).trim()
 
-    // 1) Si es respuesta a nuestro prompt de resultados
     const quoted = m.quoted
     if (quoted && quoted.key?.id) {
       const sess = pendingPlaySessions.get(m.chat)
       if (sess && sess.promptMsgId === quoted.key.id) {
         const choice = parseChoice(body)
         if (!choice) {
-          return conn.reply(m.chat, '❌ Responde con "audio", "video", o por ejemplo "audio 3".', m)
+          return conn.reply(m.chat, '❌ Responde con "ytmp3", "ytmp4", o por ejemplo "ytmp3 3".', m)
         }
         const idx = choice.index - 1
         const pick = sess.results[idx]
@@ -214,10 +173,7 @@ let handler = async (m, { conn, text, isBaileys, usedPrefix, command }) => {
       }
     }
 
-    // 2) Si es un texto normal (sin prefijo) y no es mensaje del bot
     if (!fromMe && !isCmd && body && body.length >= 2) {
-      // Haz tu propia validación si quieres filtrar saludos, etc.
-      // BÚSQUEDA
       const r = await yts.search({ query: body, hl: 'es', gl: 'PE' })
       const vids = (r.videos || []).slice(0, RESULTS_PER_PAGE)
       if (!vids.length) return conn.reply(m.chat, '🙃 No encontré resultados. Prueba con otro nombre.', m)
@@ -254,7 +210,7 @@ let handler = async (m, { conn, text, isBaileys, usedPrefix, command }) => {
   }
 }
 
-handler.help = ['ytv-v <url>']
+handler.help = ['ytmp']
 handler.tags = ['downloader']
-handler.command = /^ytv-v$/i
+handler.command = /^ytmp$/i
 export default handler
