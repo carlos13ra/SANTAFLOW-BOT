@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+
 import yts from "yt-search";
 
 const ytIdRegex = /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -25,9 +25,8 @@ const formatViews = (views) => {
   return views.toString();
 };
 
-// 🔹 comando principal: play
 let handler = async (m, { conn, text }) => {
-  if (!text) return m.reply(toSansSerifPlain("*Ingresa el nombre o link de un video.*"));
+  if (!text) return m.reply(toSansSerifPlain("✦ Ingresa el nombre o link de un video."));
 
   await conn.sendMessage(m.chat, { react: { text: "🕐", key: m.key } });
 
@@ -63,6 +62,7 @@ let handler = async (m, { conn, text }) => {
     caption
   }, { quoted: m });
 
+
   conn.playContext = conn.playContext || {};
   conn.playContext[msg.key.id] = { url };
 };
@@ -70,65 +70,25 @@ let handler = async (m, { conn, text }) => {
 handler.command = ["play"];
 export default handler;
 
-// ─── CAPTURADOR DE RESPUESTAS ───
-let before = async (m, { conn, command, text }) => {
-  // si no hay contexto de play, no hace nada
-  if (!m.quoted && !["audio", "video"].includes(m.text?.toLowerCase().split(" ")[0])) return;
-  if (!conn.playContext) conn.playContext = {};
+// ---------------------------------------------
+// Capturador de respuestas
+let before = async (m, { conn }) => {
+  if (!m.quoted) return;
+  if (!conn.playContext) return;
 
-  let url;
-  // caso 1: usuario respondió al mensaje del menú
-  if (m.quoted && conn.playContext[m.quoted.id]) {
-    url = conn.playContext[m.quoted.id].url;
-  }
-  // caso 2: usuario ejecutó .audio <link> o .video <link>
-  else if (["audio", "video"].includes(m.text?.toLowerCase().split(" ")[0])) {
-    url = text || m.text.split(" ")[1]; // extrae url si se dio
-  }
+  let ctx = conn.playContext[m.quoted.id];
+  if (!ctx) return;
 
-  if (!url) return;
+  let txt = m.text.trim().toLowerCase();
 
-  let choice = command || m.text.trim().toLowerCase().split(" ")[0];
-
-  try {
-    if (choice === "audio") {
-      let res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(url)}`);
-      let json = await res.json();
-      if (!json.estado) throw new Error("No se pudo descargar el audio.");
-
-      let { titulo, autor, imagen, descargar } = json.datos;
-
-      await conn.sendMessage(m.chat, {
-        audio: { url: descargar.url },
-        mimetype: "audio/mpeg",
-        fileName: descargar.filename,
-        contextInfo: {
-          externalAdReply: {
-            title: titulo,
-            body: autor,
-            thumbnailUrl: imagen,
-            mediaType: 1,
-            renderLargerThumbnail: true
-          }
-        }
-      }, { quoted: m });
-
-    } else if (choice === "video") {
-      let res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${encodeURIComponent(url)}`);
-      let json = await res.json();
-      if (!json.estado) throw new Error("No se pudo descargar el video.");
-
-      let { titulo, autor, imagen, descargar } = json.datos;
-
-      await conn.sendMessage(m.chat, {
-        video: { url: descargar.url },
-        mimetype: "video/mp4",
-        fileName: descargar.filename,
-        caption: `✦ ${titulo}\n> Canal: ${autor}`
-      }, { quoted: m });
-    }
-  } catch (e) {
-    m.reply("✦ Error al procesar la descarga.");
+  if (txt === "audio") {
+    // redirige al plugin ytmp3
+    m.text = ctx.url;
+    conn.plugins["ytmp3"]?.(m, { conn, text: ctx.url, args: [ctx.url], command: "ytmp3", usedPrefix: "." });
+  } else if (txt === "video") {
+    // redirige al plugin ytmp4
+    m.text = ctx.url;
+    conn.plugins["ytmp4"]?.(m, { conn, text: ctx.url, args: [ctx.url], command: "ytmp4", usedPrefix: "." });
   }
 };
 
