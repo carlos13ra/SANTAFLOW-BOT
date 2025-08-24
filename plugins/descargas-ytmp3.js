@@ -1,34 +1,95 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch'
+import yts from 'yt-search'
 
-let handler = async (m, { conn, text }) => {
-  if (!text) return m.reply("✦ Ingresa un link de YouTube válido.");
-
+let handler = async (m, { conn, text, command, usedPrefix }) => {
   try {
-    const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(text)}`);
-    const json = await res.json();
+    if (!text) {
+      return conn.reply(
+        m.chat,
+        `🧪 Ingresa el nombre de la canción o un enlace de YouTube.\n\n🍂 Ejemplo: ${usedPrefix + command} DJ Malam Pagi`,
+        m
+      )
+    }
 
-    if (!json.estado) throw new Error("No se pudo descargar el audio.");
+    await conn.sendMessage(m.chat, { react: { text: '🕓', key: m.key } })
 
-    const { titulo, autor, imagen, descargar } = json.datos;
+    let search = await yts(text)
+    let video = search.videos[0]
+    if (!video) {
+      return conn.reply(m.chat, '❌ No se encontró ningún resultado en YouTube.', m)
+    }
+
+    const apiUrl = `https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(video.url)}`
+    const res = await fetch(apiUrl)
+    const json = await res.json()
+
+    if (!json?.result?.download?.url) {
+      return conn.reply(m.chat, '❌ No se pudo obtener el audio, intenta con otro nombre o link.', m)
+    }
+
+    const meta = json.result.metadata
+    const dl = json.result.download
+/*
+    const textoInfo = `✿  𝗬𝗔𝗦𝗦𝗨 - 𝗬𝗧 𝗠𝗣𝟯 🌲
+
+🍂 *Título:* ${meta.title}
+⏱️ *Duración:* ${meta.duration?.timestamp || video.timestamp || 'Desconocida'}
+🌱 *Canal:* ${meta.author?.name || video.author?.name || 'Desconocido'}
+🚀 *Vistas:* ${meta.views?.toLocaleString('es-PE') || video.views?.toLocaleString('es-PE') || '0'}
+🧪 *Publicado:* ${video.ago || 'Desconocido'}
+💨 *Link:* ${meta.url || video.url}
+
+*➤ El audio está en camino... 🌸💖*`
+
+    await conn.sendMessage(
+      m.chat,
+      {
+        image: { url: meta.thumbnail || video.thumbnail },
+        caption: textoInfo,
+        contextInfo: {
+          externalAdReply: {
+            title: meta.title || video.title,
+            body: "📥 Descargando desde YouTube",
+            thumbnailUrl: logo,
+            sourceUrl: meta.url || video.url,
+            mediaType: 1,
+            renderLargerThumbnail: false
+          }
+        }
+      },
+      { quoted: m }
+    )*/
+
+    const audioBuffer = await (await fetch(dl.url)).buffer()
 
     await conn.sendMessage(m.chat, {
-      audio: { url: descargar.url },
+      audio: audioBuffer,
+      fileName: `${meta.title}.mp3`,
       mimetype: "audio/mpeg",
-      fileName: descargar.filename,
+      ptt: false,
       contextInfo: {
         externalAdReply: {
-          title: titulo,
-          body: autor,
-          thumbnailUrl: imagen,
+          title: video.title,
+          body: `Duracion: ${video.timestamp}`,
+          mediaUrl: video.url,
+          sourceUrl: video.url,
+          thumbnailUrl: video.thumbnail,
           mediaType: 1,
-          renderLargerThumbnail: true
+          renderLargerThumbnail: false
         }
       }
-    }, { quoted: m });
-  } catch (e) {
-    m.reply("✦ Error al descargar el audio.");
-  }
-};
+    }, { quoted: m })
 
-handler.command = ["ytmp3"];
-export default handler;
+    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
+  } catch (e) {
+    console.error('❌ Error en ytplaymp3:', e)
+    await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } })
+    await conn.reply(m.chat, `❌ *Error:* ${e.message}`, m)
+  }
+}
+
+handler.command = ['ytmp3', 'song']
+handler.tags = ['descargas']
+handler.help = ['ytmp3 <texto o link>', 'song <texto>']
+
+export default handler
