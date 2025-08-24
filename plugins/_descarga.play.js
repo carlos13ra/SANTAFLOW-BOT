@@ -1,135 +1,98 @@
-import fetch from "node-fetch";
-import yts from "yt-search";
+import fetch from "node-fetch"
+import yts from "yt-search"
 
-const ytIdRegex = /(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-
-const toSansSerifPlain = (text = "") =>
-  text.split("").map((char) => {
-    const map = {
-      a: "𝖺", b: "𝖻", c: "𝖼", d: "𝖽", e: "𝖾", f: "𝖿", g: "𝗀", h: "𝗁", i: "𝗂",
-      j: "𝗃", k: "𝗄", l: "𝗅", m: "𝗆", n: "𝗇", o: "𝗈", p: "𝗉", q: "𝗊", r: "𝗋",
-      s: "𝗌", t: "𝗍", u: "𝗎", v: "𝗏", w: "𝗐", x: "𝗑", y: "𝗒", z: "𝗓",
-      A: "𝖠", B: "𝖡", C: "𝖢", D: "𝖣", E: "𝖤", F: "𝖥", G: "𝖦", H: "𝖧", I: "𝖨",
-      J: "𝖩", K: "𝖪", L: "𝖫", M: "𝖬", N: "𝖭", O: "𝖮", P: "𝖯", Q: "𝖰", R: "𝖱",
-      S: "𝖲", T: "𝖳", U: "𝖴", V: "𝖵", W: "𝖶", X: "𝖷", Y: "𝖸", Z: "𝖹",
-      0: "𝟢", 1: "𝟣", 2: "𝟤", 3: "𝟥", 4: "𝟦", 5: "𝟧", 6: "𝟨", 7: "𝟩", 8: "𝟪", 9: "𝟫"
-    };
-    return map[char] || char;
-  }).join("");
-
-const formatViews = (views) => {
-  if (!views) return "Desconocido";
-  if (views >= 1_000_000_000) return `${(views / 1_000_000_000).toFixed(1)}B`;
-  if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M`;
-  if (views >= 1_000) return `${(views / 1_000).toFixed(1)}k`;
-  return views.toString();
-};
-
-// 🔹 comando principal: play
-let handler = async (m, { conn, text }) => {
-  if (!text) return m.reply(toSansSerifPlain("*Ingresa el nombre o link de un video.*"));
-
-  await conn.sendMessage(m.chat, { react: { text: "🕐", key: m.key } });
-
-  let video;
+let handler = async (m, { conn, text, command, usedPrefix }) => {
   try {
-    const ytId = ytIdRegex.exec(text);
-    const search = ytId ? await yts({ videoId: ytId[1] }) : await yts(text);
-    video = ytId ? search.video : search.all[0];
-  } catch {
-    return m.reply(toSansSerifPlain("✦ Error al buscar el video."));
-  }
+    let q = m.quoted?.text || text // si responde al mensaje del bot
+    let input = text || q 
 
-  if (!video) return m.reply(toSansSerifPlain("✦ No se encontró el video."));
-
-  const { title, timestamp, views, url, thumbnail, author, ago } = video;
-
-  const caption = [
-    "✧─── ･ ｡ﾟ★: .✦ . :★. ───✧",
-    "⧼ ᰔᩚ ⧽  M U S I C  -  Y O U T U B E",
-    "",
-    `» ✧🌱 « *${title}*`,
-    `> ➩ Canal › *${author.name}*`,
-    `> ➩ Duración › *${timestamp}*`,
-    `> ➩ Vistas › *${formatViews(views)}*`,
-    `> ➩ Publicado › *${ago || "desconocido"}*`,
-    `> ➩ Link › *${url}*`,
-    "",
-    "> ✰ Responde con *audio* o *video* para descargar ✧"
-  ].join("\n");
-
-  let msg = await conn.sendMessage(m.chat, {
-    image: { url: thumbnail },
-    caption
-  }, { quoted: m });
-
-  conn.playContext = conn.playContext || {};
-  conn.playContext[msg.key.id] = { url };
-};
-
-handler.command = ["play"];
-export default handler;
-
-// ─── CAPTURADOR DE RESPUESTAS ───
-let before = async (m, { conn, command, text }) => {
-  // si no hay contexto de play, no hace nada
-  if (!m.quoted && !["audio", "video"].includes(m.text?.toLowerCase().split(" ")[0])) return;
-  if (!conn.playContext) conn.playContext = {};
-
-  let url;
-  // caso 1: usuario respondió al mensaje del menú
-  if (m.quoted && conn.playContext[m.quoted.id]) {
-    url = conn.playContext[m.quoted.id].url;
-  }
-  // caso 2: usuario ejecutó .audio <link> o .video <link>
-  else if (["audio", "video"].includes(m.text?.toLowerCase().split(" ")[0])) {
-    url = text || m.text.split(" ")[1]; // extrae url si se dio
-  }
-
-  if (!url) return;
-
-  let choice = command || m.text.trim().toLowerCase().split(" ")[0];
-
-  try {
-    if (choice === "audio") {
-      let res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(url)}`);
-      let json = await res.json();
-      if (!json.estado) throw new Error("No se pudo descargar el audio.");
-
-      let { titulo, autor, imagen, descargar } = json.datos;
-
-      await conn.sendMessage(m.chat, {
-        audio: { url: descargar.url },
-        mimetype: "audio/mpeg",
-        fileName: descargar.filename,
-        contextInfo: {
-          externalAdReply: {
-            title: titulo,
-            body: autor,
-            thumbnailUrl: imagen,
-            mediaType: 1,
-            renderLargerThumbnail: true
-          }
-        }
-      }, { quoted: m });
-
-    } else if (choice === "video") {
-      let res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${encodeURIComponent(url)}`);
-      let json = await res.json();
-      if (!json.estado) throw new Error("No se pudo descargar el video.");
-
-      let { titulo, autor, imagen, descargar } = json.datos;
-
-      await conn.sendMessage(m.chat, {
-        video: { url: descargar.url },
-        mimetype: "video/mp4",
-        fileName: descargar.filename,
-        caption: `✦ ${titulo}\n> Canal: ${autor}`
-      }, { quoted: m });
+    if (!input) {
+      return conn.reply(
+        m.chat,
+        `🌱 Ingresa el nombre de la canción o un enlace de YouTube.\n\n📌 Ejemplo:\n${usedPrefix + command} despacito`,
+        m
+      )
     }
-  } catch (e) {
-    m.reply("✦ Error al procesar la descarga.");
-  }
-};
 
-export { before };
+    // Caso especial: si el usuario responde al BOT con "audio" o "video"
+    if (/^(audio|video)$/i.test(input) && m.quoted?.text) {
+      let lastQuery = m.quoted.text.match(/🎶 Resultado de: (.+)/i)?.[1]
+      if (!lastQuery) return conn.reply(m.chat, "⚠️ No encontré el título anterior.", m)
+
+      input = lastQuery // usar el título de la búsqueda anterior
+      input = { query: lastQuery, type: input.toLowerCase() }
+    }
+
+    // Detectar tipo: audio o video
+    let type = "audio"
+    if (/video/i.test(input.query || input)) type = "video"
+    if (/audio/i.test(input.query || input)) type = "audio"
+
+    let search = await yts(input.query || input)
+    let vid = search.videos[0]
+    if (!vid) return conn.reply(m.chat, "⚠️ No encontré resultados.", m)
+
+    // API según tipo
+    let apiUrl = type === "audio"
+      ? `https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(vid.title)}`
+      : `https://api.vreden.my.id/api/ytplaymp4?query=${encodeURIComponent(vid.title)}`
+
+    await conn.sendMessage(m.chat, { react: { text: "⏳", key: m.key } })
+
+    let res = await fetch(apiUrl)
+    let json = await res.json()
+    if (!json.result?.download_url) {
+      return conn.reply(m.chat, "⚠️ Error descargando el archivo.", m)
+    }
+
+    // Enviar el resultado
+    if (type === "audio") {
+      await conn.sendMessage(
+        m.chat,
+        {
+          audio: { url: json.result.download_url },
+          mimetype: "audio/mpeg",
+          contextInfo: {
+            externalAdReply: {
+              title: vid.title,
+              body: "🎶 Descargado en MP3",
+              thumbnailUrl: vid.thumbnail,
+              sourceUrl: vid.url,
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
+        },
+        { quoted: m }
+      )
+    } else {
+      await conn.sendMessage(
+        m.chat,
+        {
+          video: { url: json.result.download_url },
+          caption: `🎬 *${vid.title}*`,
+          contextInfo: {
+            externalAdReply: {
+              title: vid.title,
+              body: "🎥 Descargado en MP4",
+              thumbnailUrl: vid.thumbnail,
+              sourceUrl: vid.url,
+              mediaType: 1,
+              renderLargerThumbnail: true
+            }
+          }
+        },
+        { quoted: m }
+      )
+    }
+
+    await conn.sendMessage(m.chat, { react: { text: "✅", key: m.key } })
+
+  } catch (e) {
+    console.error(e)
+    conn.reply(m.chat, "⚠️ Error al procesar tu solicitud.", m)
+  }
+}
+
+handler.command = /^(play|yt)$/i
+export default handler
