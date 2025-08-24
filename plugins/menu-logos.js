@@ -54,19 +54,6 @@ const estilogo = [
 
 const handler = async (m, { conn, usedPrefix }) => {
   try {
-  
-// Configuración del creador dinámico
-const CREATOR_NUMBER = "51919199620"; // tu número
-const CREATOR_JID = `${CREATOR_NUMBER}@s.whatsapp.net`;
-
-// Objeto del creador (nombre dinámico desde WhatsApp)
-const getCreator = async (conn) => ({
-  jid: CREATOR_JID,
-  tag: `@${CREATOR_NUMBER}`,
-  name: await conn.getName(CREATOR_JID)
-});  
-let CREATOR = await getCreator(conn);
-let msg = `👑 Creador: ${CREATOR.tag} (${CREATOR.name})`;
 
     let menutxt = `╭━━━❰ *✨ MENÚ DE LOGOS & ESTILOS ✨* ❱━━━╮\n\n`;
 
@@ -83,7 +70,7 @@ let msg = `👑 Creador: ${CREATOR.tag} (${CREATOR.name})`;
     menutxt += `\n\n╰━━⊱ *CÓMO USAR* ⊰━━╯\n`;
     menutxt += `_Escribe el comando seguido del texto que quieres transformar_\n`;
     menutxt += `Ejemplo: *${usedPrefix}glitchtext Sukuna Bot*\n\n`;
-    menutxt += `⚡ *Tip:* Puedes combinar varios estilos y emojis para hacer tu logo único.\n> ${msg}`;
+    menutxt += `⚡ *Tip:* Puedes combinar varios estilos y emojis para hacer tu logo único.`;
 
     await conn.sendMessage(m.chat, {
       text: menutxt,
