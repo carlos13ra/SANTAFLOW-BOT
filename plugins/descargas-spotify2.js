@@ -1,4 +1,3 @@
-// un codigo bug jsjs
 import fetch from 'node-fetch'
 import Jimp from 'jimp'
 
@@ -24,7 +23,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       ? new Date(json.duration_ms).toISOString().substr(14, 5) 
       : "0:00"
     const download = json.download_url
-
+    await conn.sendMessage(m.chat, { react: { text: '🕓', key: m.key } })
     let caption = `\`\`\`🧪 Título: ${name}
 🌷 Artista: ${artists}
 ⏱️ Duración: ${duration} min\`\`\``
@@ -45,28 +44,31 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       mimetype: 'audio/mpeg',
       fileName: `${name}.mp3`,
       caption: caption,
-      jpegThumbnail: thumb
+      ...(thumb ? { jpegThumbnail: thumb } : {})
     }, { quoted: m })
+
 
     await conn.sendMessage(m.chat, {
       audio: { url: download },
       mimetype: 'audio/mpeg',
       fileName: `${name}.mp3`,
-      contextInfo: {
-        externalAdReply: {
-          title: name,
-          body: artists,
-          thumbnailUrl: thumb,
-          sourceUrl: text,
-          mediaType: 2,
-          renderLargerThumbnail: true
+      ...(thumb ? { 
+        contextInfo: {
+          externalAdReply: {
+            title: name,
+            body: artists,
+            mediaType: 2,
+            renderLargerThumbnail: true,
+            thumbnail: thumb,
+            sourceUrl: text
+          }
         }
-      }
+      } : {})
     }, { quoted: m })
 
   } catch (e) {
     console.error(e)
-    m.reply("❌ Error al procesar la descarga de Spotify.")
+    m.reply("\`Error al procesar la descarga de Spotify.\`")
   }
 }
 
