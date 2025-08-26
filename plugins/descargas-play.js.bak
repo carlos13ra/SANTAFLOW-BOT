@@ -46,36 +46,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.reply(m.chat, infoMessage, m, external)
 
-//------------------------------------------------------------------------------------------
-let loading = [
-  '⚽ DESCARGANDO ARCHIVO\n> 🌘 [█░░░░░░░░░] 10%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌗 [██░░░░░░░░] 20%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌖 [███░░░░░░░] 30%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌕 [████░░░░░░] 40%',
-  '⚽ DESCARGANDO ARCHIVO\n> ✨ [█████░░░░░] 50%',
-  '⚽ DESCARGANDO ARCHIVO\n> ⚡ [██████░░░░] 60%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🔥 [███████░░░] 70%',
-  '⚽ DESCARGANDO ARCHIVO\n> 💥 [████████░░] 80%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌀 [█████████░] 90%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌟 [██████████] 100%',
-  '✅ 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗔\n> ☘️ ENVIANDO ARCHIVO, ESPERE UNOS SEGUNDOS....'
-];
-
-let { key } = await conn.sendMessage(m.chat, {
-  text: '_Iniciando descarga..._',
-  quoted: m
-});
-
-for (let paso of loading) {
-  await conn.sendMessage(m.chat, {
-    text: paso,
-    edit: key,
-    quoted: m
-  });
-  await new Promise(r => setTimeout(r, 500)); // velocidad del "loading"
-}
-//------------------------------------------------------------------------------------------
-
     if (['play', 'playaudio'].includes(command)) {
       try {
         const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
@@ -103,36 +73,6 @@ for (let paso of loading) {
         return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m)
       }
     }
-
-//------------------------------------------------------------------------------------------
-let loading = [
-  '⚽ DESCARGANDO ARCHIVO\n> 🌘 [█░░░░░░░░░] 10%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌗 [██░░░░░░░░] 20%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌖 [███░░░░░░░] 30%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌕 [████░░░░░░] 40%',
-  '⚽ DESCARGANDO ARCHIVO\n> ✨ [█████░░░░░] 50%',
-  '⚽ DESCARGANDO ARCHIVO\n> ⚡ [██████░░░░] 60%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🔥 [███████░░░] 70%',
-  '⚽ DESCARGANDO ARCHIVO\n> 💥 [████████░░] 80%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌀 [█████████░] 90%',
-  '⚽ DESCARGANDO ARCHIVO\n> 🌟 [██████████] 100%',
-  '✅ 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗔\n> ☘️ ENVIANDO ARCHIVO, ESPERE UNOS SEGUNDOS....'
-];
-
-let { key } = await conn.sendMessage(m.chat, {
-  text: '_Iniciando descarga..._',
-  quoted: m
-});
-
-for (let paso of loading) {
-  await conn.sendMessage(m.chat, {
-    text: paso,
-    edit: key,
-    quoted: m
-  });
-  await new Promise(r => setTimeout(r, 500)); // velocidad del "loading"
-}
-//------------------------------------------------------------------------------------------
 
     else if (['play2','playvideo'].includes(command)) {
       try {
