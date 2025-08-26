@@ -161,8 +161,23 @@ if (qr && mcode) {
 let secret = await sock.requestPairingCode((m.sender.split`@`[0]))
 secret = secret.match(/.{1,4}/g)?.join("-")
 
-txtCode = await conn.sendMessage(m.chat, {text : rtx2}, { quoted: m })
-codeBot = await conn.reply(m.chat, `\`${secret}\``, m, fake);
+    let imgUrl = banner; 
+    let txtCode = await conn.sendMessage(m.chat, {
+      image: { url: imgUrl },
+      caption: rtx2,
+      contextInfo: {
+        mentionedJid: [m.sender],
+       // isForwarded: true,
+       // forwardedNewsletterMessageInfo: {
+       //   newsletterJid: channelRD.id,
+      //    serverMessageId: 100,
+      //    newsletterName: channelRD.name
+       // },
+        isForwarded: true
+      }
+    }, { quoted: m });
+
+codeBot = await conn.reply(m.chat, `\`${secret}\``, m);
 
 console.log(secret)
 }
