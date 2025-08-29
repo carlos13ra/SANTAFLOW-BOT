@@ -14,48 +14,69 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 
 
   if (user.registered) {
-   const texto = `➤ ⌬ \`ＡＶＩＳＯ\` ⌬
-*🚫 Ya estás registrado...*
-¿ ǫᴜɪᴇʀᴇs ᴠᴏʟᴠᴇʀ ᴀ ʀᴇɢɪsᴛʀᴀʀᴛᴇ ?
-  
-⛩️ Usa *#unreg* para borrar tu registro y volver a empezar.`;
+   const texto = `✧━━━━〔 ⚠ ＡＶＩＳＯ ⚠ 〕━━━━✧
+*🚫 Ya cuentas con un registro activo...*
+¿ 𝚀𝚞𝚒𝚎𝚛𝚎𝚜 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚊𝚛𝚝𝚎 𝚗𝚞𝚎𝚟𝚊𝚖𝚎𝚗𝚝𝚎?
 
-   const botones = [
-     { buttonId: `${usedPrefix}ping`, buttonText: { displayText: '🌳 Velocidad del Bot' }, type: 1 },
-     { buttonId: `${usedPrefix}unreg`, buttonText: { displayText: '🌷 Unreg' }, type: 1 },
-   ];
+🎋 Usa *#unreg* para borrar tu registro y comenzar otra vez.
+✧━━━━━━━━━━━━━━━━━━✧`;
 
-   return await conn.sendMessage(m.chat, {
-     image: { url: icono },
-     caption: texto,
-     mentions: [m.sender],
-     footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
-     buttons: botones,
-     headerType: 4
-   }, { quoted: m });
+    const botones = [
+      { buttonId: `${usedPrefix}ping`, buttonText: { displayText: '🌳 Velocidad del Bot' }, type: 1 },
+      { buttonId: `${usedPrefix}unreg`, buttonText: { displayText: '🌷 Unreg' }, type: 1 },
+    ];
+
+    return await conn.sendMessage(m.chat, {
+      image: { url: icono },
+      caption: texto,
+      mentions: [m.sender],
+      footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
+      buttons: botones,
+      headerType: 4,
+      contextInfo: {
+        mentionedJid: [m.sender],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channelRD.id,
+          serverMessageId: 100,
+          newsletterName: channelRD.name
+        }
+      }
+    }, { quoted: m });
  }
   
    if (!Reg.test(text)) {
-     const mensaje = `*『✦』El comando ingresado es incorrecto, uselo de la siguiente manera:*
+     const mensaje = `✦・🍂  ᴇʟ ᴄᴏᴍᴀɴᴅᴏ ɪɴɢʀᴇsᴀᴅᴏ ᴇs ɪɴᴄᴏʀʀᴇᴄᴛᴏ
+┈┈┈┈┈┈┈┈┈┈
+↳ Úsalo así:
+   ${usedPrefix + command} nombre.edad
 
-*${usedPrefix + command} nombre.edad*
-
-🎄 \`Ejemplo:\`
-*${usedPrefix + command} ${name2}.18*`;
+🎄 Ejemplo:
+   ${usedPrefix + command} ${name2}.18
+┈┈┈┈┈┈┈┈┈┈`;
 
      const botones = [
        { buttonId: `${usedPrefix}reg ${name2}.18`, buttonText: { displayText: '🖍️ Auto Verificación' }, type: 1 },
        { buttonId: `${usedPrefix}menu`, buttonText: { displayText: '🎲 Menu All' }, type: 1 },
      ];
 
-     return await conn.sendMessage(m.chat, {
-       image: { url: icono },
-       caption: mensaje,
-       mentions: [m.sender],
-       footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
-       buttons: botones,
-       headerType: 4
-     }, { quoted: m });
+    return await conn.sendMessage(m.chat, {
+      image: { url: icono },
+      caption: mensaje,
+      mentions: [m.sender],
+      footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
+      buttons: botones,
+      headerType: 4,
+      contextInfo: {
+        mentionedJid: [m.sender],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channelRD.id,
+          serverMessageId: 100,
+          newsletterName: channelRD.name
+        }
+      }
+    }, { quoted: m });
   }
 
   let hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' });
@@ -105,14 +126,14 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
       image: { url: pp },
       caption: regbot,
       contextInfo: {
-        externalAdReply: {
-         //mentionedJid: [m.sender],
+      mentionedJid: [m.sender],
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: channelRD.id,
           serverMessageId: 100,
           newsletterName: channelRD.name
         },
+        externalAdReply: {
           title: '✦͢🌹⌗ 𝐔𝐒𝐔𝐀𝐑𝐈𝐎 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐃𝐎 💎✨',
           body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ éꜱᴇxɪᴛᴏ\n☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
           mediaType: 1,
@@ -124,7 +145,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
       }
     },
     { quoted: m });
-};
+  };
 
 handler.help = ['reg']
 handler.tags = ['rg']
