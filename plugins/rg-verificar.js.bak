@@ -106,7 +106,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
       caption: regbot,
       contextInfo: {
         externalAdReply: {
-         //mentionedJid: [m.sender],
+         mentionedJid: [m.sender],
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
           newsletterJid: channelRD.id,
