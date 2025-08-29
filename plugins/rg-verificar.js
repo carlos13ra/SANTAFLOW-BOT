@@ -106,6 +106,13 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
       caption: regbot,
       contextInfo: {
         externalAdReply: {
+         mentionedJid: [m.sender],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channelRD.id,
+          serverMessageId: 100,
+          newsletterName: channelRD.name
+        },
           title: '✦͢🌹⌗ 𝐔𝐒𝐔𝐀𝐑𝐈𝐎 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐃𝐎 💎✨',
           body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ éꜱᴇxɪᴛᴏ\n☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
           mediaType: 1,
