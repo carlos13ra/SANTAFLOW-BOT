@@ -49,7 +49,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const res = await fetch(`https://d.ymcdn.org/api/v1/init?p=y&23=1llum1n471&_=${Math.random()}`)
+        const res = await fetch(`https://d.ymcdn.org/api/v1/init?p=y&23=1llum1n471&_=$}`)
         const json = await res.json()
         if (!json.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
 
