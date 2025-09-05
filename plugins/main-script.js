@@ -3,7 +3,7 @@ import fetch from 'node-fetch'
 
 let handler = async (m, { conn, args }) => {
 try {
-let res = await fetch('https://github.com/carlos13ra/SANTAFLOW-BOT.git')
+let res = await fetch('https://github.com/Yuji-XDev/Rin-Itoshi-Bot')
 
 if (!res.ok) throw new Error('Error al obtener datos del repositorio')
 let json = await res.json()
