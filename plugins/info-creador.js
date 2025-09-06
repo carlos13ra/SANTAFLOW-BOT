@@ -4,10 +4,10 @@ import { proto } from '@whiskeysockets/baileys';
 import PhoneNumber from 'awesome-phonenumber';
 
 const handler = async (m, { conn }) => {
-  const name = '🌱 𝙎𝙃𝘼𝘿𝙊𝙒 - 𝘾𝙧𝙚𝙖𝙙𝙤𝙧 ⚡';
+  const name = '🌱 CARLOS- CREADOR ⚡';
   const numCreador = '51946200884';
-  const empresa = 'Rin Itoshi Bot Inc.';
-  const about = '🧪 Desarrollador de Rin itoshi Ultra - MD';
+  const empresa = ' SANTAFLOW Bot Inc.';
+  const about = '🧪 Desarrollador de SANTAFLOW BOT- MD';
   const correo = 'blackoficial2025@gmail.com';
   const web = 'https://gituhb.com/Yuji-XDev';
   const direccion = 'Tokyo, Japón 🇯🇵';
