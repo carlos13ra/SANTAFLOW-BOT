@@ -1,68 +1,102 @@
-import { prepareWAMessageMedia, generateWAMessageFromContent } from '@whiskeysockets/baileys';
+import fetch from 'node-fetch';
 import yts from 'yt-search';
+import baileys from '@whiskeysockets/baileys';
 
-const handler = async (m, { conn, usedPrefix, command, text }) => {
-  if (!text) throw `*🌴 Por favor, ingresa un texto para buscar en Youtube.*\n> *\`Ejemplo:\`* ${usedPrefix + command} Bing Bang`;
+const { generateWAMessageContent, generateWAMessageFromContent, proto } = baileys;
 
-  const results = await yts(text);
-  const videos = results.videos.slice(0, 10);
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) return m.reply(`*🌴 Por favor, ingresa un texto para buscar en YouTube.*\n> *\`Ejemplo:\`*\n> ${usedPrefix + command} Bing Bang`);
+  await m.react('🕓');
 
-  if (!videos.length) throw '⚠️ *No se encontraron resultados para tu búsqueda.*';
+  try {
+    const results = await yts(text);
+    const videos = results.videos.slice(0, 15);
 
-  const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    if (!videos.length) throw '⚠️ *No se encontraron resultados para tu búsqueda.*';
 
-  const media = await prepareWAMessageMedia(
-    { image: { url: randomVideo.thumbnail } },
-    { upload: conn.waUploadToServer }
-  );
+    async function createImage(url) {
+      const { imageMessage } = await generateWAMessageContent(
+        { image: { url } },
+        { upload: conn.waUploadToServer }
+      );
+      return imageMessage;
+    }
 
-  const interactiveMessage = {
-    body: {
-      text: `> *Resultados:* \`${videos.length}\`\n\n*${randomVideo.title}*\n\n≡ 🌵 *\`Autor:\`* ${randomVideo.author.name}\n≡ 🍁 *\`Vistas:\`* ${randomVideo.views.toLocaleString()}\n≡ 🌿 *\`Enlace:\`* ${randomVideo.url}`
-    },
-    footer: { text: 'sᴜᴋᴜɴᴀ ʙᴏᴛ ᴍᴅ' },
-    header: {
-      title: '```乂 YOUTUBE - SEARCH```',
-      hasMediaAttachment: true,
-      imageMessage: media.imageMessage
-    },
-    nativeFlowMessage: {
-      buttons: [
-        {
-          name: 'single_select',
-          buttonParamsJson: JSON.stringify({
-            title: 'Opciones de descarga',
-            sections: videos.map(video => ({
-              title: `${video.title}`,
-              rows: [
-                {
-                  header: video.title,
-                  title: video.author.name,
-                  description: `𝖣𝖾𝗌𝖼𝖺𝗋𝗀𝖺𝗋 𝖺𝗎𝖽𝗂𝗈 | Duración: ${video.timestamp}`,
-                  id: `.ytmp3 ${video.url}`
-                },
-                {
-                  header: video.title,
-                  title: video.author.name,
-                  description: `𝖣𝖾𝗌𝖼𝖺𝗋𝗀𝖺𝗋 𝗏𝗂𝖽𝖾𝗈 | Duración: ${video.timestamp}`,
-                  id: `.ytmp4 ${video.url}`
-                }
-              ]
-            }))
+    let cards = [];
+    for (let video of videos) {
+      let image = await createImage(video.thumbnail);
+
+      cards.push({
+        body: proto.Message.InteractiveMessage.Body.fromObject({
+          text: `[ ✿ ]◦ *Título:* ${video.title}\n> [🍂]◦ *Autor:* ${video.author.name}\n> [🌱]◦ *Duración:* ${video.timestamp}\n> [🌷]◦ *Vistas:* ${video.views.toLocaleString()}`
+        }),
+        footer: proto.Message.InteractiveMessage.Footer.fromObject({
+          text: '® ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ | © sʜᴀᴅᴏᴡ.xʏᴢ'
+        }),
+        header: proto.Message.InteractiveMessage.Header.fromObject({
+          title: '',
+          hasMediaAttachment: true,
+          imageMessage: image
+        }),
+        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
+          buttons: [
+            {
+              name: 'cta_copy',
+              buttonParamsJson: JSON.stringify({
+                display_text: "🎵 Descargar Audio",
+                id: "ytmp3",
+                copy_code: `.ytmp3 ${video.url}`
+              })
+            },
+            {
+              name: 'cta_copy',
+              buttonParamsJson: JSON.stringify({
+                display_text: "📹 Descargar Video",
+                id: "ytmp4",
+                copy_code: `.ytmp4 ${video.url}`
+              })
+            }
+          ]
+        })
+      });
+    }
+
+    const msg = generateWAMessageFromContent(m.chat, {
+      viewOnceMessage: {
+        message: {
+          messageContextInfo: {
+            deviceListMetadata: {},
+            deviceListMetadataVersion: 2
+          },
+          interactiveMessage: proto.Message.InteractiveMessage.fromObject({
+            body: proto.Message.InteractiveMessage.Body.create({
+              text: `*🌱 Resultados de:* \`${text}\`\n> Mostrando: ${videos.length} resultados`
+            }),
+            footer: proto.Message.InteractiveMessage.Footer.create({
+              text: '_YouTube - Search_'
+            }),
+            header: proto.Message.InteractiveMessage.Header.create({
+              hasMediaAttachment: false
+            }),
+            carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({
+              cards
+            })
           })
         }
-      ],
-      messageParamsJson: ''
-    }
-  };
+      }
+    }, { quoted: m });
 
-  const userJid = conn?.user?.jid || m.key.participant || m.chat;
-  const msg = generateWAMessageFromContent(m.chat, { interactiveMessage }, { userJid, quoted: m });
-  conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
+    await m.react('✅');
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
+
+  } catch (e) {
+    console.error(e);
+    await m.reply('❌ Error en la búsqueda o envío del mensaje.');
+  }
 };
 
-handler.help = ['yts <texto>'];
+handler.help = ['ytsearch <texto>'];
 handler.tags = ['buscador'];
-handler.command = ['yts', 'ytsearch'];
+handler.command = ['ytsearch', 'yts'];
 
 export default handler;
