@@ -7,7 +7,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text?.trim()) 
-      return conn.reply(m.chat, `*Por favor, ingresa el nombre o enlace del video.*`, m);
+      return conn.reply(m.chat, `⚡ *Por favor, ingresa el nombre o enlace del video.*`, m);
 
     let videoIdMatch = text.match(youtubeRegexID);
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text);
@@ -58,27 +58,24 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         const audioUrl = json.data.download.url;
         const fileName = json.data.download.filename || `${audioTitle}.mp3`;
 
-        await m.react('✅');
-        await conn.sendMessage(m.chat, {  
-           audio: { 
-             url: audioUrl, 
-             mimetype: 'audio/mpeg', 
-             ptt: true
-           },  
-           fileName: fileName,  
-           contextInfo: {  
-             externalAdReply: {  
-               title: audioTitle,  
-               body: '⚽ RIN ITOSHI - IA 💥',  
-               mediaType: 1,  
-               thumbnail: thumb,  
-               mediaUrl: url,  
-               sourceUrl: url,  
-               renderLargerThumbnail: false  
-             }  
-           }  
-        }, { quoted: m });
-
+         await conn.sendMessage(m.chat, {
+         audio: { url: audioUrl },
+         mimetype: 'audio/mpeg',
+         fileName: fileName,
+         ptt: true
+         contextInfo: {
+           externalAdReply: {
+             title: title,
+             body: '⚽ RIN ITOSHI - IA 🌀',
+             mediaType: 1,
+             thumbnail: thumb,
+             mediaUrl: url,
+             sourceUrl: url,
+             renderLargerThumbnail: true
+           }
+         }
+       }, { quoted: m })
+       
       } catch (e) {
         return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m);
       }
