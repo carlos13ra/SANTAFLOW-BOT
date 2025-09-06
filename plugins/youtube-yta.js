@@ -1,3 +1,6 @@
+// Código creado por Dev.Shadow xD
+// https://github.com/Yuji-XDev
+
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
@@ -13,27 +16,57 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (isYoutubeUrl) {
       try {
-        const res = await fetch(`https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(text)}&type=audio&quality=128kbps&apikey=russellxz`);
+        const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(text)}`);
         const json = await res.json();
 
-        if (json?.status && json?.data?.url) {
+        if (json?.resultado?.descarga?.url) {
           info = {
-            title: json.title || "YouTube Audio",
-            author: json.channel || "Desconocido",
-            duration: json.fduration || "Desconocida",
-            thumb: json.thumbnail || `https://i.ytimg.com/vi/${json.id}/hqdefault.jpg`,
-            download: json.data.url,
-            filename: json.data.filename || `${command}_${Date.now()}.mp3`,
-            size: json.data.size || "Desconocido"
+            title: json.resultado.metadata.title,
+            author: json.resultado.metadata.author?.nombre,
+            duration: json.resultado.metadata.duración?.marca_de_tiempo,
+            thumb: json.resultado.metadata.image,
+            download: json.resultado.descarga.url,
+            filename: json.resultado.descarga.filename,
+            size: json.resultado.descarga.size
           };
         }
       } catch (e) {
-        console.error('Error en Neoxr API:', e);
+        console.error('Error en ytmp3:', e);
       }
     }
 
-    if (!info) throw '❌ No se pudo obtener información de la API.';
+    if (!info) {
+      try {
+        const res = await fetch(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(text)}`);
+        const json = await res.json();
 
+        if (json?.result?.download?.url) {
+          info = {
+            title: json.result.metadata.title,
+            author: json.result.metadata.author?.name,
+            duration: json.result.metadata.duration?.timestamp,
+            thumb: json.result.metadata.thumbnail,
+            download: json.result.download.url,
+            filename: json.result.download.filename,
+            size: json.result.download.size
+          };
+        }
+      } catch (e) {
+        console.error('Error en yta:', e);
+      }
+    }
+
+    if (!info) throw '❌ No se pudo obtener información de ninguna API.';
+
+    await conn.sendMessage(m.chat, {
+      image: { url: info.thumb },
+      caption: `╭━━━〔 𝗬𝗼𝘂𝗧𝘂𝗯𝗲 𝗠𝗣𝟯 〕━━⬣
+┃ 🎵 *Título:* ${info.title}
+┃ 👤 *Canal:* ${info.author || 'Desconocido'}
+┃ ⏱️ *Duración:* ${info.duration || 'Desconocida'}
+╰━━━━━━━━━━━━⬣`
+    }, { quoted: m });
+ 
     await conn.sendMessage(m.chat, {
       audio: { url: info.download },
       fileName: info.filename,
@@ -42,9 +75,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: info.title,
-          body: `🌱 Duración: ${info.duration} | Canal: ${info.author}`,
-          mediaUrl: text,
-          sourceUrl: text,
+          body: `🌱 Duración: ${info.duration || 'Desconocida'} | Canal: ${info.author || 'Desconocido'}`,
+          mediaUrl: info.download,
+          sourceUrl: info.download,
           thumbnailUrl: info.thumb,
           mediaType: 1,
           renderLargerThumbnail: true
