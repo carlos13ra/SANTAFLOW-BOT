@@ -27,6 +27,8 @@ let handler = async (m, { conn, usedPrefix }) => {
     let packname = "SantaFlow Pack"
     let dev = "By dev.nose xd"
     let redes = "https://github.com/Yuji-XDev"
+
+    // ===== SISTEMA DE COMANDOS =====
     const emojis = {
       'main': '🦋', 'tools': '🛠️', 'audio': '🎧', 'group': '👥',
       'owner': '👑', 'fun': '🎮', 'info': 'ℹ️', 'internet': '🌐',
@@ -55,6 +57,7 @@ let handler = async (m, { conn, usedPrefix }) => {
       return `╭━━━〔 ${emoji} ${tag.toUpperCase()} 〕━━⬣\n` + cmds.map(cmd => `┃ ✦ ${cmd}`).join('\n') + `\n╰━━━〔 ✦ 〕━━⬣`
     }).join('\n\n')
 
+    // ===== MENSAJE FINAL =====
     let menuText = `
 🌷｡･:*˚:✧｡  sᴀɴᴛᴀғʟᴏᴡ - ʙᴏᴛ ｡✧:˚*:･｡🌱
 ⊱ ────── {.⋅ ✯ ⋅.} ────── ⊰
@@ -89,17 +92,9 @@ ${secciones}
 `.trim()
 
     await m.react('☘️')
-
     await conn.sendMessage(m.chat, {
-      image: { url: banner },
-      caption: menuText,
-      mentions: [m.sender],
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelRD.id,
-        serverMessageId: 100,
-        newsletterName: channelRD.name
-      }
+      text: menuText,
+      mentions: [m.sender]
     }, { quoted: m })
 
   } catch (e) {
