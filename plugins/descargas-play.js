@@ -50,7 +50,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const apiUrl = `https://api.stellarwa.xyz/download/ytmp3?url=${encodeURIComponent(url)}&apikey=${STELLAR_API_KEY}`;
+        const apiUrl = `https://api.stellarwa.xyz/dow/ytmp3?url=${encodeURIComponent(url)}&apikey=${STELLAR_API_KEY}`;
         const res = await fetch(apiUrl);
         const json = await res.json();
 
