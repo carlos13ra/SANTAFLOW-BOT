@@ -6,7 +6,8 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
-    if (!text.trim()) return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m, fake)
+    if (!text?.trim()) 
+      return conn.reply(m.chat, `*Por favor, ingresa el nombre o enlace del video.*`, m);
 
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
@@ -16,16 +17,16 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (!video) return conn.reply(m.chat, '✧ No se encontraron resultados para tu búsqueda.', m)
 
-    const { title, thumbnail, timestamp, views, ago, url, author } = video
+    const { title = 'Desconocido', thumbnail, timestamp = 'Desconocido', views, ago = 'Desconocido', url, author } = video
     const vistas = formatViews(views)
     const canal = author?.name || 'Desconocido'
-    
+
     await m.react('⏱️');
-    const infoMessage = `🌷 \`Titulo:\`  *<${title || 'Desconocido'}>*\n\n` +
+    const infoMessage = `🌷 \`Titulo:\`  *<${title}>*\n\n` +
       `> 📺 \`Canal\` » *${canal}*\n` +
-      `> 👁️ \`Vistas\` » *${vistas || 'Desconocido'}*\n` +
-      `> ⏱ \`Duración\` » *${timestamp || 'Desconocido'}*\n` +
-      `> 📆 \`Publicado\` » *${ago || 'Desconocido'}*\n` +
+      `> 👁️ \`Vistas\` » *${vistas}*\n` +
+      `> ⏱ \`Duración\` » *${timestamp}*\n` +
+      `> 📆 \`Publicado\` » *${ago}*\n` +
       `> 🔗 \`Link\` » ${url}`
 
     const thumb = (await conn.getFile(thumbnail))?.data
@@ -46,61 +47,66 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.reply(m.chat, infoMessage, m, external)
 
-
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
+        const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${url}`)
         const json = await res.json()
-        if (!json.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
+        if (!json?.status || !json?.data?.download?.url) 
+          throw '*⚠ No se obtuvo un enlace válido.*'
 
-       await m.react('✅');
-       await conn.sendMessage(m.chat, {
-         audio: { url: json.result.download.url },
-         mimetype: 'audio/mpeg',
-         fileName: `${json.result.title}.mp3`,
-         contextInfo: {
-           externalAdReply: {
-             title: title,
-             body: '⚽ RIN ITOSHI - IA 🌀',
-             mediaType: 1,
-             thumbnail: thumb,
-             mediaUrl: url,
-             sourceUrl: url,
-             renderLargerThumbnail: false
-           }
-         }
-       }, { quoted: m })
+        const audioTitle = json.data.title || 'audio'
+        const audioUrl = json.data.download.url
+        const fileName = json.data.download.filename || `${audioTitle}.mp3`
+
+        await m.react('✅');
+        await conn.sendMessage(m.chat, {
+          audio: { url: audioUrl },
+          mimetype: 'audio/mpeg',
+          fileName: fileName,
+          contextInfo: {
+            externalAdReply: {
+              title: audioTitle,
+              body: '⚽ RIN ITOSHI - IA 🌀',
+              mediaType: 1,
+              thumbnail: thumb,
+              mediaUrl: url,
+              sourceUrl: url,
+              renderLargerThumbnail: false
+            }
+          }
+        }, { quoted: m })
+
       } catch (e) {
         return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m)
       }
     }
 
+    // DESCARGA VIDEO (opcional, sigue igual)
     else if (['play2','playvideo'].includes(command)) {
       try {
         const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`)
         const json = await res.json()
-
-        if (!json.status || !json.data?.download?.url) throw '⚠ No se obtuvo enlace de video.'
+        if (!json?.status || !json?.data?.download?.url) 
+          throw '⚠ No se obtuvo enlace de video.'
 
         const size = await getSize(json.data.download.url)
         const sizeStr = size ? await formatSize(size) : 'Desconocido'
 
         await m.react('✅');
 
-        let caption = ` 🧪  DESCARGA COMPLETA 🌱
-> ✦ *Título:* ${json.data.title}
-> ❏ *Canal:* ${json.data.author}
-> ⌬ *Categoría:* ${json.data.category || "Desconocida"}
-> ⬡ *Duración:* ${formatTime(json.data.duration)}
-> ✧ *Calidad:* ${json.data.quality || "HD"}
+        const caption = ` 🧪  DESCARGA COMPLETA 🌱
+> ✦ *Título:* ${json.data.title || 'Desconocido'}
+> ❏ *Canal:* ${json.data.author || 'Desconocido'}
+> ⌬ *Categoría:* ${json.data.category || 'Desconocida'}
+> ⬡ *Duración:* ${formatTime(json.data.duration || 0)}
+> ✧ *Calidad:* ${json.data.quality || 'HD'}
 > ⨳ *Tamaño:* ${sizeStr}
 > 🜸 *Vistas:* ${formatViews(json.data.views)}
-> ◈ *Likes:* ${json.data.likes || "No disponible"}
-> ⌭ *Comentarios:* ${json.data.comments || "No disponible"}
-> ❖ *Publicado:* ${ago || 'Desconocido'}
+> ◈ *Likes:* ${json.data.likes || 'No disponible'}
+> ⌭ *Comentarios:* ${json.data.comments || 'No disponible'}
+> ❖ *Publicado:* ${ago}
 
-🌱 *Enlace:* https://youtu.be/${json.data.id}
-        `.trim()
+🌱 *Enlace:* https://youtu.be/${json.data.id || ''}`.trim()
 
         await conn.sendFile(
           m.chat,
@@ -114,9 +120,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       }
     }
 
-    else {
-      return conn.reply(m.chat, '✧︎ Comando no reconocido.', m)
-    }
+    else return conn.reply(m.chat, '✧︎ Comando no reconocido.', m)
 
   } catch (err) {
     return m.reply(`⚠︎ Ocurrió un error:\n${err}`)
@@ -128,9 +132,8 @@ handler.tags = ['descargas']
 
 export default handler
 
-
 function formatViews(views) {
-  if (views === undefined) return "No disponible"
+  if (!views) return "No disponible"
   if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`
   if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M (${views.toLocaleString()})`
   if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K (${views.toLocaleString()})`
