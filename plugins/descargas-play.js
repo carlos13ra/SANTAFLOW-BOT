@@ -2,14 +2,15 @@ import fetch from "node-fetch";
 import yts from "yt-search";
 import axios from "axios";
 
-const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/;
+const YT_REGEX = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/;
+const STELLAR_API_KEY = 'proyectsV2';
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text?.trim()) 
       return conn.reply(m.chat, `⚡ *Por favor, ingresa el nombre o enlace del video.*`, m);
 
-    let videoIdMatch = text.match(youtubeRegexID);
+    let videoIdMatch = text.match(YT_REGEX);
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text);
     let video = videoIdMatch
       ? search.all.find(v => v.videoId === videoIdMatch[1]) || search.videos.find(v => v.videoId === videoIdMatch[1])
@@ -22,7 +23,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const canal = author?.name || 'Desconocido';
 
     await m.react('⏱️');
-    const infoMessage = `🌷 \`Titulo:\`  *<${title}>*\n\n` +
+    const infoMessage = `🌷 \`Titulo:\`  *${title}*\n\n` +
       `> 📺 \`Canal\` » *${canal}*\n` +
       `> 👁️ \`Vistas\` » *${vistas}*\n` +
       `> ⏱ \`Duración\` » *${timestamp}*\n` +
@@ -49,33 +50,34 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp3?url=${url}`);
+        const apiUrl = `https://api.stellarwa.xyz/dow/ytmp3?url=${encodeURIComponent(url)}&apikey=${STELLAR_API_KEY}`;
+        const res = await fetch(apiUrl);
         const json = await res.json();
-        if (!json?.status || !json?.data?.download?.url) 
+
+        if (!json?.status || !json?.data?.dl) 
           throw '*⚠ No se obtuvo un enlace válido.*';
 
         const audioTitle = json.data.title || 'audio';
-        const audioUrl = json.data.download.url;
-        const fileName = json.data.download.filename || `${audioTitle}.mp3`;
+        const audioUrl = json.data.dl;
 
-         await conn.sendMessage(m.chat, {
-         audio: { url: audioUrl },
-         mimetype: 'audio/mpeg',
-         fileName: fileName,
-         ptt: true
-         contextInfo: {
-           externalAdReply: {
-             title: title,
-             body: '⚽ RIN ITOSHI - IA 🌀',
-             mediaType: 1,
-             thumbnail: thumb,
-             mediaUrl: url,
-             sourceUrl: url,
-             renderLargerThumbnail: true
-           }
-         }
-       }, { quoted: m })
-       
+        await conn.sendMessage(m.chat, {
+          audio: { url: audioUrl },
+          mimetype: 'audio/mpeg',
+          fileName: `${audioTitle}.mp3`,
+          ptt: true,
+          contextInfo: {
+            externalAdReply: {
+              title: title,
+              body: '⚽ RIN ITOSHI - IA 🌀',
+              mediaType: 1,
+              thumbnail: thumb,
+              mediaUrl: url,
+              sourceUrl: url,
+              renderLargerThumbnail: true
+            }
+          }
+        }, { quoted: m });
+
       } catch (e) {
         return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m);
       }
