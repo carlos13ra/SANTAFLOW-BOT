@@ -1,4 +1,4 @@
-//codigo creador x dv.shadow xd
+/*//codigo creado x dv.shadow xd
 
 import fetch from 'node-fetch';
 
@@ -41,4 +41,77 @@ handler.help = ["aiimg <texto>"];
 handler.tags = ["ai", "imagenes"];
 handler.command = /^aiimg$/i;
 
-export default handler;
+export default handler;*/
+
+import { generateWAMessageFromContent, proto } from "@whiskeysockets/baileys"
+import fs from "fs"
+
+let handler = async (m, { conn }) => {
+  try {
+    const secret = `WHOI-ZUMI`
+
+    const shadow_xyz = {
+      key: {
+        fromMe: false,
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast"
+      },
+      message: {
+        productMessage: {
+          product: {
+            productImage: {
+              mimetype: "image/jpeg",
+              jpegThumbnail: fs.readFileSync("./src/catalogo.jpg")
+            },
+            title: "⚡ PRUEBA | RIN ITOSHI ⚡",
+            description: "Funciones y comandos disponibles",
+            currencyCode: "USD",
+            priceAmount1000: 5000,
+            retailerId: "menu-funciones",
+            productImageCount: 1
+          },
+          businessOwnerJid: "51919199620@s.whatsapp.net"
+        }
+      }
+    }
+
+    const msg = generateWAMessageFromContent(
+      m.chat,
+      proto.Message.fromObject({
+        viewOnceMessage: {
+          message: {
+            interactiveMessage: {
+              body: { text: '✨ *CÓDIGO DE VINCULACIÓN* 🌱' },
+              footer: { text: `𝚁𝙸𝙽 𝙸𝚃𝙾𝚂𝙷𝙸 | \`𝚂𝙷𝙰𝙳𝙾𝚆.𝚇𝚈𝚉\`` },
+              header: { hasMediaAttachment: false },
+              nativeFlowMessage: {
+                buttons: [
+                  {
+                    name: "cta_copy",
+                    buttonParamsJson: JSON.stringify({
+                      display_text: "📋 Copiar el código para vincular a subbot",
+                      copy_code: secret
+                    })
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }),
+      { quoted: shadow_xyz }
+    )
+
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+
+  } catch (e) {
+    console.error(e)
+    await conn.reply(m.chat, "❌ Hubo un error al generar el código de vinculación.", m)
+  }
+}
+
+handler.command = ['codigo', 'vincular']
+handler.tags = ['tools']
+handler.help = ['codigo', 'vincular']
+
+export default handler
