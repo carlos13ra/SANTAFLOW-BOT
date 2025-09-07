@@ -122,7 +122,7 @@ global.icono = [
 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg'
 ].getRandom()
 
-/*global.rcanal = {
+global.rcanal = {
   contextInfo: {
     mentionedJid: [m.sender],
     isForwarded: true,
@@ -145,11 +145,11 @@ global.icono = [
     }
   }
 }
-*/
+/*
 
 global.rcanal = {contextInfo: {forwardingScore: 2025, isForwarded: true, externalAdReply: {title: packname, body: author, sourceUrl: redes, thumbnailUrl: icono}}}
 }
-
+*/
 export default handler
 
 function pickRandom(list) {
