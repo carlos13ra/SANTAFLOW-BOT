@@ -61,8 +61,8 @@ global.etiqueta = '@sʜᴀᴅᴏᴡ°ᴄᴏʀᴇ'
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
 global.moneda = 'Motoko Points'
-global.welcom1 = '💤⚡ Bienvenido/a al campo de juego ⚡🏟️\n❍ Edita con el comando *setwelcome*'
-global.welcom2 = '🔥⚽ El jugador ha salido del partido ⚽🔥\n❍ Edita con el comando *setbye*'
+global.welcom1 = '💤 Bienvenido/a al campo de juego ⚡🏟️\n❍ Edita con el comando *setwelcome*'
+global.welcom2 = '🔥 El jugador ha salido del partido ⚽🔥\n❍ Edita con el comando *setbye*'
 global.banner = 'https://i.postimg.cc/0NxWTkp0/1754525596737.jpg'
 global.avatar = 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg'
 global.logo = 'https://i.postimg.cc/pTm6Z0fw/1754253021526.jpg'
