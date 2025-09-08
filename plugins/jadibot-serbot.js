@@ -57,7 +57,7 @@ let rtx2 = ` \`[ 𝗦𝗨𝗕 𝗕𝗢𝗧 - 𝗠𝗢𝗗𝗘: 𝗖𝗢𝗗𝗘 
   ➤ \`4\` Ingresa el *código especial* ⚽
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-> \`NOTA: NO SE RECOMIENDA UTILIZAR EN SU CUENTA PRINCIPAL XD\``;
+> \`NOTA: NO SE RECOMIENDA UTILIZAR EN SU CUENTA PRINCIPAL\``;
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
