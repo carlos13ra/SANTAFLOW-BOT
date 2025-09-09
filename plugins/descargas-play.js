@@ -46,7 +46,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.reply(m.chat, infoMessage, m, external)
 
-    if (['playaudio'].includes(command)) {
+    if (['playaudio', 'play'].includes(command)) {
       try {
         const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
         const json = await res.json()
@@ -74,7 +74,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
       }
     }
     
-    else if (['playvideo'].includes(command)) {
+    else if (['playvideo', 'play2'].includes(command)) {
       try {
         const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`)
         const json = await res.json()
@@ -122,7 +122,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-handler.command = handler.help = ['playaudio', 'playvideo']
+handler.command = handler.help = ['playaudio', 'playvideo', 'play', 'play2']
 handler.tags = ['descargas']
 
 export default handler
