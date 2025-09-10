@@ -43,12 +43,12 @@ console.log(chalk.bold.redBright(`\n▨─────────────�
 console.log(chalk.magentaBright('\n🌱 Iniciando bot...'))
 console.log(chalk.bold.redBright(`\n▨────────────────────────▨`))
 
-say('RIN ITOSHI', {
+say('SANTAFLOW', {
 font: 'simple',
 align: 'left',
 gradient: ['green', 'white']
 })
-say('Made with By shadow', {
+say('Made with By Carlos.rv', {
 font: 'console',
 align: 'center',
 colors: ['cyan', 'magenta', 'yellow']
