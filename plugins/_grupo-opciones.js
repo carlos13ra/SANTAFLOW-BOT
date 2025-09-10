@@ -24,7 +24,6 @@ const handler = async (m, { conn }) => {
   
 ╭─〔 *Grupos* 〕
 │ ☘️ Welcome: ${estado(welcome)}
-| ☘️ Goodbye: ${estado(goodbye)}
 │ ☘️ Antibot: ${estado(antiBot)}
 │ ☘️ Autoaceptar: ${estado(autoAceptar)}
 │ ☘️ Autorechazar: ${estado(autoRechazar)}
