@@ -24,6 +24,7 @@ const handler = async (m, { conn }) => {
   
 ╭─〔 *Grupos* 〕
 │ ☘️ Welcome: ${estado(welcome)}
+| ☘️ Goodbye: ${estado(goodbye)}
 │ ☘️ Antibot: ${estado(antiBot)}
 │ ☘️ Autoaceptar: ${estado(autoAceptar)}
 │ ☘️ Autorechazar: ${estado(autoRechazar)}
@@ -58,9 +59,9 @@ _*📝 Ejemplo:*_  \`.antilink on\``;
     text,
     contextInfo: {
       externalAdReply: {
-        title: '⚙️ Configuración Rin Itoshi',
+        title: '⚙️ Configuración Santaflow',
         body: 'Gestión Avanzada del Reino',
-        thumbnailUrl: 'https://files.catbox.moe/4dple4.jpg',
+        thumbnailUrl: 'https://i.postimg.cc/k55z3h9Z/IMG-20250909-WA0059.jpg',
         mediaType: 1,
         showAdAttribution: true,
         renderLargerThumbnail: true
