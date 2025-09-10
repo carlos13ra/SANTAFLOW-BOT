@@ -36,6 +36,13 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, i
           global.dfail('group', m, conn)
           throw false
         }
+      } else if (!isAdmin) {
+        global.dfail('admin', m, conn)
+        throw false
+      }
+      chat.welcome = isEnable
+      break  
+              }
         case 'goodbay':
     case 'dedpedida':
       if (!m.isGroup) {
@@ -47,9 +54,9 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, i
         global.dfail('admin', m, conn)
         throw false
       }
-      chat.welcome = isEnable
+      chat.goodbye = isEnable
       break  
-      
+  
     case 'antiprivado':
     case 'antiprivate':
       isAll = true
