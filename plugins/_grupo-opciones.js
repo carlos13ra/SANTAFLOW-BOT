@@ -1,6 +1,6 @@
 const handler = async (m, { conn }) => {
   const { welcome, antiPrivate, antiarabe, restrict, antiBot, autoAceptar, autoRechazar, antiBot2, modoadmin, reaction, nsfw, antiSpam, antiLink2, jadibotmd, detect, antiver, audios, antiLink, antifake } = global.db.data.chats[m.chat] || {};
-    '/*
+    /*
         let thumbnail = 'https://i.postimg.cc/k55z3h9Z/IMG-20250909-WA0059.jpg';  
         let rcanal = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U';
         
