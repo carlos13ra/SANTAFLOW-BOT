@@ -21,11 +21,6 @@ let handler = async (m, { conn, usedPrefix }) => {
     let fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' })
     let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' })
 
-    let suittag = "51946200884"
-    let club = "🌸 SantaFlow Bot"
-    let channelRD = { id: "120363402079893698@newsletter", name: "SantaFlow Oficial" }
-    let redes = "https://github.com/Yuji-XDev"
-
     const emojis = {
       'main': '🦋', 'tools': '🛠️', 'audio': '🎧', 'group': '👥',
       'owner': '👑', 'fun': '🎮', 'info': 'ℹ️', 'internet': '🌐',
