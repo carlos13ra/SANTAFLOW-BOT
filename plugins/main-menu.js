@@ -24,9 +24,8 @@ let handler = async (m, { conn, usedPrefix }) => {
     let suittag = "51946200884"
     let club = "🌸 SantaFlow Bot"
     let channelRD = { id: "120363402079893698@newsletter", name: "SantaFlow Oficial" }
-    let packname = "SantaFlow Pack"
-    let dev = "By dev.nose xd"
     let redes = "https://github.com/Yuji-XDev"
+
     const emojis = {
       'main': '🦋', 'tools': '🛠️', 'audio': '🎧', 'group': '👥',
       'owner': '👑', 'fun': '🎮', 'info': 'ℹ️', 'internet': '🌐',
@@ -91,14 +90,25 @@ ${secciones}
     await m.react('☘️')
 
     await conn.sendMessage(m.chat, {
-      image: { url: banner },
+      video: { url: 'https://files.catbox.moe/tc1zxx.mp4' },
       caption: menuText,
-      mentions: [m.sender],
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelRD.id,
-        serverMessageId: 100,
-        newsletterName: channelRD.name
+      contextInfo: {
+        mentionedJid: [m.sender],
+        isForwarded: true,
+        forwardedNewsletterMessageInfo: {
+          newsletterJid: channelRD.id,
+          newsletterName: channelRD.name,
+          serverMessageId: -1,
+        },
+        forwardingScore: 99999,
+        externalAdReply: {
+          title: packname,
+          body: dev,
+          thumbnailUrl: banner,
+          sourceUrl: redes,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        },
       }
     }, { quoted: m })
 
