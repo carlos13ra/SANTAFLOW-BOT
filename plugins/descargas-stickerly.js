@@ -1,5 +1,5 @@
 import fetch from "node-fetch"
-import { sticker } from "../lib/sticker.js" // librería que me pasaste
+import { sticker } from "../lib/sticker.js"
 
 const API_STICKERLY = "https://delirius-apiofc.vercel.app/download/stickerly"
 
