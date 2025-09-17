@@ -1,43 +1,57 @@
 import fetch from 'node-fetch'
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
+let handler = async (m, { conn, text }) => {
+  const user = global.db.data.users[m.sender] || {}
+
+  if (!text) return m.reply(`*${emojis} Por favor, ingresa un link de Mediafire.*`)
+  
+  await conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } })
+      await conn.sendMessage(m.chat, {
+      text: '🍂 *D E S C A R G A N D O. . . ...*\n> 𝙴𝚂𝙿𝙴𝚁𝙴 𝚄𝙽 𝙼𝙾𝙼𝙴𝙽𝚃𝙸𝚃𝙾 𝚄𝚆𝚄',
+      mentions: [m.sender],
+      contextInfo: {
+        externalAdReply: {
+          title: '🍄 Rɪɴ Iᴛᴏsʜɪ ᴍᴅ 🌹 | 🪾 ʙʏ sʜᴀᴅᴏᴡ.xʏᴢ 🪴',
+          body: club,
+          thumbnailUrl: global.logo,
+          sourceUrl: 'https://Instagram.com',
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+  }, { quoted: m })
+  
   try {
-    if (!text) {
-      throw m.reply(`🧪 Ingresa un enlace válido de *Mediafire*.\n\n🌱 Ejemplo: ${usedPrefix + command} https://www.mediafire.com/file/xxxxxx/file`);
-    }
+    let res = await fetch(`https://api.stellarwa.xyz/dow/mediafire?url=${encodeURIComponent(text)}&apikey=proyectsV2`)
+    let json = await res.json()
 
-    await conn.sendMessage(m.chat, { react: { text: "🕒", key: m.key } });
+    if (!json.status) throw new Error("No se pudo obtener el archivo.")
 
-    let apiUrl = `https://api.vreden.my.id/api/mediafiredl?url=${encodeURIComponent(text)}`;
-    let res = await fetch(apiUrl);
-    let json = await res.json();
+    let { title, peso, fecha, tipo, dl } = json.data
 
-    if (!json.result || !json.result[0] || !json.result[0].status) {
-      throw `❌ No se pudo obtener información del archivo.\nVerifica que el link sea correcto.`;
-    }
+    await conn.sendFile(
+      m.chat,
+      dl,
+      title,
+      `乂  *¡MEDIAFIRE - DESCARGAS!*  乂
 
-    let file = json.result[0];
-    let { nama, size, mime, link } = file;
+🌱 *Nombre* : ${title}
+⚡ *Peso* : ${peso}
+💖 *Fecha* : ${fecha}
+🌳 *MimeType* : ${tipo}
 
-    await conn.sendFile(m.chat, link, nama, 
-      `乂  *¡MEDIAFIRE - DESCARGAS!*  乂\n\n` +
-      `📂 *Nombre:* ${nama}\n` +
-      `📦 *Peso:* ${size}\n` +
-      `🔖 *MimeType:* ${mime}\n\n` +
-      `> 📥 Archivo descargado desde Mediafire`, 
+${emoji} Archivo descargado con éxito.`,
       m
-    );
+    )
 
-    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
-
-  } catch (err) {
-    console.error(err);
-    m.reply(`❌ Ocurrió un error al intentar descargar el archivo.\n\n⚠️ Verifica el link de *Mediafire*.`);
-    await conn.sendMessage(m.chat, { react: { text: '❌', key: m.key } });
+    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } })
+  } catch (e) {
+    console.error(e)
+    m.reply(`❌ Error al descargar el archivo.\n${e.message}`)
   }
-};
+}
 
-handler.help = ['mediafire <url>']
+handler.help = ['mediafire']
 handler.tags = ['descargas']
 handler.command = ['mf', 'mediafire']
 handler.register = true
