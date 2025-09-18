@@ -33,9 +33,9 @@ export async function before(m, { conn }) {
         mentions: [m.sender],
         contextInfo: {
           externalAdReply: {
-            title: '🌱 Dv.Shadow 🇦🇱',
-            body: '💎◌*̥₊ ʀɪɴ ɪᴛᴏsʜɪ ᴀɪ ◌❐⚽༉',
-            thumbnailUrl: 'https://files.catbox.moe/mez710.jpg',
+            title: dev,
+            body: packname,
+            thumbnailUrl: banner,
             sourceUrl: 'https://github.com/Yuji-XDev',
             mediaType: 1,
             renderLargerThumbnail: true
@@ -77,15 +77,15 @@ export async function before(m, { conn }) {
   ];
 
   const texto = mensajesNoEncontrado[Math.floor(Math.random() * mensajesNoEncontrado.length)];
-  const imgurl = 'https://files.catbox.moe/jyz3f8.jpg';
+  const imgurl = icono;
 
   await conn.sendMessage(m.chat, {
     text: texto,
     mentions: [m.sender],
     contextInfo: {
       externalAdReply: {
-        title: '☘️ Dev.Shadow 🌱',
-        body: '🌷◌*̥₊ ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ ᴍᴅ ◌❐⚽༉',
+        title: dev,
+        body: packname,
         thumbnailUrl: imgurl,
         sourceUrl: 'https://instagram.com',
         mediaType: 1,
