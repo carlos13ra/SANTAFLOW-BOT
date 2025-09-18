@@ -168,10 +168,8 @@ async function formatSize(bytes) {
 
   return `${bytes.toFixed(2)} ${units[i]}`;
 }
-/*
-  
-  
-import fetch from 'node-fetch'
+/
+import fetch from 'node-fetch
 
 function formatBytes(bytes) {
   if (!bytes || isNaN(bytes)) return "Desconocido"
