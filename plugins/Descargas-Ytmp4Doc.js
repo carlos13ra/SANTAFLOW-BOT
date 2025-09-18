@@ -1,172 +1,290 @@
-import fetch from "node-fetch";
-import axios from 'axios';
+/*import fetch from 'node-fetch'
+import Jimp from 'jimp'
 
-let handler = async (m, { conn, text, args }) => {
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+  let q = args.join(" ").trim()
+  if (!q) {
+    return conn.sendMessage(m.chat, {
+      text: `*🧪 Ingresa el nombre del video a descargar.*`
+    }, { quoted: m })
+  }
+
+  await conn.sendMessage(m.chat, {
+    text: `🌸≽───────≼🌸
+૮₍｡˃ ᵕ ˂ ｡₎ა 🎶 *¡Descargando tu archiwito kawaii!*
+  
+˚₊· ͟͟͞͞➳❥ 📊 Progresito:  
+[▓▓▓▓▓░░░░░] 50% 🍬💗  
+🌸≽───────≼🌸`
+  }, { quoted: m })
+  
   try {
-    if (!text) return conn.reply(m.chat, `💔 *Por favor, ingresa la URL del vídeo de YouTube.*`, m, fake);
 
-    if (!/^(?:https?:\/\/)?(?:www\.|m\.|music\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/.test(args[0])) {
-      return conn.reply(m.chat, `⚠️ *Enlace inválido.* Por favor, ingresa una URL válida de YouTube.`, m);
+    let res = await fetch(`https://delirius-apiofc.vercel.app/search/ytsearch?q=${encodeURIComponent(q)}`)
+    let json = await res.json()
+
+    if (!json.status || !json.data || !json.data.length) {
+      return conn.sendMessage(m.chat, { text: `No encontré resultados para *${q}*.` }, { quoted: m })
     }
 
-    await conn.sendMessage(m.chat, { react: { text: '📀', key: m.key } });
+    let vid = json.data[0]
 
-    const thumbRes = await fetch('https://files.catbox.moe/9exbxh.png');
-    const thumbBuffer = await thumbRes.buffer();
+    let dl = await fetch(`https://api.starlights.uk/api/downloader/youtube?url=${encodeURIComponent(vid.url)}`)
+    let info = await dl.json()
 
-    const fkontak = {
-      key: {
-        participants: "0@s.whatsapp.net",
-        remoteJid: "status@broadcast",
-        fromMe: false,
-        id: "Halo"
-      },
-      message: {
-        locationMessage: {
-          name: `DESCARGA COMPLETA\n[▓▓▓▓▓▓░░░░░░] 100%`,
-          jpegThumbnail: thumbBuffer
-        }
-      },
-      participant: "0@s.whatsapp.net"
-    };
+    if (!info.status || !info.mp4) {
+      return conn.sendMessage(m.chat, { text: `⚠️ No se pudo obtener el video de *${vid.title}*.` }, { quoted: m })
+    }
 
-    const videoData = await ytdl(args[0]);
-    const { title, duration, url } = videoData;
-    const size = await getSize(url);
-    const sizeStr = size ? await formatSize(size) : 'Desconocido';
-    const thumbnail = await getThumbnail(args[0]);
-    const cleanTitle = title.replace(/[^\w\s]/gi, '').trim().replace(/\s+/g, '_');
-    const fileName = `${cleanTitle}.mp4`;
+    let { mp4 } = info
+
+    let caption = `
+= 💎 *${vid.title}*
+= 🌱 𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: ${vid.duration}
+= ☘️ 𝐂𝐚𝐧𝐚𝐥: ${vid.author?.name || "Desconocido"}
+= 💥 𝐓𝐚𝐦𝐚𝐧̃𝐨: ${mp4.size}
+= 💖 𝐂𝐚𝐥𝐢𝐝𝐚𝐝: ${mp4.quality}
+= 🍧 𝐋𝐢𝐧𝐤: ${vid.url}
+`.trim()
+
+    let thumb = null
+    try {
+      const img = await Jimp.read(mp4.thumbnail || vid.thumbnail || "")
+      img.resize(300, Jimp.AUTO)
+      thumb = await img.getBufferAsync(Jimp.MIME_JPEG)
+    } catch (err) {
+      console.log("⚠️ Error al procesar miniatura:", err)
+    }
 
     await conn.sendMessage(m.chat, {
-    text: `🎶 ¡Descargando archivo!
-
-📊 Progreso: [▓▓▓▓▓░░░░░] 50%
-
-📂 Nombre: *${title}*
-⏰ Tiempo: *${duration}*
-💽 Peso: *${sizeStr}*
-🔗 Link: ${args[0]}
-
-⌛ Estado: Casi listo, procesando video...`,
-    mentions: [m.sender],
-    contextInfo: {
-      externalAdReply: {
-        title: title,
-        thumbnailUrl: thumbnail,
-        sourceUrl: null,
-        mediaType: 1,
-        renderLargerThumbnail: true
+      document: { url: mp4.dl_url },
+      mimetype: "video/mp4",
+      fileName: `${vid.title}.mp4`,
+      caption,
+      ...(thumb ? { jpegThumbnail: thumb } : {}),
+      contextInfo: {
+        externalAdReply: {
+          title: vid.title,
+          body: "🚀 YouTube Video 💖",
+          mediaUrl: vid.url,
+          sourceUrl: vid.url,
+          thumbnailUrl: mp4.thumbnail || vid.thumbnail,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
       }
-    }
-  }, { quoted: m });
+    }, { quoted: m })
 
-    const caption = `*📥 Descarga completa:*\n> 🎧 *Título:* ${title}\n> ⏱️ *Duración:* ${duration}\n> 💾 *Tamaño:* ${sizeStr}`;
+  } catch (err) {
+    console.error("[Error en ytmp4doc:]", err)
+    conn.sendMessage(m.chat, { text: `💔 Error: ${err.message}` }, { quoted: m })
+  }
+}
+
+handler.command = ['ytmp4doc', 'ytvdoc', 'ytdoc']
+handler.help = ['ytmp4doc']
+handler.tags = ['descargas']
+
+export default handler*/
+
+import fetch from 'node-fetch'
+import Jimp from 'jimp'
+import axios from 'axios'
+import crypto from 'crypto'
+
+const savetube = {
+  api: {
+    base: "https://media.savetube.me/api",
+    cdn: "/random-cdn",
+    info: "/v2/info",
+    download: "/download"
+  },
+  headers: {
+    'accept': '*/*',
+    'content-type': 'application/json',
+    'origin': 'https://yt.savetube.me',
+    'referer': 'https://yt.savetube.me/',
+    'user-agent': 'Postify/1.0.0'
+  },
+  crypto: {
+    hexToBuffer: (hexString) => {
+      const matches = hexString.match(/.{1,2}/g);
+      return Buffer.from(matches.join(''), 'hex');
+    },
+    decrypt: async (enc) => {
+      const secretKey = 'C5D58EF67A7584E4A29F6C35BBC4EB12';
+      const data = Buffer.from(enc, 'base64');
+      const iv = data.slice(0, 16);
+      const content = data.slice(16);
+      const key = savetube.crypto.hexToBuffer(secretKey);
+
+      const decipher = crypto.createDecipheriv('aes-128-cbc', key, iv);
+      let decrypted = decipher.update(content);
+      decrypted = Buffer.concat([decrypted, decipher.final()]);
+
+      return JSON.parse(decrypted.toString());
+    }
+  },
+  isUrl: str => { 
+    try { new URL(str); return true } catch { return false } 
+  },
+  youtube: url => {
+    const patterns = [
+      /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+      /youtu\.be\/([a-zA-Z0-9_-]{11})/
+    ];
+    for (let regex of patterns) {
+      if (regex.test(url)) return url.match(regex)[1];
+    }
+    return null;
+  },
+  request: async (endpoint, data = {}, method = 'post') => {
+    try {
+      const { data: response } = await axios({
+        method,
+        url: `${endpoint.startsWith('http') ? '' : savetube.api.base}${endpoint}`,
+        data: method === 'post' ? data : undefined,
+        params: method === 'get' ? data : undefined,
+        headers: savetube.headers
+      });
+      return { status: true, code: 200, data: response };
+    } catch (error) {
+      return {
+        status: false,
+        code: error.response?.status || 500,
+        error: error.message
+      };
+    }
+  },
+  getCDN: async () => {
+    const response = await savetube.request(savetube.api.cdn, {}, 'get');
+    if (!response.status) return response;
+    return { status: true, code: 200, data: response.data.cdn };
+  },
+  download: async (link, quality = '360') => {
+    if (!link) return { status: false, code: 400, error: "Falta el enlace de YouTube." };
+    if (!savetube.isUrl(link)) return { status: false, code: 400, error: "URL inválida de YouTube." };
+
+    const id = savetube.youtube(link);
+    if (!id) return { status: false, code: 400, error: "No se pudo extraer el ID del video." };
 
     try {
-      await conn.sendMessage(m.chat, {
-        document: { url },
-        fileName,
-        mimetype: 'video/mp4',
-        caption,
-        thumbnail,
-        contextInfo: {
-          externalAdReply: {
-            title,
-            body: '🌱 YOUTUBE DOC 💎',
-            mediaUrl: args[0],
-            sourceUrl: args[0],
-            thumbnailUrl: args[0],
-            mediaType: 1,
-            renderLargerThumbnail: false
-          }
+      const cdnRes = await savetube.getCDN();
+      if (!cdnRes.status) return cdnRes;
+      const cdn = cdnRes.data;
+
+      const infoRes = await savetube.request(`https://${cdn}${savetube.api.info}`, {
+        url: `https://www.youtube.com/watch?v=${id}`
+      });
+      if (!infoRes.status) return infoRes;
+
+      const decrypted = await savetube.crypto.decrypt(infoRes.data.data);
+
+      const dl = await savetube.request(`https://${cdn}${savetube.api.download}`, {
+        id: id,
+        downloadType: 'video',
+        quality: quality, // 360p
+        key: decrypted.key
+      });
+
+      return {
+        status: true,
+        code: 200,
+        result: {
+          title: decrypted.title || "Desconocido",
+          thumbnail: decrypted.thumbnail || `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
+          download: dl.data.data.downloadUrl,
+          duration: decrypted.duration,
+          quality: quality,
+          id
         }
-      }, { quoted: fkontak });
-    } catch (err) {
-      console.warn('❗ Error al enviar como documento. Se enviará como video.');
+      };
 
-      await conn.sendMessage(m.chat, {
-        video: { url },
-        caption,
-        mimetype: 'video/mp4',
-        thumbnail
-      }, { quoted: fkontak });
+    } catch (error) {
+      return { status: false, code: 500, error: error.message };
     }
-
-    await conn.sendMessage(m.chat, { react: { text: '☑️', key: m.key } });
-
-  } catch (e) {
-    console.error(e);
-    m.reply(`❌ *Ocurrió un error:*\n${e.message}`);
   }
 };
 
-handler.command = ['ytmp4doc', 'ytvdoc', 'ytdoc'];
-handler.help = ['ytmp4doc'];
-handler.tags = ['descargas'];
-export default handler;
-
-
-async function ytdl(url) {
-  const headers = {
-    "accept": "*/*",
-    "accept-language": "es-PE,es;q=0.9",
-    "sec-fetch-mode": "cors",
-    "Referer": "https://id.ytmp3.mobi/"
-  };
-
-  const initRes = await fetch(`https://d.ymcdn.org/api/v1/init?p=y&23=1llum1n471&_=${Math.random()}`, { headers });
-  const init = await initRes.json();
-  const videoId = url.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?/]+)/)?.[1];
-  const convertURL = init.convertURL + `&v=${videoId}&f=mp4&_=${Math.random()}`;
-
-  const convertRes = await fetch(convertURL, { headers });
-  const convert = await convertRes.json();
-
-  let info = {};
-  for (let i = 0; i < 3; i++) {
-    const progressRes = await fetch(convert.progressURL, { headers });
-    info = await progressRes.json();
-    if (info.progress === 3) break;
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+  let q = args.join(" ").trim()
+  if (!q) {
+    return conn.sendMessage(m.chat, {
+      text: `*🧪 Ingresa el nombre del video a descargar.*`
+    }, { quoted: m })
   }
 
-  return {
-    url: convert.downloadURL,
-    title: info.title || 'video',
-    duration: info.duration || 'Desconocido'
-  };
-}
-
-async function formatSize(bytes) {
-  const units = ['B', 'KB', 'MB', 'GB'];
-  let i = 0;
-  if (!bytes || isNaN(bytes)) return 'Desconocido';
-  while (bytes >= 1024 && i < units.length - 1) {
-    bytes /= 1024;
-    i++;
-  }
-  return `${bytes.toFixed(2)} ${units[i]}`;
-}
-
-async function getSize(url) {
+  await conn.sendMessage(m.chat, {
+    text: `૮₍｡˃ ᵕ ˂ ｡₎ა 🎶 *¡ESCARGANDO EL ARCHIVO!*⌛
+  
+˚₊· ͟͟͞͞➳❥ ⌛ DESCARGANDO🔥:  
+[▓▓▓▓▓░░░░░] 50% ▶️⌛  `
+  }, { quoted: m })
+  
   try {
-    const res = await axios.head(url);
-    const length = res.headers['content-length'];
-    return length ? parseInt(length, 10) : null;
+    // 🔍 Buscar en YT
+    let res = await fetch(`https://delirius-apiofc.vercel.app/search/ytsearch?q=${encodeURIComponent(q)}`)
+    let json = await res.json()
+    if (!json.status || !json.data || !json.data.length) {
+      return conn.sendMessage(m.chat, { text: `No encontré resultados para *${q}*.` }, { quoted: m })
+    }
+
+    let vid = json.data[0]
+
+    let info = await savetube.download(vid.url, '360')
+    if (!info.status) {
+      return conn.sendMessage(m.chat, { text: `⚠️ No se pudo obtener el video de *${vid.title}*.` }, { quoted: m })
+    }
+
+    let { result } = info
+
+    let caption = `
+= 📀 *${result.title}*
+= ⌛ 𝐃𝐮𝐫𝐚𝐜𝐢𝐨𝐧: ${vid.duration}
+= ▶️ 𝐂𝐚𝐥𝐢𝐝𝐚𝐝: ${result.quality}p
+= 🎵 𝐂𝐚𝐧𝐚𝐥: ${vid.author?.name || "Desconocido"}
+= 🔗 𝐋𝐢𝐧𝐤: ${vid.url}
+`.trim()
+
+    let thumb = null
+    try {
+      const img = await Jimp.read(result.thumbnail)
+      img.resize(300, Jimp.AUTO)
+      thumb = await img.getBufferAsync(Jimp.MIME_JPEG)
+    } catch (err) {
+      console.log("Error al procesar miniatura:", err)
+    }
+
+    await conn.sendMessage(m.chat, {
+      document: { url: result.download },
+      mimetype: "video/mp4",
+      fileName: `${result.title}.mp4`,
+      caption,
+      ...(thumb ? { jpegThumbnail: thumb } : {}),
+      contextInfo: {
+        externalAdReply: {
+          title: result.title,
+          body: "🥭 YOUTUBE ~ MP3 ~ DOC ~ SANTAFLOW IA 💫",
+          mediaUrl: vid.url,
+          sourceUrl: vid.url,
+          thumbnailUrl: result.thumbnail,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: m })
+
   } catch (err) {
-    console.error('⚠️ Error al obtener tamaño del archivo:', err.message);
-    return null;
+    console.error("[Error en ytmp4doc:]", err)
+    conn.sendMessage(m.chat, { text: `❌ Error: ${err.message}` }, { quoted: m })
   }
 }
 
-async function getThumbnail(ytUrl) {
-  try {
-    const videoId = ytUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:.*v=|.*\/|.*embed\/))([^&?/]+)/)?.[1];
-    if (!videoId) return null;
-    const thumbUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-    const res = await fetch(thumbUrl);
-    return await res.buffer();
-  } catch {
-    return null;
-  }
-}
+handler.command = ['ytmp4doc', 'ytvdoc', 'ytdoc']
+handler.help = ['ytmp4doc']
+handler.tags = ['descargas']
+
+export default handler
