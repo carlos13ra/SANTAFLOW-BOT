@@ -20,6 +20,18 @@ let handler = async (m, { conn, usedPrefix }) => {
     let hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' })
     let fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' })
     let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' })
+    
+    let videos = [
+        'https://files.catbox.moe/jgfdmn.mp4',
+        'https://files.catbox.moe/wc8wcz.mp4',
+        'https://files.catbox.moe/t9frnr.mp4',
+        'https://files.catbox.moe/j4aew2.mp4',
+        'https://files.catbox.moe/1b5zis.mp4',
+        'https://files.catbox.moe/leq8g0.mp4',
+        'https://files.catbox.moe/hvfmay.mp4',
+        'https://files.catbox.moe/x2tt5r.mp4'
+    ]
+    let video = videos[Math.floor(Math.random() * videos.length)]
 
     const emojis = {
       'main': '🦋', 'tools': '🛠️', 'audio': '🎧', 'group': '👥',
@@ -82,30 +94,9 @@ let handler = async (m, { conn, usedPrefix }) => {
 ${secciones}
 `.trim()
 
-    await m.react('☘️')
-
-    await conn.sendMessage(m.chat, {
-      video: { url: 'https://files.catbox.moe/tc1zxx.mp4' },
-      caption: menuText,
-      contextInfo: {
-        mentionedJid: [m.sender],
-        isForwarded: true,
-        forwardedNewsletterMessageInfo: {
-          newsletterJid: channelRD.id,
-          newsletterName: channelRD.name,
-          serverMessageId: -1,
-        },
-        forwardingScore: 99999,
-        externalAdReply: {
-          title: packname,
-          body: dev,
-          thumbnailUrl: banner,
-          sourceUrl: redes,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        },
-      }
-    }, { quoted: m })
+ await m.react('🎋')
+await conn.sendMessage(m.chat, { video: { url: video }, caption: menuText, contextInfo: { mentionedJid: [m.sender], isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, newsletterName: channelRD.name, serverMessageId: -1, }, forwardingScore: 999, externalAdReply: { title: packname, body: dev, thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false,
+}, }, gifPlayback: true, gifAttribution: 0 }, { quoted: null })
 
   } catch (e) {
     console.error(e)
