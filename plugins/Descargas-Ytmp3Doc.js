@@ -215,7 +215,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
   }
 
   await conn.sendMessage(m.chat, {
-    text: `૮₍｡˃ ᵕ ˂ ｡₎ა 🫛 *¡Descargando tu archiwito kawaii!*
+    text: `૮₍｡˃ ᵕ ˂ ｡₎ა ☘️ *¡Descargando tu archivo!*👻
   
 ˚₊· ͟͟͞͞➳❥ 🔥 DESCARGANDO 💫:  
 [▓▓▓▓▓░░░░░] 50% 🔥`
