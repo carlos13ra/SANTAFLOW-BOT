@@ -36,7 +36,7 @@ export async function before(m, { conn }) {
             title: dev,
             body: packname,
             thumbnailUrl: banner,
-            sourceUrl: 'https://github.com/Yuji-XDev',
+            sourceUrl: 'https://github.com/carlos13ra',
             mediaType: 1,
             renderLargerThumbnail: true
           }
