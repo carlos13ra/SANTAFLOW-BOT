@@ -1,12 +1,12 @@
 import fetch from "node-fetch"
 import yts from "yt-search"
-import axios from "axios"
+import axios from "axios";
 
 const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-zA-Z0-9_-]{11})/
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
-    if (!text.trim()) return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m)
+    if (!text.trim()) return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m, fake)
 
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
@@ -45,72 +45,72 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     }
 
     await conn.reply(m.chat, infoMessage, m, external)
-    
-    if (['playaudio', 'play'].includes(command)) {
+
+
+    if (['play', 'playaudio'].includes(command)) {
       try {
         const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
         const json = await res.json()
+        if (!json.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
 
-        if (!json?.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
-
-        await m.react('✅');
-        await conn.sendMessage(m.chat, {
-          audio: { url: json.result.download.url },
-          mimetype: 'audio/mpeg',
-          fileName: `${json.result.metadata?.title || 'audio'}.mp3`,
-          contextInfo: {
-            externalAdReply: {
-              title: title,
-              body: '⚽ Rin Itoshi - Music 🎧',
-              mediaType: 1,
-              thumbnail: thumb,
-              mediaUrl: url,
-              sourceUrl: url,
-              renderLargerThumbnail: true
-            }
-          }
-        }, { quoted: m })
+       await m.react('✅');
+       await conn.sendMessage(m.chat, {
+         audio: { url: json.result.download.url },
+         mimetype: 'audio/mpeg',
+         fileName: `${json.result.title}.mp3`,
+         contextInfo: {
+           externalAdReply: {
+             title: title,
+             body: '🔥 SANTAFLOW - IA 🌀',
+             mediaType: 1,
+             thumbnail: thumb,
+             mediaUrl: url,
+             sourceUrl: url,
+             renderLargerThumbnail: false
+           }
+         }
+       }, { quoted: m })
       } catch (e) {
-        return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio.*', m)
+        return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m)
       }
     }
 
-    else if (['playvideo', 'play2'].includes(command)) {
+    else if (['play2','playvideo'].includes(command)) {
       try {
-        const res = await fetch(`https://api.vreden.my.id/api/ytplaymp4?query=${encodeURIComponent(url)}`)
+        const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`)
         const json = await res.json()
 
-        if (!json?.result?.download?.url) throw '⚠ No se obtuvo enlace de video.'
+        if (!json.status || !json.data?.download?.url) throw '⚠ No se obtuvo enlace de video.'
 
-        const meta = json.result.metadata || {}
-        const down = json.result.download || {}
-
-        const size = await getSize(down.url)
+        const size = await getSize(json.data.download.url)
         const sizeStr = size ? await formatSize(size) : 'Desconocido'
 
         await m.react('✅');
 
-        let caption = `🧪  DESCARGA COMPLETA 🌱
-> ✦ *Título:* ${meta.title || "Desconocido"}
-> ❏ *Canal:* ${meta.author?.name || "Desconocido"}
-> ⌬ *Duración:* ${meta.duration?.timestamp || "Desconocida"}
-> ✧ *Calidad:* ${down.quality || "HD"}
+        let caption = ` 🧪  DESCARGA COMPLETA 🌱
+> ✦ *Título:* ${json.data.title}
+> ❏ *Canal:* ${json.data.author}
+> ⌬ *Categoría:* ${json.data.category || "Desconocida"}
+> ⬡ *Duración:* ${formatTime(json.data.duration)}
+> ✧ *Calidad:* ${json.data.quality || "HD"}
 > ⨳ *Tamaño:* ${sizeStr}
-> 🜸 *Vistas:* ${formatViews(meta.views)}
-> ❖ *Publicado:* ${meta.ago || 'Desconocido'}
+> 🜸 *Vistas:* ${formatViews(json.data.views)}
+> ◈ *Likes:* ${json.data.likes || "No disponible"}
+> ⌭ *Comentarios:* ${json.data.comments || "No disponible"}
+> ❖ *Publicado:* ${ago || 'Desconocido'}
 
-🌱 *Enlace:* ${meta.url || url}
+🌱 *Enlace:* https://youtu.be/${json.data.id}
         `.trim()
 
         await conn.sendFile(
           m.chat,
-          down.url,
-          down.filename || 'video.mp4',
+          json.data.download.url,
+          `${json.data.title || 'video'}.mp4`,
           caption,
           m
         )
       } catch (e) {
-        return conn.reply(m.chat, '⚠︎ No se pudo enviar el video.', m)
+        return conn.reply(m.chat, '⚠︎ No se pudo enviar el video. El archivo podría ser muy pesado o hubo un error en el enlace.', m)
       }
     }
 
@@ -123,14 +123,14 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 }
 
-handler.command = handler.help = ['playaudio', 'playvideo', 'play', 'play2']
+handler.command = handler.help = ['playaudio', 'play', 'playvideo', 'play2']
 handler.tags = ['descargas']
 
 export default handler
 
 
 function formatViews(views) {
-  if (!views) return "No disponible"
+  if (views === undefined) return "No disponible"
   if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`
   if (views >= 1e6) return `${(views / 1e6).toFixed(1)}M (${views.toLocaleString()})`
   if (views >= 1e3) return `${(views / 1e3).toFixed(1)}K (${views.toLocaleString()})`
@@ -148,7 +148,8 @@ async function getSize(downloadUrl) {
     const response = await axios.head(downloadUrl, { maxRedirects: 5 });
     const length = response.headers['content-length'];
     return length ? parseInt(length, 10) : null;
-  } catch {
+  } catch (error) {
+    console.error("Error al obtener el tamaño:", error.message);
     return null;
   }
 }
@@ -156,10 +157,13 @@ async function getSize(downloadUrl) {
 async function formatSize(bytes) {
   const units = ['B', 'KB', 'MB', 'GB'];
   let i = 0;
+
   if (!bytes || isNaN(bytes)) return 'Desconocido';
+
   while (bytes >= 1024 && i < units.length - 1) {
     bytes /= 1024;
     i++;
   }
+
   return `${bytes.toFixed(2)} ${units[i]}`;
-}
+      }
