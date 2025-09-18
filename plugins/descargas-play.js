@@ -46,35 +46,37 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.reply(m.chat, infoMessage, m, external)
 
-
+    // --- AUDIO (play / playaudio) ---
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const res = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)
+        const res = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${url}&quality=128`)
         const json = await res.json()
+        
         if (!json.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
 
-       await m.react('✅');
-       await conn.sendMessage(m.chat, {
-         audio: { url: json.result.download.url },
-         mimetype: 'audio/mpeg',
-         fileName: `${json.result.title}.mp3`,
-         contextInfo: {
-           externalAdReply: {
-             title: title,
-             body: '🔥 SANTAFLOW - IA 🌀',
-             mediaType: 1,
-             thumbnail: thumb,
-             mediaUrl: url,
-             sourceUrl: url,
-             renderLargerThumbnail: false
-           }
-         }
-       }, { quoted: m })
+        await m.react('✅');
+        await conn.sendMessage(m.chat, {
+          audio: { url: json.result.download.url },
+          mimetype: 'audio/mpeg',
+          fileName: json.result.download.filename || `${json.result.metadata?.title || title}.mp3`,
+          contextInfo: {
+            externalAdReply: {
+              title: title,
+              body: '🔥 SANTAFLOW - IA 🌀',
+              mediaType: 1,
+              thumbnail: thumb,
+              mediaUrl: url,
+              sourceUrl: url,
+              renderLargerThumbnail: false
+            }
+          }
+        }, { quoted: m })
       } catch (e) {
         return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m)
       }
     }
 
+    // --- VIDEO (play2 / playvideo) ---
     else if (['play2','playvideo'].includes(command)) {
       try {
         const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`)
@@ -129,6 +131,7 @@ handler.tags = ['descargas']
 export default handler
 
 
+// --- Helpers ---
 function formatViews(views) {
   if (views === undefined) return "No disponible"
   if (views >= 1e9) return `${(views / 1e9).toFixed(1)}B (${views.toLocaleString()})`
@@ -157,13 +160,10 @@ async function getSize(downloadUrl) {
 async function formatSize(bytes) {
   const units = ['B', 'KB', 'MB', 'GB'];
   let i = 0;
-
   if (!bytes || isNaN(bytes)) return 'Desconocido';
-
   while (bytes >= 1024 && i < units.length - 1) {
     bytes /= 1024;
     i++;
   }
-
   return `${bytes.toFixed(2)} ${units[i]}`;
-      }
+}
