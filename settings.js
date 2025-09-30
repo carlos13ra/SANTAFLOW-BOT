@@ -16,7 +16,7 @@ global.botNumber = ''
 global.owner = [
 // <-- Número @s.whatsapp.net -->
   ['51946200884', '🜲 Propietario 🜲', true],
-  ['51934053286', 'Carlos.rv', true],
+  ['51984169553', 'Carlos.rv', true],
   ['51946200884', ':v', true],
   ['51919199620', ':v', true ],
   ['51965763942', 'ShadowCore 🌿', true],
