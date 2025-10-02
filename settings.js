@@ -15,7 +15,7 @@ global.botNumber = ''
 
 global.owner = [
 // <-- Número @s.whatsapp.net -->
-  ['51946200884', '🜲 Propietario 🜲', true],
+  ['51984169553', '🜲 Propietario 🜲', true],
   ['51984169553', 'Carlos.rv', true],
   ['51946200884', ':v', true],
   ['51919199620', ':v', true ],
@@ -23,7 +23,7 @@ global.owner = [
   
 // <-- Número @lid -->
 
-  ['49285437599822', 'Propietario', true],
+  ['41885158654125', 'Propietario', true],
   ['102680420733070', 'carlos.rv', true],
   ['49285437599822', ':v', true ],
   ['80754461647013', ':v', true ],
