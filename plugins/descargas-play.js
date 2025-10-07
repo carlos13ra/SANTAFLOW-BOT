@@ -60,10 +60,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     // --- VIDEO (play2 / playvideo) ---
     else if (['play2','playvideo'].includes(command)) {
       try {
-        const res = await fetch(`https://delirius-apiofc.vercel.app/download/ytmp4?url=${url}`)
-        const json = await res.json()
-
-        if (!json.status || !json.data?.download?.url) throw '⚠ No se obtuvo enlace de video.'
+        const res = await fetch(`https://api-nv.eliasaryt.pro/api/dl/yt-direct?url=${url}&type=video&key=hYSK8YrJpKRc9jSE`)
 
         const size = await getSize(json.data.download.url)
         const sizeStr = size ? await formatSize(size) : 'Desconocido'
@@ -71,24 +68,12 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
         await m.react('✅');
 
         let caption = ` 🧪  DESCARGA COMPLETA 🌱
-> ✦ *Título:* ${json.data.title}
-> ❏ *Canal:* ${json.data.author}
-> ⌬ *Categoría:* ${json.data.category || "Desconocida"}
-> ⬡ *Duración:* ${formatTime(json.data.duration)}
-> ✧ *Calidad:* ${json.data.quality || "HD"}
-> ⨳ *Tamaño:* ${sizeStr}
-> 🜸 *Vistas:* ${formatViews(json.data.views)}
-> ◈ *Likes:* ${json.data.likes || "No disponible"}
-> ⌭ *Comentarios:* ${json.data.comments || "No disponible"}
-> ❖ *Publicado:* ${ago || 'Desconocido'}
-
-🌱 *Enlace:* https://youtu.be/${json.data.id}
         `.trim()
 
         await conn.sendFile(
           m.chat,
-          json.data.download.url,
-          `${json.data.title || 'video'}.mp4`,
+          res,
+          `${title || 'video'}.mp4`,
           caption,
           m
         )
