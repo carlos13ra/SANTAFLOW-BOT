@@ -6,8 +6,10 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
-    if (!text?.trim()) return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m, fake)
+    if (!text?.trim()) 
+      return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m, fake)
 
+    // Buscar video
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
     let video = videoIdMatch
@@ -25,7 +27,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     const thumb = (await conn.getFile(thumbnail)).data
     await conn.sendMessage(m.chat, { image: thumb, caption: info, ...rcanal }, { quoted: fkontak })
-    
+
     if (['play', 'playaudio'].includes(command)) {
       try {
         const res = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${url}&quality=128`)
@@ -57,22 +59,25 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     else if (['play2', 'playvideo'].includes(command)) {
       try {
-        const apiUrl = `https://ochinpo-helper.hf.space/yt?query=${encodeURIComponent(url)}`
+        const apiUrl = `https://api.zenzxz.my.id/downloader/ytmp4v2?url=${encodeURIComponent(url)}`
         const res = await fetch(apiUrl)
         const json = await res.json()
 
-        if (!json.success || !json.result?.download?.video)
+        if (!json.status || !json.download_url)
           throw '*⚠ No se pudo obtener el enlace de descarga de video.*'
 
-        const dlUrl = json.result.download.video
-        const videoTitle = json.result.title || title
-        const videoDesc = json.result.description || 'Sin descripción'
+        const dlUrl = json.download_url
+        const videoTitle = json.title || title
+        const videoDesc = `Duración: ${json.duration || 'Desconocido'}s\nFormato: ${json.format || 'Desconocido'}`
+        const thumbUrl = json.thumbnail || thumbnail
+        const thumb = (await conn.getFile(thumbUrl)).data
+
         const size = await getSize(dlUrl)
         const sizeStr = size ? await formatSize(size) : 'Desconocido'
 
         await m.react('✅')
 
-        const caption = `🎬 *${videoTitle}*\n\n🧾 ${videoDesc.slice(0, 150)}...\n📏 Tamaño: *${sizeStr}*\n\n> ⚡ *Descarga completa*`
+        const caption = `🎬 *${videoTitle}*\n\n🧾 ${videoDesc}\n📏 Tamaño: *${sizeStr}*\n\n> ⚡ *Descarga completa*`
 
         await conn.sendMessage(m.chat, {
           video: { url: dlUrl },
@@ -111,8 +116,6 @@ handler.command = handler.help = ['playaudio', 'play', 'playvideo', 'play2']
 handler.tags = ['descargas']
 
 export default handler
-
-
 
 function formatViews(views) {
   if (views === undefined) return "No disponible"
