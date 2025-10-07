@@ -21,31 +21,12 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const canal = author?.name || 'Desconocido'
     
     await m.react('⏱️');
-    const infoMessage = `🌷 \`Titulo:\`  *<${title || 'Desconocido'}>*\n\n` +
-      `> 📺 \`Canal\` » *${canal}*\n` +
-      `> 👁️ \`Vistas\` » *${vistas || 'Desconocido'}*\n` +
-      `> ⏱ \`Duración\` » *${timestamp || 'Desconocido'}*\n` +
-      `> 📆 \`Publicado\` » *${ago || 'Desconocido'}*\n` +
-      `> 🔗 \`Link\` » ${url}`
+    const info = `🌷 \`Titulo:\`  *<${title || 'Desconocido'}>*\n\n> 📺 \`Canal\` » *${canal}*\n> 👁️ \`Vistas\` » *${vistas || 'Desconocido'}*\n> ⏱ \`Duración\` » *${timestamp || 'Desconocido'}*\n> 📆 \`Publicado\` » *${ago || 'Desconocido'}*\n> 🔗 \`Link\` » ${url}`
 
-    const thumb = (await conn.getFile(thumbnail))?.data
-    const external = {
-      contextInfo: {
-        externalAdReply: {
-          title: title,
-          body: '🎶 Descarga en curso...',
-          mediaType: 1,
-          previewType: 0,
-          mediaUrl: url,
-          sourceUrl: url,
-          thumbnail: thumb,
-          renderLargerThumbnail: true
-        }
-      }
-    }
-
-    await conn.reply(m.chat, infoMessage, m, external)
-
+    
+    const thumb = (await conn.getFile(thumbnail)).data
+    await conn.sendMessage(m.chat, { image: thumb, caption: info, ...rcanal }, { quoted: fkontak })
+    
     // --- AUDIO (play / playaudio) ---
     if (['play', 'playaudio'].includes(command)) {
       try {
