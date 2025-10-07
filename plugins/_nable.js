@@ -249,15 +249,13 @@ const handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, i
       }
       chat.antiLink = isEnable
       break
-      
-       case 'economy': case 'economia': {
-        if (m.isGroup && !(isAdmin || isOwner)) {
-         global.dfail('admin', m, conn)
-         throw false
-       }
-         chat.economy = isEnable
-         break
-        
+case 'economy': case 'economia': {
+if (m.isGroup && !(isAdmin || isOwner)) {
+global.dfail('admin', m, conn)
+throw false
+}
+chat.economy = isEnable
+break
 
       case 'antifake': 
       case 'antivirtuales':
