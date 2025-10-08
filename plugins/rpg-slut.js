@@ -1,75 +1,65 @@
-let handler = async (m, { conn, usedPrefix, command }) => {
-if (!db.data.chats[m.chat].economy && m.isGroup) {
-return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-}
-let user = global.db.data.users[m.sender]
-user.lastslut = user.lastslut || 0
-const cooldown = 5 * 60 * 1000
-if (Date.now() < user.lastslut) {
-const restante = user.lastslut - Date.now()
-const tiempoRestante = formatTime(restante)
-return conn.reply(m.chat, `ꕥ Debes esperar *${tiempoRestante}* para usar *${usedPrefix + command}* de nuevo.`, m)
-}
-user.lastslut = Date.now() + cooldown
-const evento = pickRandom(slut)
-let cantidad
-if (evento.tipo === 'victoria') {
-cantidad = Math.floor(Math.random() * 1501) + 4000
-user.coin += cantidad
-} else {
-cantidad = Math.floor(Math.random() * 1001) + 3000
-user.coin -= cantidad
-if (user.coin < 0) user.coin = 0
-}
-const mensaje = `❀ ${evento.mensaje} *¥${cantidad.toLocaleString()} ${currency}*`
-await conn.reply(m.chat, mensaje, m)
-}
+let cooldowns = {}
 
-handler.help = ['slut']
+let handler = async (m, { conn, text, command, usedPrefix }) => {
+let users = global.db.data.users
+let senderId = m.sender
+let senderName = conn.getName(senderId)
+
+let tiempo = 5 * 60
+if (cooldowns[m.sender] && Date.now() - cooldowns[m.sender] < tiempo * 1000) {
+let tiempo2 = segundosAHMS(Math.ceil((cooldowns[m.sender] + tiempo * 1000 - Date.now()) / 1000))
+m.reply(`${emoji3} Debes esperar *${tiempo2}* para usar *#slut* de nuevo.`)
+return
+}
+cooldowns[m.sender] = Date.now()
+let senderCoin = users[senderId].coin || 0
+let randomUserId = Object.keys(users)[Math.floor(Math.random() * Object.keys(users).length)]
+while (randomUserId === senderId) {
+randomUserId = Object.keys(users)[Math.floor(Math.random() * Object.keys(users).length)]}
+let randomUserCoin = users[randomUserId].coin || 0
+let minAmount = 15
+let maxAmount = 50
+let amountTaken = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount
+let randomOption = Math.floor(Math.random() * 3)
+switch (randomOption) {
+case 0:
+users[senderId].coin += amountTaken
+users[randomUserId].coin -= amountTaken
+conn.sendMessage(m.chat, {
+text: `${emoji} ¡Se la chupaste a @${randomUserId.split("@")[0]} por *${amountTaken} ${moneda}* lo dejaste bien seco\n\nSe suman *+${amountTaken} ${moneda}* a ${senderName}.`,
+contextInfo: { 
+mentionedJid: [randomUserId],
+}}, { quoted: m })
+break
+case 1:
+let amountSubtracted = Math.min(Math.floor(Math.random() * (senderCoin - minAmount + 1)) + minAmount, maxAmount)
+users[senderId].coin -= amountSubtracted
+conn.reply(m.chat, `${emoji} No fuiste cuidadoso y le rompiste la verga a tu cliente, se te restaron *-${amountSubtracted} ${moneda}* a ${senderName}.`, m)
+break
+case 2:
+let smallAmountTaken = Math.min(Math.floor(Math.random() * (randomUserCoin / 2 - minAmount + 1)) + minAmount, maxAmount)
+users[senderId].coin += smallAmountTaken
+users[randomUserId].coin -= smallAmountTaken
+conn.sendMessage(m.chat, {
+text: `${emoji} Le diste unos sentones y te pagaron *${smallAmountTaken} ${moneda}* de @${randomUserId.split("@")[0]} lo dejaste paralitico\n\nSe suman *+${smallAmountTaken} ${moneda}* a ${senderName}.`,
+contextInfo: { 
+mentionedJid: [randomUserId],
+}}, { quoted: m })
+break
+}
+global.db.write()}
+
 handler.tags = ['rpg']
+handler.help = ['slut']
 handler.command = ['slut', 'protituirse']
+handler.register = true
 handler.group = true
 
 export default handler
 
-function formatTime(ms) {
-const totalSec = Math.ceil(ms / 1000)
-const minutes = Math.floor((totalSec % 3600) / 60)
-const seconds = totalSec % 60
-const parts = []
-if (minutes > 0) parts.push(`${minutes} minuto${minutes !== 1 ? 's' : ''}`)
-parts.push(`${seconds} segundo${seconds !== 1 ? 's' : ''}`)
-return parts.join(' ')
+function segundosAHMS(segundos) {
+let horas = Math.floor(segundos / 3600)
+let minutos = Math.floor((segundos % 3600) / 60)
+let segundosRestantes = segundos % 60
+return `${minutos} minutos y ${segundosRestantes} segundos`
 }
-function pickRandom(list) {
-return list[Math.floor(Math.random() * list.length)]
-}
-const slut = [
-{ tipo: 'victoria', mensaje: "Le acaricias el pene a un cliente habitual y ganaste." },
-{ tipo: 'victoria', mensaje: "El admin se viene en tu boca, ganaste." },
-{ tipo: 'victoria', mensaje: "El admin te manosea las tetas, ganaste." },
-{ tipo: 'victoria', mensaje: "Te vistieron de neko kwai en publico, ganaste." },
-{ tipo: 'victoria', mensaje: "Te haces la Loli del admin por un día, ganaste." },
-{ tipo: 'victoria', mensaje: "Te dejas manosear por un extraño por dinero, ganaste." },
-{ tipo: 'victoria', mensaje: "Eres la maid del admin por un día, ganaste." },
-{ tipo: 'victoria', mensaje: "Un gay te paga para que lo hagas con el, ganaste." },
-{ tipo: 'victoria', mensaje: "Tu SuggarMommy muere, ganaste." },
-{ tipo: 'victoria', mensaje: "Tu SuggarDaddy muere, ganaste." },
-{ tipo: 'victoria', mensaje: "Dejaste que un extraño te toque el culo por dinero, ganaste." },
-{ tipo: 'victoria', mensaje: "Dejaste que un extraño te toque el culo por dinero, ganaste." },
-{ tipo: 'victoria', mensaje: "Alguien te pone una correa y eres su mascota sexual por una hora, ganaste." },
-{ tipo: 'victoria', mensaje: "Te vistieron de colegiala en público, ganaste." },
-{ tipo: 'victoria', mensaje: "Te vistieron de una milf en público, ganaste." },
-{ tipo: 'victoria', mensaje: "Los integrantes del grupo te usaron como saco de cum, ganaste." },
-{ tipo: 'victoria', mensaje: "Eres la perra de los admins por un día, ganaste." },
-{ tipo: 'victoria', mensaje: "Unos Aliens te secuestraron y te usaron cómo objeto sexual, ganaste." },
-{ tipo: 'victoria', mensaje: "Un enano se culio tu pierna, ganaste." },
-{ tipo: 'derrota', mensaje: "Intentaste cobrarle al cliente equivocado y te denunciaron, perdiste." },
-{ tipo: 'derrota', mensaje: "El admin te bloqueó después del servicio, perdiste." },
-{ tipo: 'derrota', mensaje: "Te disfrazaste sin que nadie te pagara, perdiste." },
-{ tipo: 'derrota', mensaje: "La SuggarMommy te dejó por una waifu nueva, perdiste." },
-{ tipo: 'derrota', mensaje: "Un extraño te robó el cosplay antes del evento, perdiste." },
-{ tipo: 'derrota', mensaje: "Te manosearon sin pagar nada, perdiste." },
-{ tipo: 'derrota', mensaje: "El gay se arrepintió en el último segundo, perdiste." },
-{ tipo: 'derrota', mensaje: "Los Aliens te devolvieron con trauma, perdiste." }
-]

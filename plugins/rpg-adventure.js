@@ -1,85 +1,81 @@
-let handler = async (m, { conn, command, usedPrefix }) => {
+import fetch from 'node-fetch';
 
-let user = global.db.data.users[m.sender]
-if (!user) global.db.data.users[m.sender] = user = { coin: 0, exp: 0, health: 100, lastAdventure: 0 }
-if (user.coin == null) user.coin = 0
-if (user.exp == null) user.exp = 0
-if (user.health == null) user.health = 100
-if (user.lastAdventure == null) user.lastAdventure = 0
-if (user.health < 5)
-return conn.reply(m.chat, `ꕥ No tienes suficiente salud para volver a *aventurarte*.\n> Usa *"${usedPrefix}heal"* para curarte.`, m)
-const cooldown = 20 * 60 * 1000
-const now = Date.now()
-if (now < user.lastAdventure) {
-const restante = user.lastAdventure - now
-const wait = formatTime(restante)
-return conn.reply(m.chat, `ꕥ Debes esperar *${wait}* para usar *${usedPrefix + command}* de nuevo.`, m)
+let handler = async (m, { conn }) => {
+let user = global.db.data.users[m.sender];
+let img = 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745557963353.jpeg';
+if (!user) {
+return conn.reply(m.chat, `${emoji} El usuario no se encuentra en la base de Datos.`, m);
 }
-user.lastAdventure = now + cooldown
-const evento = pickRandom(aventuras)
-let monedas, experiencia, salud
-if (evento.tipo === 'victoria') {
-monedas = Math.floor(Math.random() * 3001) + 15000
-experiencia = Math.floor(Math.random() * 81) + 40
-salud = Math.floor(Math.random() * 6) + 10
-user.coin += monedas
-user.exp += experiencia
-user.health -= salud
-} else if (evento.tipo === 'derrota') {
-monedas = Math.floor(Math.random() * 2001) + 7000
-experiencia = Math.floor(Math.random() * 41) + 40
-salud = Math.floor(Math.random() * 6) + 10
-user.coin -= monedas
-user.exp -= experiencia
-user.health -= salud
-if (user.coin < 0) user.coin = 0
-if (user.exp < 0) user.exp = 0
-} else {
-experiencia = Math.floor(Math.random() * 61) + 30
-user.exp += experiencia
+if (user.health < 80) {
+return conn.reply(m.chat, '💔 No tienes suficiente salud para aventurarte. Usa el comando .heal para curarte.', m);
 }
-if (user.health < 0) user.health = 0
-const resultado = `❀ ${evento.mensaje} ${evento.tipo === 'neutro' ? '' : evento.tipo === 'victoria' ? `ganaste. *¥${monedas.toLocaleString()} ${currency}*` : `perdiste. *¥${monedas.toLocaleString()} ${currency}*`}`
-await conn.reply(m.chat, resultado, m)
-await global.db.write()
+if (user.lastAdventure && new Date() - user.lastAdventure <= 1500000) {
+let timeLeft = 1500000 - (new Date() - user.lastAdventure);
+return conn.reply(m.chat, `${emoji3} Debés esperar. ${msToTime(timeLeft)} antes de aventurarte de nuevo.`, m);
+}
+let kingdoms = [
+'Reino de Eldoria',
+'Reino de Drakonia',
+'Reino de Arkenland',
+'Reino de Valoria',
+'Reino de Mystara',
+'Reino de Ferelith',
+'Reino de Thaloria',
+'Reino de Nimboria',
+'Reino de Galadorn',
+'Reino de Elenaria'
+];
+let randomKingdom = pickRandom(kingdoms);
+let coin = pickRandom([20, 5, 7, 8, 88, 40, 50, 70, 90, 999, 300]);
+let emerald = pickRandom([1, 5, 7, 8]);
+let iron = pickRandom([5, 6, 7, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80]);
+let gold = pickRandom([20, 5, 7, 8, 88, 40, 50]);
+let coal = pickRandom([20, 5, 7, 8, 88, 40, 50, 80, 70, 60, 100, 120, 600, 700, 64]);
+let stone = pickRandom([200, 500, 700, 800, 900, 4000, 300]);
+let diamonds = pickRandom([1, 2, 3, 4, 5]);
+let exp = pickRandom([10, 20, 30, 40, 50]);
+user.coin += coin;
+user.emerald += emerald;
+user.iron += iron;
+user.gold += gold;
+user.coal += coal;
+user.stone += stone;
+user.diamonds += diamonds;
+user.exp += exp;
+user.health -= 50;
+user.lastAdventure = new Date();
+if (user.health < 0) {
+user.health = 0;
+}
+let info = `🛫 Te has aventurado en el *<${randomKingdom}>*\n` +
+`🏞️ *Aventura Finalizada* 🏞️\n` +
+`💸 *${moneda} Ganados:* ${coin}\n` +
+`♦️ *Esmeralda:* ${emerald}\n` +
+`🔩 *Hierro:* ${iron}\n` +
+`🏅 *Oro:* ${gold}\n` +
+`🕋 *Carbón:* ${coal}\n` +
+`🪨 *Piedra:* ${stone}\n` +
+`💎 *Diamantes Ganados:* ${diamonds}\n` +
+`✨ *Experiencia Ganada:* ${exp}\n` +
+`❤️ *Salud Actual:* ${user.health}`;
+await conn.sendFile(m.chat, img, 'yuki.jpg', info, fkontak);
 }
 
-handler.tags = ['rpg']
-handler.help = ['adventure', 'aventura']
-handler.command = ['adventure', 'aventura']
-handler.group = true
+handler.help = ['aventura', 'adventure'];
+handler.tags = ['rpg'];
+handler.command = ['adventure', 'aventura'];
+handler.group = true;
+handler.register = true;
+handler.cooldown = 1500000;
 
-export default handler
+export default handler;
 
-function formatTime(ms) {
-const totalSec = Math.ceil(ms / 1000)
-const min = Math.floor((totalSec % 3600) / 60)
-const sec = totalSec % 60
-const txt = []
-if (min > 0) txt.push(`${min} minuto${min !== 1 ? 's' : ''}`)
-txt.push(`${sec} segundo${sec !== 1 ? 's' : ''}`)
-return txt.join(' ')
-}
 function pickRandom(list) {
-return list[Math.floor(Math.random() * list.length)]
+return list[Math.floor(Math.random() * list.length)];
 }
-const aventuras = [
-{ tipo: 'victoria', mensaje: 'Derrotaste a un ogro emboscado entre los árboles de Drakonia,' },
-{ tipo: 'victoria', mensaje: 'Te conviertes en campeón del torneo de gladiadores de Valoria,' },
-{ tipo: 'victoria', mensaje: 'Rescatas un libro mágico del altar de los Susurros,' },
-{ tipo: 'victoria', mensaje: 'Liberas a aldeanos atrapados en las minas de Ulderan tras vencer a los trolls,' },
-{ tipo: 'victoria', mensaje: 'Derrotas a un dragón joven en los acantilados de Flamear,' },
-{ tipo: 'victoria', mensaje: 'Encuentras un relicario sagrado en las ruinas de Iskaria y lo proteges de saqueadores,' },
-{ tipo: 'victoria', mensaje: 'Triunfas en el duelo contra el caballero corrupto de Invalion,' },
-{ tipo: 'victoria', mensaje: 'Conquistas la fortaleza maldita de las Sombras Rojas sin sufrir bajas,' },
-{ tipo: 'victoria', mensaje: 'Te infiltras en el templo del Vacío y recuperas el cristal del equilibrio,' },
-{ tipo: 'victoria', mensaje: 'Resuelves el acertijo de la cripta eterna y obtienes un tesoro legendario,' },
-{ tipo: 'derrota', mensaje: 'El hechicero oscuro te lanzó una maldición y huyes perdiendo recursos,' },
-{ tipo: 'derrota', mensaje: 'Te extravías en la jungla de Zarkelia y unos bandidos te asaltan,' },
-{ tipo: 'derrota', mensaje: 'Un basilisco te embiste y escapas herido sin botín,' },
-{ tipo: 'derrota', mensaje: 'Fracasa tu incursión a la torre de hielo cuando caes en una trampa mágica,' },
-{ tipo: 'derrota', mensaje: 'Pierdes orientación entre los portales del bosque espejo y terminas sin recompensa,' },
-{ tipo: 'neutro', mensaje: 'Exploras ruinas antiguas y aprendes secretos ocultos sin hallar tesoros.' },
-{ tipo: 'neutro', mensaje: 'Sigues la pista de un espectro pero desaparece entre la niebla.' },
-{ tipo: 'neutro', mensaje: 'Acompañas a una princesa por los desiertos de Thaloria sin contratiempos.' }
-]
+
+function msToTime(duration) {
+let minutes = Math.floor((duration / (1000 * 60)) % 60);
+let seconds = Math.floor((duration / 1000) % 60);
+return `${minutes} m y ${seconds} s`;
+}
