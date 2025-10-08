@@ -1,5 +1,5 @@
 const handler = async (m, { conn, text, command, usedPrefix }) => {
-if (!db.data.chats[m.chat].economy && m.isGroup) return conn.reply(m.chat, `《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`, m)
+
 const user = global.db.data.users[m.sender]
 if (!text) return conn.reply(m.chat, `❀ Debes apostar una cantidad válida.\n> Ejemplo » *${usedPrefix + command} 150 (cara/cruz).*`, m)
 const args = text.trim().split(/\s+/)

@@ -1,7 +1,5 @@
 let handler = async (m, { conn, command, usedPrefix }) => {
-if (!global.db.data.chats[m.chat].economy && m.isGroup) {
-return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-}
+
 let user = global.db.data.users[m.sender]
 if (!user) global.db.data.users[m.sender] = user = { health: 100, coin: 0, exp: 0, lastDungeon: 0 }
 if (user.health < 5)

@@ -1,8 +1,6 @@
 let buatall = 1
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-if (!db.data.chats[m.chat].economy && m.isGroup) {
-return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-}
+
 const user = global.db.data.users[m.sender]
 let Aku = Math.floor(Math.random() * 101)
 let Kamu = Math.floor(Math.random() * 55)
