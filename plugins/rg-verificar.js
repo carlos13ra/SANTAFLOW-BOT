@@ -12,25 +12,40 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   let user = global.db.data.users[m.sender]
   let name2 = conn.getName(m.sender)
 
+  let bio
+  try {
+    const info = await conn.fetchStatus(who)
+    bio = info?.status?.trim() || "😔 Sin biografía disponible"
+  } catch {
+    bio = "Sin biografía disponible"
+  }
 
   if (user.registered) {
-   const texto = `✧━━━━〔 ⚠ ＡＶＩＳＯ ⚠ 〕━━━━✧
-*🚫 Ya cuentas con un registro activo...*
-¿ 𝚀𝚞𝚒𝚎𝚛𝚎𝚜 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚊𝚛𝚝𝚎 𝚗𝚞𝚎𝚟𝚊𝚖𝚎𝚗𝚝𝚎?
+   const texto = `✦₊˚ 🎀 𓂃 ₊˚⊹♡ ₊˚ 🎀 ✦
+꒰🍓⚠️ 𝒂𝒗𝒊𝒔𝒐 ⚠️🍓꒱  
+┈┈┈┈┈┈┈┈┈┈
 
-🎋 Usa *#unreg* para borrar tu registro y comenzar otra vez.
-✧━━━━━━━━━━━━━━━━━━✧`;
+(｡>﹏<｡) 💦  
+*Ya cuentas con un registro activo...*  
+
+🌸 ¿𝒒𝒖𝒊𝒆𝒓𝒆𝒔 𝒓𝒆𝒈𝒊𝒔𝒕𝒓𝒂𝒓𝒕𝒆 𝒏𝒖𝒆𝒗𝒂𝒎𝒆𝒏𝒕𝒆?  
+
+💌 Usa *#unreg* para borrar tu registro y comenzar otra vez.  
+
+┈┈┈┈┈┈┈┈┈┈  
+૮₍´｡• ᵕ •｡\`₎ა 🌷 𝒕𝒆 𝒆𝒔𝒑𝒆𝒓𝒂𝒓𝒆𝒎𝒐𝒔 ~  
+✦₊˚ 🎀 𓂃 ₊˚⊹♡ ₊˚ 🎀 ✦`;
 
     const botones = [
-      { buttonId: `${usedPrefix}ping`, buttonText: { displayText: '🌳 Velocidad del Bot' }, type: 1 },
-      { buttonId: `${usedPrefix}unreg`, buttonText: { displayText: '🌷 Unreg' }, type: 1 },
+      { buttonId: `${usedPrefix}ping`, buttonText: { displayText: '🔥 Velocidad' }, type: 1 },
+      { buttonId: `${usedPrefix}unreg`, buttonText: { displayText: '🍁 Eliminar Registro' }, type: 1 },
     ];
 
     return await conn.sendMessage(m.chat, {
-      image: { url: icono },
+      image: { url: 'https://files.catbox.moe/eml66k.jpg' },
       caption: texto,
       mentions: [m.sender],
-      footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
+      footer: dev,
       buttons: botones,
       headerType: 4,
       contextInfo: {
@@ -42,18 +57,21 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
           newsletterName: channelRD.name
         }
       }
-    }, { quoted: m });
+    }, { quoted: fkontak });
  }
-  
-   if (!Reg.test(text)) {
-     const mensaje = `✦・🍂  ᴇʟ ᴄᴏᴍᴀɴᴅᴏ ɪɴɢʀᴇsᴀᴅᴏ ᴇs ɪɴᴄᴏʀʀᴇᴄᴛᴏ
-┈┈┈┈┈┈┈┈┈┈
-↳ Úsalo así:
-   ${usedPrefix + command} nombre.edad
 
-🎄 Ejemplo:
-   ${usedPrefix + command} ${name2}.18
-┈┈┈┈┈┈┈┈┈┈`;
+  if (!Reg.test(text)) {
+     const mensaje = `｡☆✼★━━━━━━━━━━━━★✼☆｡  
+❀ ₊˚⊹ ᴏᴏᴘꜱ~ ᴄᴏᴍᴀɴᴅᴏ ɪɴᴄᴏʀʀᴇᴄᴛᴏ (｡•́︿•̀｡)  
+┈┈┈┈┈┈┈┈┈┈  
+↳ 𝑼́𝒔𝒂𝒍𝒐 𝒂𝒔𝒊́:  
+   ${usedPrefix + command} nombre.edad  
+
+🐰 𝑬𝒋𝒆𝒎𝒑𝒍𝒐:  
+> ${usedPrefix + command} ${name2}.18  
+┈┈┈┈┈┈┈┈┈┈  
+🌸 𝒏𝒐 𝒕𝒓𝒊𝒔𝒕𝒆~ 𝒗𝒖𝒆𝒍𝒗𝒆 𝒂 𝒊𝒏𝒕𝒆𝒏𝒕𝒂𝒓 ꒰ᐢ. .ᐢ꒱
+｡☆✼★━━━━━━━━━━━━★✼☆｡`;
 
      const botones = [
        { buttonId: `${usedPrefix}reg ${name2}.18`, buttonText: { displayText: '🖍️ Auto Verificación' }, type: 1 },
@@ -61,10 +79,10 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
      ];
 
     return await conn.sendMessage(m.chat, {
-      image: { url: icono },
+      image: { url: 'https://files.catbox.moe/eml66k.jpg' },
       caption: mensaje,
       mentions: [m.sender],
-      footer: '˜”*°•.˜”*°• RIN ITOSHI BOT •°*”˜.•°*”˜',
+      footer: dev,
       buttons: botones,
       headerType: 4,
       contextInfo: {
@@ -76,7 +94,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
           newsletterName: channelRD.name
         }
       }
-    }, { quoted: m });
+    }, { quoted: fkontak });
   }
 
   let hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' });
@@ -86,12 +104,12 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   let dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' });
 
   let [_, name, splitter, age] = text.match(Reg)
-  if (!name) return m.reply(`*『✦』El nombre no puede estar vacío.*`)
-  if (!age) return m.reply(`*『✦』La edad no puede estar vacía.*`)
-  if (name.length >= 100) return m.reply(`*『✦』El nombre es demasiado largo.*`)
+  if (!name) return m.reply(`✦₊˚ 🎀꒰ 🍓 ꒱🎀 ₊˚✦\n(｡>﹏<｡)💦 *El nombre no puede estar vacío*`)
+  if (!age) return m.reply(`✦₊˚ 🎀꒰ 🍓 ꒱🎀 ₊˚✦\n(≧﹏≦) *La edad no puede estar vacía*`)
+  if (name.length >= 100) return m.reply(`✦₊˚ 🎀꒰ 🍓 ꒱🎀 ₊˚✦\n(๑•﹏•) *El nombre es demasiado largo...*`)
   age = parseInt(age)
-  if (age > 1000) return m.reply(`*『✦』Wow el abuelo quiere jugar al bot.*`)
-  if (age < 5) return m.reply(`*『✦』hay un abuelo bebé jsjsj.*`)
+  if (age > 1000) return m.reply(`✦₊˚ 🎀꒰ 🍓 ꒱🎀 ₊˚✦\n(´｡• ᵕ •｡\`) 💮 *Wow~ el abuelito quiere jugar al bot*`)
+  if (age < 5) return m.reply(`✦₊˚ 🎀꒰ 🍓 ꒱🎀 ₊˚✦\n(｡•́︿•̀｡) *Awww~ un abuelito bebé jsjs* 🍼💕`)
 
   user.name = `${name} ✓`
   user.age = age
@@ -102,21 +120,35 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
   user.joincount = (user.joincount || 0) + 20
 
   let sn = createHash('md5').update(m.sender).digest('hex').slice(0, 20)
+  
 
-  let regbot = `✅ VERIFICACIÓN EXITOSA ✅
-───────────────────
-· › 🌷 \`NOMBRE\` » *${name}*
-· › 🌀 \`EDAD\` » *${age} años*
-───────────────────
-· › 🕸️ \`FECHA\` » *${fecha}*
-· › 🐋 \`HORA\` » *${hora}*
-· › 🌿 \`DIA\` » *${dia}*
-───────────────────
-• 🍹 RECOMPENSAS 🧪
-· › 🪙 \`COINS:\` *+40*
-· › 🏮 \`EXP:\` *+300*
-· › 🔰 \`TOKENS:\` *+20*
-───────────────────`.trim();
+  let regbot = `≡══════════════════════════≡
+✿⊹⊱⋆彡 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐎 • 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐎 彡⋆⊰⊹✿
+≡══════════════════════════≡
+
+╭━━━━━ ˚₊· ͟͟͞͞➳❥
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🍓̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔* ɴᴏᴍʙʀᴇ »  ${name}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ💫̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴜsᴇʀ »  ${name2}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ📱̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ɴᴜᴍᴇʀᴏ »  ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🐰̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴇᴅᴀᴅ »  ${age} añitos ฅ^•ﻌ•^ฅ
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🕸️̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ʙɪᴏ »  ${bio}
+├────────────
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ📖̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ғᴇᴄʜᴀ »  ${fecha}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ⌛̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ʜᴏʀᴀ »  ${hora}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🌙̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴅɪᴀ » ${dia}
+╰━━━━━ ˚₊· ͟͟͞͞➳❥
+
+ﾟ｡⋆｡🎀｡⋆｡ﾟ⋆｡🎀｡⋆｡ﾟ
+💌 〔 𝑹𝑬𝑪𝑶𝑴𝑷𝑬𝑵𝑺𝑨𝑺 〕 💌
+✧ 💰 +40 → coins
+✧ 🔮 +300 → ᴇxᴘ
+✧ 💎 +20 → ᴛᴏᴋᴇɴs
+ﾟ｡⋆｡🎀｡⋆｡ﾟ⋆｡🎀｡⋆｡ﾟ
+
+
+🕊️ ¡Bienvenido ${name}!
+Tu esencia ha sido registrada en el libro celestial ✨
+Que los astros guíen tu camino 🌌 (づ๑•ᴗ•๑)づ♡ `.trim();
 
   await m.react?.('📩')
 
@@ -134,17 +166,17 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
           newsletterName: channelRD.name
         },
         externalAdReply: {
-          title: '✦͢🌹⌗ 𝐔𝐒𝐔𝐀𝐑𝐈𝐎 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐃𝐎 💎✨',
-          body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ éꜱᴇxɪᴛᴏ\n☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
+          title: '❁︩︪•°ֺ໋۪݊🌱 ʀᴇɢɪsᴛʀᴏ - ʀɪɴ ɪᴛᴏsʜɪ ᴜʟᴛʀᴀ ⚡°໋•︪︩❁',
+          body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ ᴇxɪᴛᴏ `☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
           mediaType: 1,
-          thumbnailUrl: icono,
+          thumbnailUrl: 'https://files.catbox.moe/1npzmw.jpg',
           mediaUrl: redes,
           sourceUrl: redes,
           renderLargerThumbnail: true
         }
       }
     },
-    { quoted: m });
+    { quoted: fkontak });
   };
 
 handler.help = ['reg']
