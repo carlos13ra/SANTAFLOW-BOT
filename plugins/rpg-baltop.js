@@ -1,44 +1,37 @@
 let handler = async (m, { conn, args, participants }) => {
-    let users = Object.entries(global.db.data.users).map(([key, value]) => {
-        return { ...value, jid: key };
-    });
+if (!db.data.chats[m.chat].economy && m.isGroup) {
+return m.reply(`《✦》Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+}
+const users = [...new Map(Object.entries(global.db.data.users).map(([jid, data]) => [jid, { ...data, jid }])).values()]
+const sorted = users.sort((a, b) => ((b.coin || 0) + (b.bank || 0)) - ((a.coin || 0) + (a.bank || 0)))
+const totalPages = Math.ceil(sorted.length / 10)
+const page = Math.max(1, Math.min(parseInt(args[0]) || 1, totalPages))
+const startIndex = (page - 1) * 10
+const endIndex = startIndex + 10
+let text = `「✿」Los usuarios con más *${currency}* son:\n\n`
+const slice = sorted.slice(startIndex, endIndex)
+for (let i = 0; i < slice.length; i++) {
+const { jid, coin, bank } = slice[i]
+const total = (coin || 0) + (bank || 0)
+let name = await (async () => global.db.data.users[jid].name.trim() || (await conn.getName(jid).then(n => typeof n === 'string' && n.trim() ? n : jid.split('@')[0]).catch(() => jid.split('@')[0])))()
+text += `✰ ${startIndex + i + 1} » *${name}:*\n`
+text += `\t\t Total→ *¥${total.toLocaleString()} ${currency}*\n`
+}
+text += `\n> • Página *${page}* de *${totalPages}*`
+await conn.reply(m.chat, text.trim(), m, { mentions: conn.parseMention(text) })
 
-    let sortedLim = users.sort((a, b) => (b.coin || 0) + (b.bank || 0) - (a.coin || 0) - (a.bank || 0));
-    let len = args[0] && args[0].length > 0 ? Math.min(10, Math.max(parseInt(args[0]), 10)) : Math.min(10, sortedLim.length);
-    
-    let text = `「${emoji}」Los usuarios con más *¥${moneda}* son:\n\n`;
-
-    text += sortedLim.slice(0, len).map(({ jid, coin, bank }, i) => {
-        let total = (coin || 0) + (bank || 0);
-        return `✰ ${i + 1} » *${participants.some(p => jid === p.jid) ? `(${conn.getName(jid)}) wa.me/` : '@'}${jid.split`@`[0]}:*` +
-               `\n\t\t Total→ *¥${total} ${moneda}*`;
-    }).join('\n');
-
-    await conn.reply(m.chat, text.trim(), m, { mentions: conn.parseMention(text) });
+  await conn.sendMessage(m.chat, {
+    image: { url: 'https://files.catbox.moe/8xasa6.jpg' },
+    caption: texto,
+    fileName: 'bal.jpg',
+    mentions: [who],
+    ...rcanal
+  }, { quoted: m })
 }
 
-handler.help = ['baltop'];
-handler.tags = ['rpg'];
-handler.command = ['baltop', 'eboard'];
-handler.group = true;
-handler.register = true;
-handler.fail = null;
-handler.exp = 0;
+handler.help = ['baltop']
+handler.tags = ['rpg']
+handler.command = ['baltop', 'eboard', 'economyboard']
+handler.group = true
 
-export default handler;
-
-function sort(property, ascending = true) {
-    if (property) return (...args) => args[ascending & 1][property] - args[!ascending & 1][property];
-    else return (...args) => args[ascending & 1] - args[!ascending & 1];
-}
-
-function toNumber(property, _default = 0) {
-    if (property) return (a, i, b) => {
-        return { ...b[i], [property]: a[property] === undefined ? _default : a[property] };
-    }
-    else return a => a === undefined ? _default : a;
-}
-
-function enumGetKey(a) {
-    return a.jid;
-}
+export default handler
