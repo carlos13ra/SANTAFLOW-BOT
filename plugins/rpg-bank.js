@@ -8,10 +8,10 @@ let handler = async (m, { conn, usedPrefix }) => {
   let user = global.db.data.users[who]
   let total = (user.coin || 0) + (user.bank || 0)
 
-  let img = 'https://files.catbox.moe/spg9j8.jpg'
+  let img = 'https://i.postimg.cc/15XzLLYj/edificio-del-banco-1.jpg'
 
   let texto = `
-╭━━━〔 💎 𝐄𝐂𝐎𝐍𝐎𝐌𝐈𝐀 💎 〕━━━⬣
+╭━━━〔 💰 𝐄𝐂𝐎𝐍𝐎𝐌𝐈𝐀 💰 〕━━━⬣
 ┃
 ┃ 👤 Usuario » *${conn.getName(who)}*
 ┃ ⛀ Dinero » *${user.coin || 0} ${moneda}*
