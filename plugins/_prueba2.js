@@ -41,7 +41,7 @@ handler.help = ["aiimg <texto>"];
 handler.tags = ["ai", "imagenes"];
 handler.command = /^aiimg$/i;
 
-export default handler;*/
+export default handler;
 
 import { generateWAMessageFromContent, proto } from "@whiskeysockets/baileys"
 import fs from "fs"
@@ -114,4 +114,4 @@ handler.command = ['codigo', 'vincular']
 handler.tags = ['tools']
 handler.help = ['codigo', 'vincular']
 
-export default handler
+export default handler*/
