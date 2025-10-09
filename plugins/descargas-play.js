@@ -9,7 +9,6 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     if (!text?.trim()) 
       return conn.reply(m.chat, `*⚽ Por favor, ingresa el nombre o enlace del video.*`, m, fake)
 
-    // Buscar video
     let videoIdMatch = text.match(youtubeRegexID)
     let search = await yts(videoIdMatch ? 'https://youtu.be/' + videoIdMatch[1] : text)
     let video = videoIdMatch
@@ -30,30 +29,36 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const res = await fetch(`https://api.vreden.my.id/api/v1/download/youtube/audio?url=${url}&quality=128`)
+        const apiUrl = `https://api.nekolabs.my.id/downloader/youtube/v1?url=${encodeURIComponent(url)}&format=mp3`
+        const res = await fetch(apiUrl)
         const json = await res.json()
-        
-        if (!json.result?.download?.url) throw '*⚠ No se obtuvo un enlace válido.*'
 
-        await m.react('✅');
+        if (!json.status || !json.result?.downloadUrl)
+          throw '*⚠ No se obtuvo un enlace válido desde la API.*'
+
+        const { title: songTitle, downloadUrl, duration, cover, format, quality } = json.result
+
+        await m.react('✅')
         await conn.sendMessage(m.chat, {
-          audio: { url: json.result.download.url },
+          audio: { url: downloadUrl },
           mimetype: 'audio/mpeg',
-          fileName: json.result.download.filename || `${json.result.metadata?.title || title}.mp3`,
+          fileName: `${songTitle || title}.mp3`,
           contextInfo: {
             externalAdReply: {
-              title: title,
-              body: '🔥 SANTAFLOW - IA 🌀',
+              title: songTitle || title,
+              body: `🎧 ${format.toUpperCase()} • ${quality}kbps • ${duration}`,
               mediaType: 1,
-              thumbnail: thumb,
+              thumbnail: await (await fetch(cover || thumbnail)).buffer(),
               mediaUrl: url,
               sourceUrl: url,
               renderLargerThumbnail: false
             }
           }
         }, { quoted: m })
+
       } catch (e) {
-        return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la generación del enlace.*', m)
+        console.error(e)
+        return conn.reply(m.chat, '*⚠︎ No se pudo enviar el audio. El archivo podría ser demasiado pesado o hubo un error en la API.*', m)
       }
     }
 
@@ -116,6 +121,7 @@ handler.command = handler.help = ['playaudio', 'play', 'playvideo', 'play2']
 handler.tags = ['descargas']
 
 export default handler
+
 
 function formatViews(views) {
   if (views === undefined) return "No disponible"
