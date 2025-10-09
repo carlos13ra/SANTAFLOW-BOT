@@ -36,7 +36,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           text: `🍃 *Nombre:* ${pack.name}\n👤 *Autor:* ${pack.author}\n🧩 *Stickers:* ${pack.sticker_count}\n👀 *Vistas:* ${pack.view_count}\n📤 *Exportados:* ${pack.export_count}`
         }),
         footer: proto.Message.InteractiveMessage.Footer.fromObject({
-          text: '® ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ | © sʜᴀᴅᴏᴡ.xʏᴢ'
+          text: '® SANTAFLOW BOT MD | © Carlos.rv'
         }),
         header: proto.Message.InteractiveMessage.Header.fromObject({
           title: '',
