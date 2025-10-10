@@ -5,11 +5,11 @@ import PhoneNumber from 'awesome-phonenumber';
 
 const handler = async (m, { conn }) => {
   const name = '🌱 CARLOS- CREADOR ⚡';
-  const numCreador = '51946200884';
+  const numCreador = '51984169553';
   const empresa = ' SANTAFLOW Bot Inc.';
   const about = '🧪 Desarrollador de SANTAFLOW BOT- MD';
-  const correo = 'blackoficial2025@gmail.com';
-  const web = 'https://gituhb.com/Yuji-XDev';
+  const correo = 'carlosramirezvillanueva30@gmail.com';
+  const web = 'https://gituhb.com/carlos13ra';
   const direccion = 'Tokyo, Japón 🇯🇵';
   const fotoPerfil = 'https://files.catbox.moe/fft2hr.jpg';
 
@@ -42,7 +42,7 @@ END:VCARD`.trim();
     },
     contextInfo: {
       externalAdReply: {
-        title: '🧪 Contacto del Creador oniichan 💌',
+        title: '🧪 Contacto del Creador 🔥',
         body: 'Toca aquí para guardar el contacto o hablar con él',
         mediaType: 1,
         thumbnailUrl: fotoPerfil,
