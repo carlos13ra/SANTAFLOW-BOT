@@ -9,7 +9,7 @@ const cSemana = 500
 const cMes = 1000
 
 let handler = async (m, { conn, usedPrefix, command, args }) => {
-let currency = moneda
+let currency = 'Yenes'
 let texto = `✐ Opciones disponibles para comprar premium:
 
 ° *h :* Horas = ${pHora} ${currency}
