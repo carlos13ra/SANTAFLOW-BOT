@@ -6,7 +6,7 @@ let handler = async(m, { conn, text, usedPrefix, command }) => {
         let name1 = conn.getName(person1);
         let name2 = conn.getName(person2);
         let name3 = conn.getName(m.sender);
-        const pp = './src/Imagen.jpg';
+        const pp = 'https://i.pinimg.com/originals/90/c8/58/90c858c65f0b3b2fca9a226fa369aa2b.png';
 
         let trio = `\t\t*TRIO VIOLENTOOOOO!*
         
