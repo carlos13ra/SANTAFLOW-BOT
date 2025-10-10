@@ -9,12 +9,13 @@ const cSemana = 500
 const cMes = 1000
 
 let handler = async (m, { conn, usedPrefix, command, args }) => {
+let currency = moneda
 let texto = `✐ Opciones disponibles para comprar premium:
 
-° *h :* Horas = ${pHora} ${moneda}
-° *d :* Días = ${pDia} ${moneda}
-° *s :* Semanas = ${pSemana} ${moneda}
-° *m :* Meses = ${pMes} ${moneda}
+° *h :* Horas = ${pHora} ${currency}
+° *d :* Días = ${pDia} ${currency}
+° *s :* Semanas = ${pSemana} ${currency}
+° *m :* Meses = ${pMes} ${currency}
 
 ✧ Ejemplo :
 ${usedPrefix + command} 1 h ---> 1 hora premium.
@@ -32,7 +33,7 @@ if (!precios[kk]) return conn.reply(m.chat, `ꕥ Formato no válido. Opciones: h
 let precio = precios[kk]
 let comision = comisiones[kk]
 let total = (precio * args[0]) + (comision * args[0])
-if (user.coin < total) return conn.reply(m.chat, `ꕥ No tienes suficientes ${moneda} para comprar la membresía premium!`, m)
+if (user.coin < total) return conn.reply(m.chat, `ꕥ No tienes suficientes ${currency} para comprar la membresía premium!`, m)
 let tiempoMs = { h: 3600000, d: 86400000, s: 604800000, m: 2592000000 }[kk] * args[0]
 let now = Date.now()
 if (now < user.premiumTime) user.premiumTime += tiempoMs
@@ -45,8 +46,8 @@ let cap = `  \`\`\`乂 ¡BUY  -  PREMIUM! 乂\`\`\`
 
 ᰔᩚ Usuario » ${name}
 ⴵ Tiempo Premium » ${args[0]} ${tipo}
-✦ Total a pagar » ${total} ${moneda}
-⛁ ${moneda} » ${user.coin}
+✦ Total a pagar » ${total} ${currency}
+⛁ ${currency} » ${user.coin}
 ✰ Tenía » ${user.coin + total}
 ✧ Comisión » -${comision * args[0]} (incluida)`
 conn.sendMessage(m.chat, { text: cap, mentions: [m.sender] }, { quoted: fkontak })
