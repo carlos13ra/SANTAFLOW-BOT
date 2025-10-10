@@ -55,5 +55,7 @@ conn.sendMessage(m.chat, { text: cap, mentions: [m.sender] }, { quoted: fkontak 
 handler.tags = ['rg']
 handler.help = ['premium']
 handler.command = ['vip', 'premium', 'prem']
+handler.register = true
+handler.group = true
 
 export default handler
