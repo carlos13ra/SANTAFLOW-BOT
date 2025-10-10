@@ -47,7 +47,7 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: `Hola Grupo: ${groupName}`,
-          body: '☘️◌*̥₊ ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ ᴍᴅ ◌❐⚽༉',
+          body: '☘️◌*̥₊ 𝚂𝙰𝙽𝚃𝙰𝙵𝙻𝙾𝚆.𝙱𝙾𝚃💫༉',
           thumbnailUrl: url || icono,
           sourceUrl: global.redes,
           mediaType: 1,
