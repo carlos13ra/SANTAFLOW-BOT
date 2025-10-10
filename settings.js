@@ -62,7 +62,7 @@ global.etiqueta = '@sʜᴀᴅᴏᴡ°ᴄᴏʀᴇ'
 
 //✎﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏﹏
 
-global.moneda = 'Motoko Points'
+global.moneda = 'Yenes'
 global.welcom1 = '💤 Bienvenido/a al campo de juego ⚡🏟️\n❍ Edita con el comando *setwelcome*'
 global.welcom2 = '🔥 El jugador ha salido del partido ⚽🔥\n❍ Edita con el comando *setbye*'
 global.banner = 'https://i.postimg.cc/0NxWTkp0/1754525596737.jpg'
