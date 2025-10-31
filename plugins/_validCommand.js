@@ -6,7 +6,7 @@ export async function before(m, { conn }) {
   const usedPrefix = global.prefix.exec(m.text)[0];
   const command = m.text.slice(usedPrefix.length).trim().split(' ')[0].toLowerCase();
   
-  const thumbRes = await fetch("https://files.catbox.moe/xydiwe.jpg");
+  const thumbRes = await fetch("https://i.postimg.cc/0NxWTkp0/1754525596737.jpg");
   const thumbBuffer = await thumbRes.buffer();
   const fkontak = {
         key: {
@@ -65,7 +65,7 @@ export async function before(m, { conn }) {
         externalAdReply: {
           title: '◌*̥₊ 🎧 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 - 𝐁𝐎𝐓 ◌📀༉',
           body: '',
-          thumbnailUrl: 'https://files.catbox.moe/6fj9u7.jpg',
+          thumbnailUrl: 'https://i.postimg.cc/Y2JJXwyb/1754525693627.jpg',
           sourceUrl: '',
           mediaType: 1,
           renderLargerThumbnail: true
@@ -103,7 +103,7 @@ export async function before(m, { conn }) {
   ];
 
   const texto = mensajesNoEncontrado[Math.floor(Math.random() * mensajesNoEncontrado.length)];
-  const thumb = 'https://files.catbox.moe/6fj9u7.jpg';
+  const thumb = 'https://i.postimg.cc/pTm6Z0fw/1754253021526.jpg';
 
   
   await conn.sendMessage(m.chat, {
