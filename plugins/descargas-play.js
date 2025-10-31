@@ -29,7 +29,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
     if (['play', 'playaudio'].includes(command)) {
       try {
-        const apiUrl = `https://api.yupra.my.id/api/downloader/ytmp3?url=${encodeURIComponent(url)}`
+        const apiUrl = `https://api.vreden.my.id/api/v1/download/youtube/audio?url=${url}&quality=128`
         const res = await fetch(apiUrl)
         const json = await res.json()
 
