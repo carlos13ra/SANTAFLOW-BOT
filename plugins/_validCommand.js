@@ -24,7 +24,7 @@ export async function before(m, { conn }) {
         participant: "0@s.whatsapp.net"
   };
   const channelRD = { 
-    id: '120363401008003732@newsletter', 
+    id: '120363402079893698@newsletter', 
     name: '🎧 𝐒𝐀𝐍𝐓𝐀𝐅𝐋𝐎𝐖 - 𝐁𝐎𝐓 | 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 𝐎𝐅𝐈𝐂𝐈𝐀𝐋 💫'
   };
 
