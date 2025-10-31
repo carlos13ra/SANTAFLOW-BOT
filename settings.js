@@ -23,7 +23,7 @@ global.owner = [
   
 // <-- Número @lid -->
 
-  ['41885158654125', 'Propietario', true],
+  ['250135271469135', 'Propietario', true],
   ['102680420733070', 'carlos.rv', true],
   ['49285437599822', ':v', true ],
   ['80754461647013', ':v', true ],
