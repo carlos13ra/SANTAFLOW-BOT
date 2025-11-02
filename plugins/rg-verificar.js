@@ -42,7 +42,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
     ];
 
     return await conn.sendMessage(m.chat, {
-      image: { url: 'https://files.catbox.moe/eml66k.jpg' },
+      image: { url: 'https://files.catbox.moe/g1nja3.jpg' },
       caption: texto,
       mentions: [m.sender],
       footer: dev,
@@ -79,7 +79,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
      ];
 
     return await conn.sendMessage(m.chat, {
-      image: { url: 'https://files.catbox.moe/eml66k.jpg' },
+      image: { url: 'https://files.catbox.moe/g1nja3.jpg' },
       caption: mensaje,
       mentions: [m.sender],
       footer: dev,
@@ -169,7 +169,7 @@ Que los astros guíen tu camino 🌌 (づ๑•ᴗ•๑)づ♡ `.trim();
           title: '❁︩︪•°ֺ໋۪݊📌 ʀᴇɢɪsᴛʀᴏ - sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ 🎧°໋•︪︩❁',
           body: '꒰🥭꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ ᴇxɪᴛᴏ `☯︎ ʙʏ: 𝑪𝒂𝒓𝒍𝒐𝒔 𝑹𝒂𝒎𝒊𝒓𝒆𝒛 🥭',
           mediaType: 1,
-          thumbnailUrl: 'https://files.catbox.moe/1npzmw.jpg',
+          thumbnailUrl: 'https://files.catbox.moe/g1nja3.jpg',
           mediaUrl: redes,
           sourceUrl: redes,
           renderLargerThumbnail: true
