@@ -20,14 +20,14 @@ nombre = `╔══✦•❖•✦══╗
 👤 Usuario: *${usuario}*
 🆕 Nuevo nombre:
 『 *${m.messageStubParameters[0]}* 』
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 foto = `╔══✦•❖•✦══╗
    🖼️ Foto Actualizada
 ╚══✦•❖•✦══╝
 👤 Usuario: *${usuario}*
 📸 Imagen del grupo cambiada.
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 edit = `╔══✦•❖•✦══╗
    ⚙️ Configuración de Grupo
@@ -36,14 +36,14 @@ edit = `╔══✦•❖•✦══╗
 ${m.messageStubParameters[0] == 'on'
 ? '🔒 Solo administradores pueden configurar.'
 : '🔓 Todos los miembros pueden configurar.'}
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 newlink = `╔══✦•❖•✦══╗
    🔗 Enlace Renovado
 ╚══✦•❖•✦══╝
 👤 Generado por: *${usuario}*
 🌍 Nuevo enlace de invitación disponible.
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 status = `╔══✦•❖•✦══╗
    🛡️ Estado del Grupo
@@ -52,21 +52,21 @@ status = `╔══✦•❖•✦══╗
 ${m.messageStubParameters[0] == 'on'
 ? '🔒 Grupo cerrado — Solo administradores pueden escribir.'
 : '🔓 Grupo abierto — Todos los miembros pueden escribir.'}
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 admingp = `╔══✦•❖•✦══╗
    👑 Nuevo Administrador
 ╚══✦•❖•✦══╝
 🔰 *@${m.messageStubParameters[0].split`@`[0]}*
 📌 Nombrado por: *${usuario}*
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 noadmingp = `╔══✦•❖•✦══╗
    ⚠️ Admin Removido
 ╚══✦•❖•✦══╝
 🔻 *@${m.messageStubParameters[0].split`@`[0]}*
 🗑️ Removido por: *${usuario}*
-— ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ —`
+— sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ —`
 
 if (chat.detect && m.messageStubType == 2) {
 const uniqid = (m.isGroup ? m.chat : m.sender)
