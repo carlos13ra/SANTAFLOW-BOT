@@ -127,10 +127,10 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 ≡══════════════════════════≡
 
 ╭━━━━━ ˚₊· ͟͟͞͞➳❥
-│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🍓̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔* ɴᴏᴍʙʀᴇ »  ${name}
-│ *ꛊֵ໋𝅭࣫𝂺ֺׅ💫̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴜsᴇʀ »  ${name2}
-│ *ꛊֵ໋𝅭࣫𝂺ֺׅ📱̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ɴᴜᴍᴇʀᴏ »  ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
-│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🐰̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴇᴅᴀᴅ »  ${age} añitos ฅ^•ﻌ•^ฅ
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🥭ᦡ࣫꒱ֵ֔* ɴᴏᴍʙʀᴇ »  ${name}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🎧ᦡ࣫꒱ֵ֔*  ᴜsᴇʀ »  ${name2}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ💫ᦡ࣫꒱ֵ֔*  ɴᴜᴍᴇʀᴏ »  ${PhoneNumber('+' + who.replace('@s.whatsapp.net', '')).getNumber('international')}
+│ *ꛊֵ໋𝅭࣫𝂺ֺׅ🍐ᦡ࣫꒱ֵ֔*  ᴇᴅᴀᴅ »  ${age} añitos ฅ^•ﻌ•^ฅ
 │ *ꛊֵ໋𝅭࣫𝂺ֺׅ🕸️̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ʙɪᴏ »  ${bio}
 ├────────────
 │ *ꛊֵ໋𝅭࣫𝂺ֺׅ📖̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ғᴇᴄʜᴀ »  ${fecha}
@@ -138,7 +138,7 @@ let handler = async function (m, { conn, text, usedPrefix, command }) {
 │ *ꛊֵ໋𝅭࣫𝂺ֺׅ🌙̶ᮢ〪〫ꨩ֔ᦡ࣫꒱ֵ֔*  ᴅɪᴀ » ${dia}
 ╰━━━━━ ˚₊· ͟͟͞͞➳❥
 
-ﾟ｡⋆｡🎀｡⋆｡ﾟ⋆｡🎀｡⋆｡ﾟ
+ﾟ｡⋆｡💫｡⋆｡ﾟ⋆｡💫｡⋆｡ﾟ
 💌 〔 𝑹𝑬𝑪𝑶𝑴𝑷𝑬𝑵𝑺𝑨𝑺 〕 💌
 ✧ 💰 +40 → coins
 ✧ 🔮 +300 → ᴇxᴘ
@@ -166,8 +166,8 @@ Que los astros guíen tu camino 🌌 (づ๑•ᴗ•๑)づ♡ `.trim();
           newsletterName: channelRD.name
         },
         externalAdReply: {
-          title: '❁︩︪•°ֺ໋۪݊🌱 ʀᴇɢɪsᴛʀᴏ - ʀɪɴ ɪᴛᴏsʜɪ ᴜʟᴛʀᴀ ⚡°໋•︪︩❁',
-          body: '꒰🍃꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ ᴇxɪᴛᴏ `☯︎ ʙʏ: 𝑺𝒉𝒂𝑫𝒐𝒘•𝑪𝒐𝒓𝒆',
+          title: '❁︩︪•°ֺ໋۪݊📌 ʀᴇɢɪsᴛʀᴏ - sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ 🎧°໋•︪︩❁',
+          body: '꒰🥭꒱ ᴛᴜ ᴄᴜᴇɴᴛᴀ ʜᴀ ꜱɪᴅᴏ ᴀᴄᴛɪᴠᴀᴅᴀ ᴄᴏɴ ᴇxɪᴛᴏ `☯︎ ʙʏ: 𝑪𝒂𝒓𝒍𝒐𝒔 𝑹𝒂𝒎𝒊𝒓𝒆𝒛 🥭',
           mediaType: 1,
           thumbnailUrl: 'https://files.catbox.moe/1npzmw.jpg',
           mediaUrl: redes,
