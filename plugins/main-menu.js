@@ -58,8 +58,8 @@ for (let tag in grupos) {
 
 const secciones = Object.entries(grupos).map(([tag, cmds]) => {
   const emoji = emojis[tag] || '⭐'
-  return `╭─🎄${emoji} ${tag.toUpperCase()}🎄─⬣\n`
-    + cmds.map(cmd => `┃ ✨ ${cmd}`).join('\n')
+  return `╭🎄${emoji} ${tag.toUpperCase()}🎄─⬣\n`
+    + cmds.map(cmd => `┃ ☃️ ${cmd}`).join('\n')
     + `\n╰──🎁 ✦ 🎁──⬣`
 }).join('\n\n')
 
@@ -72,24 +72,24 @@ let menuText = `
 🎄 Bienvenido al menú mágico de Navidad 🎅  
 
 ╔🎄ɪɴꜰᴏ ᴜꜱᴇʀ🎁╗
-> 🎅 ᴜꜱᴇʀ: ${name} 
-> 🎅 ɴɪᴠᴇʟ: ${level}  
-> 🎅 ᴇxᴘ ᴛᴏᴛᴀʟ: ${exp} 
-> 🎅 ʀᴀɴɢᴏ: ${role} 
+🎅 ᴜꜱᴇʀ: ${name} 
+🎅 ɴɪᴠᴇʟ: ${level}  
+🎅 ᴇxᴘ ᴛᴏᴛᴀʟ: ${exp} 
+🎅 ʀᴀɴɢᴏ: ${role} 
 ╚════════════╝
 
 ╔🎁ɪɴꜰᴏ ʙᴏᴛ🎄╗
-> 👑 ᴏᴡɴᴇʀ: wa.me/51${suittag}
-> 🤖 Bot: ${(conn.user.jid == global.conn.user.jid ? '🌟 ʙᴏᴛ ᴏꜰɪᴄɪᴀʟ' : '🎁 ꜱᴜʙ ʙᴏᴛ')}  
->📜 Comandos: ${totalCommands}  
-> 👥 Usuarios: ${totalreg} 
-> ⏱️ Runtime: ${uptime}  
+👑 ᴏᴡɴᴇʀ: wa.me/51${suittag}
+🤖 Bot: ${(conn.user.jid == global.conn.user.jid ? '🌟 ʙᴏᴛ ᴏꜰɪᴄɪᴀʟ' : '🎁 ꜱᴜʙ ʙᴏᴛ')}  
+📜 Comandos: ${totalCommands}  
+👥 Usuarios: ${totalreg} 
+⏱️ Runtime: ${uptime}  
 ╚═════════════╝
 
 ╔═❄️ ᴛɪᴇᴍᴘᴏ 🎆═╗
-> 🕰️ Hora Perú: ${hora}  
-> 📅 Fecha: ${fecha}  
-> ☘️ Día: ${dia}  
+>  🕰️ Hora Perú: ${hora}  
+>  📅 Fecha: ${fecha}  
+>  ☘️ Día: ${dia}  
 ╚═══════════╝
 
 🎄🎁✨═════════════════════✨🎁🎄
