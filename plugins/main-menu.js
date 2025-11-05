@@ -106,7 +106,7 @@ let menuText = `
 
 ${secciones}
 
-╭ 🎇 *SANTAFLOW BOT* 🎇 ╮
+╭ *SANTAFLOW BOT* ╮
 🎁 “Tu ayudante mágico en esta Navidad y Año Nuevo”  
 🎅 © 2025 - 2026 By Carlos Ramírez  
 ╰──────────────────────────╯
