@@ -64,14 +64,14 @@ const secciones = Object.entries(grupos).map(([tag, cmds]) => {
 }).join('\n\n')
 
 let menuText = `
-╔❄️═•❅•═❄️═╗
-𝑺𝑨𝑵𝑻𝑨𝑭𝑳𝑶𝑾-𝑩𝑶𝑻
-╚❄️═•❅•═❄️═╝
+╔❄️☃️═•❅•═☃️❄️═╗
+ 𝑺𝑨𝑵𝑻𝑨𝑭𝑳𝑶𝑾-𝑩𝑶𝑻
+╚❄️☃️═•❅•═☃️❄️═╝
 
 🎁✨ ¡${ucapan()} @${userId.split('@')[0]}! ✨🎁
 🎄 Bienvenido al menú mágico de Navidad 🎅  
 
-╔═🎄 ɪɴꜰᴏ ᴜꜱᴇʀ 🎁═╗
+╔═🎄ɪɴꜰᴏ ᴜꜱᴇʀ🎁═╗
 🎅 ᴜꜱᴇʀ: ${name} 
 🎅 ɴɪᴠᴇʟ: ${level}  
 🎅 ᴇxᴘ ᴛᴏᴛᴀʟ: ${exp} 
