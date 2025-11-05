@@ -58,9 +58,9 @@ for (let tag in grupos) {
 
 const secciones = Object.entries(grupos).map(([tag, cmds]) => {
   const emoji = emojis[tag] || '⭐'
-  return `╭───🎄${emoji} ${tag.toUpperCase()}🎄───⬣\n`
+  return `╭──🎄${emoji} ${tag.toUpperCase()}🎄──⬣\n`
     + cmds.map(cmd => `┃ ✨ ${cmd}`).join('\n')
-    + `\n╰───🎁 ✦ 🎁───⬣`
+    + `\n╰──🎁 ✦ 🎁──⬣`
 }).join('\n\n')
 
 let menuText = `
@@ -78,7 +78,7 @@ let menuText = `
 > 🎅 ʀᴀɴɢᴏ: ${role} 
 ╚════════════╝
 
-╔🎁 ɪɴꜰᴏ ʙᴏᴛ 🎄╗
+╔🎁ɪɴꜰᴏ ʙᴏᴛ🎄╗
 > 👑 ᴏᴡɴᴇʀ: wa.me/51${suittag}
 > 🤖 Bot: ${(conn.user.jid == global.conn.user.jid ? '🌟 ʙᴏᴛ ᴏꜰɪᴄɪᴀʟ' : '🎁 ꜱᴜʙ ʙᴏᴛ')}  
 > 📜 Comandos: ${totalCommands}  
