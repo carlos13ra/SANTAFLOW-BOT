@@ -95,14 +95,14 @@ let menuText = `
 ☘️ ᴅɪᴀ: ${dia}
 ──────────────────────
 
-🎄❄️══════════════❄️🎄
+🎄❄️═══════════❄️🎄
 💫🎆 𝐅𝐄𝐋𝐈𝐙 𝐍𝐀𝐕𝐈𝐃𝐀𝐃 𝐘 𝐏𝐑𝐎𝐒𝐏𝐄𝐑𝐎 𝐀Ñ𝐎 𝐍𝐔𝐄𝐕𝐎 2026 🎆💫  
 🎅 Que tu corazón brille de alegría,  
 🎁 tus días se llenen de magia y amor,  
 🎄 y tus sueños renazcan con esperanza ✨  
 🎇 ¡Gracias por compartir esta navidad y 
 💫 prospero año nuevo con nosotros! 💖  
-🎄❄️══════════════❄️🎄
+🎄❄️═══════════❄️🎄
 
 ${secciones}
 
@@ -112,7 +112,7 @@ ${secciones}
 ╰──────────────────────────╯
 `.trim()
 
-await m.react('🎅')
+await m.react('❄️')
 await conn.sendMessage(m.chat, { video: { url: video }, caption: menuText, contextInfo: { mentionedJid: [m.sender], isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, newsletterName: channelRD.name, serverMessageId: -1, }, forwardingScore: 999, externalAdReply: { title: packname, body: dev, thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false,
 }, }, gifPlayback: true, gifAttribution: 0 }, { quoted: null })
 
