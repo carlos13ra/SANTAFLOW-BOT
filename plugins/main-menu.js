@@ -64,9 +64,9 @@ const secciones = Object.entries(grupos).map(([tag, cmds]) => {
 }).join('\n\n')
 
 let menuText = `
-╔══🎅❄️════•❅•════❄️🎅══╗
-   💫 𝑺𝑨𝑵𝑻𝑨𝑭𝑳𝑶𝑾 - 𝑩𝑶𝑻 ✨
-╚══❄️🎅════•❅•════🎅❄️══╝
+╔══🎅❄️══•❅•══❄️🎅══╗
+💫 𝑺𝑨𝑵𝑻𝑨𝑭𝑳𝑶𝑾 - 𝑩𝑶𝑻 ✨
+╚══❄️🎅══•❅•══🎅❄️══╝
 
 🎁✨ ¡${ucapan()} @${userId.split('@')[0]}! ✨🎁
 🎄 Bienvenido al menú mágico de Navidad 🎅  
@@ -76,7 +76,7 @@ let menuText = `
 🎅 ɴɪᴠᴇʟ: ${level}  
 🎅 ᴇxᴘ ᴛᴏᴛᴀʟ: ${exp} 
 🎅 ʀᴀɴɢᴏ: ${role} 
-╚═══════════════╝
+╚═════════════╝
 
 ╔═🎁 ɪɴꜰᴏ ʙᴏᴛ 🎄═╗
 👑 ᴏᴡɴᴇʀ: wa.me/51${suittag}
@@ -84,13 +84,13 @@ let menuText = `
 📜 Comandos: ${totalCommands}  
 👥 Usuarios: ${totalreg} 
 ⏱️ Runtime: ${uptime}  
-╚═════════════════╝
+╚═════════════╝
 
 ╔═❄️ ᴛɪᴇᴍᴘᴏ 🎆═╗
 > 🕰️ Hora Perú: ${hora}  
 > 📅 Fecha: ${fecha}  
 > ☘️ Día: ${dia}  
-╚═════════════════╝
+╚═══════════╝
 
 🎄🎁✨═════════════════════✨🎁🎄
 💫🎆 *𝐅𝐄𝐋𝐈𝐙 𝐍𝐀𝐕𝐈𝐃𝐀𝐃 𝐘 𝐏𝐑𝐎𝐒𝐏𝐄𝐑𝐎 𝐀Ñ𝐎 𝐍𝐔𝐄𝐕𝐎 𝟐𝟎𝟐𝟔* 🎆💫  
