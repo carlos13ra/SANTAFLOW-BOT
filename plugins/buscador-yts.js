@@ -5,7 +5,7 @@ import baileys from '@whiskeysockets/baileys';
 const { generateWAMessageContent, generateWAMessageFromContent, proto } = baileys;
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`*🌴 Por favor, ingresa un texto para buscar en YouTube.*\n> *\`Ejemplo:\`*\n> ${usedPrefix + command} Bing Bang`);
+  if (!text) return m.reply(`*☃️ Por favor, ingresa un texto para buscar en YouTube.*\n> *\`Ejemplo:\`*\n> ${usedPrefix + command} Bing Bang`);
   await m.react('🕓');
 
   try {
@@ -28,10 +28,10 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
       cards.push({
         body: proto.Message.InteractiveMessage.Body.fromObject({
-          text: `[ ✿ ]◦ *Título:* ${video.title}\n> [🍂]◦ *Autor:* ${video.author.name}\n> [🌱]◦ *Duración:* ${video.timestamp}\n> [🌷]◦ *Vistas:* ${video.views.toLocaleString()}`
+          text: `[ ▶️ ]◦ *Título:* ${video.title}\n> [☃️]◦ *Autor:* ${video.author.name}\n> [🎄]◦ *Duración:* ${video.timestamp}\n> [❄️]◦ *Vistas:* ${video.views.toLocaleString()}`
         }),
         footer: proto.Message.InteractiveMessage.Footer.fromObject({
-          text: '® ʀɪɴ ɪᴛᴏsʜɪ ʙᴏᴛ | © sʜᴀᴅᴏᴡ.xʏᴢ'
+          text: '❄️ sᴀɴᴛᴀғʟᴏᴡ ʙᴏᴛ | © ᴄᴀʀʟᴏs.ʀᴠ🥭'
         }),
         header: proto.Message.InteractiveMessage.Header.fromObject({
           title: '',
@@ -70,7 +70,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
           },
           interactiveMessage: proto.Message.InteractiveMessage.fromObject({
             body: proto.Message.InteractiveMessage.Body.create({
-              text: `*🌱 Resultados de:* \`${text}\`\n> Mostrando: ${videos.length} resultados`
+              text: `*🎄 Resultados de:* \`${text}\`\n> Mostrando: ${videos.length} resultados`
             }),
             footer: proto.Message.InteractiveMessage.Footer.create({
               text: '_YouTube - Search_'
