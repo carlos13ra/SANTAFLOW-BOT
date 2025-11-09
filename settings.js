@@ -20,6 +20,7 @@ global.owner = [
   ['51946200884', ':v', true],
   ['51919199620', ':v', true ],
   ['51965763942', 'ShadowCore 🌿', true],
+  ['51948631374', 'hu tao', true],
   
 // <-- Número @lid -->
 
